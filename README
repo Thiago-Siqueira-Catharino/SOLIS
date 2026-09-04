@@ -1,236 +1,191 @@
 # Solis
 
-> Uma linguagem compilada, fortemente tipada e escrita inteiramente em português brasileiro.
+Linguagem de script compilada e fortemente tipada, escrita inteiramente em português brasileiro.
 
-A **Solis** é uma linguagem de programação voltada para a criação de scripts que podem ser integrados a aplicações desenvolvidas em outras linguagens. Sua proposta combina a organização e a segurança de uma linguagem fortemente tipada com a simplicidade de uma sintaxe inspirada em Lua.
+## Sumário
 
-A linguagem adota os paradigmas **orientado a objetos** e **funcional**, permitindo que diferentes estilos de programação sejam utilizados de acordo com a necessidade de cada projeto.
+- [Sobre a linguagem](#sobre-a-linguagem)
+- [Objetivo](#objetivo)
+- [Tipos primitivos](#tipos-primitivos)
+- [Paradigmas](#paradigmas)
+- [Operadores](#operadores)
+- [Variáveis](#variáveis)
+- [Estruturas de controle](#estruturas-de-controle)
+- [Funções](#funções)
+- [Classes](#classes)
+- [Exemplo completo](#exemplo-completo)
 
-## Visão geral
+## Sobre a linguagem
 
-| Característica | Definição |
-| --- | --- |
+| Item | Valor |
+|---|---|
 | Nome | Solis |
-| Extensão dos arquivos | `.sol` |
-| Base conceitual | Java |
-| Inspiração de sintaxe | Lua |
+| Extensão de arquivo | `.sol` |
+| Baseada em | Java |
+| Inspirada em | Lua |
 | Tipagem | Forte |
 | Execução | Compilada |
-| Paradigmas | Orientado a objetos e funcional |
-| Objetivo principal | Criar scripts integráveis a outras linguagens |
-| Idioma da linguagem | Português brasileiro |
 
-## Objetivos
+## Objetivo
 
-A Solis foi projetada para tornar a programação mais acessível a pessoas que utilizam o português brasileiro como idioma principal, sem abrir mão de recursos importantes para o desenvolvimento de software moderno.
-
-Entre os principais objetivos da linguagem estão:
-
-- oferecer uma sintaxe clara e legível em português brasileiro;
-
-- permitir a criação de scripts compilados e fortemente tipados;
-
-- facilitar a integração com aplicações e bibliotecas de outras linguagens;
-
-- combinar recursos da programação orientada a objetos e da programação funcional;
-
-- manter uma experiência de desenvolvimento simples, direta e expressiva.
+Ser uma linguagem para scripts, pensada para ser integrada a outras linguagens, com toda a sua sintaxe escrita em português brasileiro.
 
 ## Tipos primitivos
 
-A Solis possui os seguintes tipos primitivos:
+| Palavra-chave | Equivalente |
+|---|---|
+| Linha | String |
+| Inteiro | Int |
+| Quebrado | Float |
+| Booleano | Bool |
+| Vazio | Void |
+| Lista | List |
 
-| Tipo | Palavra em Solis | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| String | `Linha` | Texto ou sequência de caracteres. | `"Olá, Solis!"` |
-| Int | `Inteiro` | Número inteiro. | `42` |
-| Float | `Quebrado` | Número real com casas decimais. | `3.14` |
-| Bool | `Booleano` | Valor lógico verdadeiro ou falso. | `verdadeiro` |
-| Void | `Vazio` | Ausência de valor. | `Vazio` |
-| List | `Lista` | Coleção ordenada de valores. | `[1, 2, 3]` |
+## Paradigmas
+
+Solis combina programação orientada a objetos e programação funcional.
+
+## Operadores
+
+### Matemáticos
+
+| Operador | Significado |
+|---|---|
+| `+` | adição |
+| `-` | subtração |
+| `*` | multiplicação |
+| `/` | divisão |
+| `%` | resto |
+
+### Lógicos
+
+| Operador | Forma alternativa | Significado |
+|---|---|---|
+| `>` | `{maior}` | maior que |
+| `<` | `{menor}` | menor que |
+| `==` | `{igual}` | igual |
+| `!=` | `{diferente}` | diferença |
 
 ## Variáveis
 
-A declaração de uma variável utiliza o formato:
+Declaração e atribuição seguem o formato:
 
 ```
 {Tipo} {variavel} recebe {valor};
 ```
 
-Por exemplo:
+Exemplo:
 
 ```
-Linha mensagem recebe "texto aleatorio";
-Inteiro idade recebe 25;
-Quebrado altura recebe 1.75;
-Booleano ativo recebe verdadeiro;
-Lista numeros recebe [1, 2, 3, 4];
+Linha x recebe "texto aleatorio";
 ```
 
-A declaração explícita do tipo torna o código mais previsível e permite que o compilador identifique incompatibilidades antes da execução do programa.
+## Estruturas de controle
 
-## Operadores matemáticos
+### Condicionais
 
-A Solis disponibiliza os operadores matemáticos básicos:
+```
+se (condicao) (
+    // bloco executado se verdadeiro
+) senao (
+    // bloco executado se falso
+);
+```
 
-| Operação | Operador | Exemplo |
-| --- | --- | --- |
-| Adição | `+` | `a + b` |
-| Subtração | `-` | `a - b` |
-| Multiplicação | `*` | `a * b` |
-| Divisão | `/` | `a / b` |
-| Resto da divisão | `%` | `a % b` |
+### Loops
+
+Enquanto (equivalente ao `while`):
+
+```
+enquanto (condicao) (
+    // corpo do loop
+);
+```
+
+Para (equivalente ao `for ... in`):
+
+```
+para {variavel} em {iteravel} (
+    // corpo do loop
+);
+```
+
+Interromper um loop:
+
+```
+pare;
+```
+
+## Funções
+
+Sintaxe geral:
+
+```
+funcao <nome_da_funcao> pede (<tipo> <arg>, ...) e retorna <tipo> {
+    // corpo
+    devolve <valor>;
+};
+```
 
 Exemplo:
 
 ```
-Inteiro primeiro recebe 10;
-Inteiro segundo recebe 3;
-Inteiro soma recebe primeiro + segundo;
-Inteiro resto recebe primeiro % segundo;
+funcao soma pede (a, b) e retorna Quebrado {
+    devolve a + b;
+};
 ```
 
-## Operadores lógicos e relacionais
+## Classes
 
-As comparações podem ser escritas utilizando símbolos ou palavras reservadas em português:
-
-| Comparação | Forma simbólica | Forma em Solis |
-| --- | --- | --- |
-| Maior que | `>` | `{maior}` |
-| Menor que | `<` | `{menor}` |
-| Igual | `==` | `{igual}` |
-| Diferente | `!=` | `{diferente}` |
-
-Exemplo:
+Classes usam os blocos `Possui` (atributos) e `Faz` (métodos):
 
 ```
-se idade > 18 {
-    // A pessoa é maior de idade.
-}
-
-se idade {maior} 18 {
-    // Forma equivalente utilizando a palavra reservada.
+Classe Matematica {
+    Possui {
+    };
+    Faz {
+        funcao soma pede (a, b) e retorna Quebrado {
+            devolve a + b;
+        };
+        funcao multiplicar pede (a, b) e retorna Quebrado {
+            devolve a * b;
+        };
+    };
 }
 ```
 
-## Condicionais
-
-As estruturas condicionais utilizam as palavras `se` e `senao`:
+Instanciação de um objeto com `Novo`:
 
 ```
-se idade {maior} 17 {
-    Linha resultado recebe "Acesso permitido";
-} senao {
-    Linha resultado recebe "Acesso negado";
-}
+Matematica mat recebe Novo Matematica;
 ```
-
-Essa estrutura permite executar diferentes blocos de código conforme o resultado de uma condição.
-
-## Loops
-
-A Solis oferece estruturas para repetição de código, incluindo o loop `enquanto` e a iteração sobre valores iteráveis.
-
-### Enquanto
-
-O comando `enquanto` é equivalente ao `while` presente em outras linguagens, como Python. Ele executa um bloco enquanto a condição permanecer verdadeira.
-
-```
-Inteiro contador recebe 0;
-
-enquanto contador < 5 {
-    contador recebe contador + 1;
-}
-```
-
-### Para cada item
-
-A estrutura `para` percorre os elementos de um valor iterável:
-
-```
-Lista nomes recebe ["Ana", "Bruno", "Carla"];
-
-para nome em nomes {
-    // Executa o bloco para cada nome da lista.
-}
-```
-
-A forma geral da estrutura é:
-
-```
-para {variavel} em {iteravel} {
-    // Código executado para cada elemento.
-}
-```
-
-## Interrupção de loops
-
-O comando `pare` interrompe imediatamente a execução do loop atual:
-
-```
-Inteiro contador recebe 0;
-
-enquanto contador < 10 {
-    contador recebe contador + 1;
-
-    se contador == 5 {
-        pare;
-    }
-}
-```
-
-No exemplo, a repetição é encerrada assim que o contador alcança o valor `5`.
 
 ## Exemplo completo
 
-O exemplo a seguir reúne declaração de variáveis, condicional, loop e interrupção de execução:
-
 ```
-Linha linguagem recebe "Solis";
-Inteiro limite recebe 10;
-Inteiro contador recebe 0;
+funcao soma pede (a, b) e retorna Quebrado {
+    devolve a + b;
+};
 
-se linguagem == "Solis" {
-    enquanto contador < limite {
-        contador recebe contador + 1;
-
-        se contador == 5 {
-            pare;
-        }
-    }
-} senao {
-    Linha mensagem recebe "Linguagem desconhecida";
+Classe Matematica {
+    Possui {
+    };
+    Faz {
+        funcao soma pede (a, b) e retorna Quebrado {
+            devolve a + b;
+        };
+        funcao multiplicar pede (a, b) e retorna Quebrado {
+            devolve a * b;
+        };
+    };
 }
+
+funcao principal pede () e retorna Vazio {
+    Quebrado x recebe 3.14;
+    Inteiro y recebe 2;
+    Matematica mat recebe Novo Matematica;
+    Imprime(soma(x, y));
+    Imprime(mat.multiplicar(x, y));
+    devolve Vazio;
+};
 ```
-
-## Sintaxe resumida
-
-| Recurso | Sintaxe |
-| --- | --- |
-| Declaração de variável | `{Tipo} {variavel} recebe {valor};` |
-| Condicional | `se {condicao} { ... }` |
-| Alternativa | `senao { ... }` |
-| Loop condicional | `enquanto {condicao} { ... }` |
-| Loop sobre iterável | `para {variavel} em {iteravel} { ... }` |
-| Interrupção | `pare;` |
-| Fim de instrução | `;` |
-
-## Filosofia da linguagem
-
-A Solis busca equilibrar três princípios: **clareza**, **segurança** e **integração**. A clareza vem da utilização de palavras em português brasileiro e de uma sintaxe direta. A segurança é reforçada pela tipagem forte e pela compilação. A integração permite que a linguagem seja utilizada como uma camada de scripts dentro de aplicações maiores.
-
-## Status do projeto
-
-A especificação apresentada neste documento define a proposta inicial da linguagem Solis. Novos recursos de sintaxe, bibliotecas-padrão, mecanismos de interoperabilidade e ferramentas de desenvolvimento podem ser adicionados conforme o projeto evoluir.
-
-## Contribuição
-
-Contribuições são bem-vindas. Para propor uma melhoria, correção ou novo recurso, abra uma issue descrevendo a motivação e o comportamento esperado. Alterações maiores devem ser discutidas antes da implementação para manter a consistência da linguagem.
-
-## Licença
-
-A licença do projeto ainda não foi definida.
-
----
-
-Desenvolvido para tornar a programação mais acessível, expressiva e integrada em português brasileiro.
