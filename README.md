@@ -4,16 +4,16 @@ Linguagem de script compilada e fortemente tipada, escrita inteiramente em portu
 
 ## Sobre o Projeto
 
-A **Solis** é uma linguagem de programação criada para o desenvolvimento de scripts que podem ser integrados a aplicações desenvolvidas em outras linguagens.
+A Solis é uma linguagem de programação voltada para a criação de scripts que podem ser integrados a aplicações desenvolvidas em outras linguagens.
 
-Sua sintaxe combina a organização e a segurança inspiradas em **Java** com a simplicidade e a flexibilidade de **Lua**. A linguagem também oferece suporte aos paradigmas de programação orientada a objetos e programação funcional.
+A linguagem combina a organização e a segurança inspiradas em Java com a simplicidade e a flexibilidade de Lua. Seu projeto também contempla os paradigmas de programação orientada a objetos e programação funcional.
 
 ## Características
 
 | Característica | Detalhes |
 | --- | --- |
 | Nome | Solis |
-| Extensão | `.sol` |
+| Extensão de arquivo | `.sol` |
 | Base | Java |
 | Inspiração | Lua |
 | Tipagem | Forte |
@@ -25,11 +25,9 @@ Sua sintaxe combina a organização e a segurança inspiradas em **Java** com a 
 
 O objetivo da Solis é oferecer uma linguagem simples e expressiva para a criação de scripts, permitindo que eles sejam incorporados a sistemas maiores e utilizados em conjunto com outras linguagens de programação.
 
-A linguagem busca tornar o código mais acessível para desenvolvedores brasileiros, utilizando palavras-chave em português sem abrir mão de uma estrutura clara e consistente.
+A linguagem utiliza palavras-chave em português brasileiro para tornar o código mais acessível, mantendo uma estrutura clara, consistente e adequada ao desenvolvimento de software.
 
 ## Tipos Primitivos
-
-A Solis possui os seguintes tipos primitivos:
 
 | Tipo | Descrição | Exemplo |
 | --- | --- | --- |
@@ -42,9 +40,9 @@ A Solis possui os seguintes tipos primitivos:
 
 ## Variáveis
 
-As variáveis são declaradas informando o tipo, o nome e o valor inicial. A palavra `recebe` é utilizada para atribuição.
+As variáveis são declaradas informando o tipo, o nome e o valor inicial. A palavra `recebe` representa a atribuição de um valor.
 
-```
+```solis
 Linha mensagem recebe "Olá, Solis!";
 Inteiro idade recebe 25;
 Quebrado altura recebe 1.75;
@@ -54,13 +52,13 @@ Lista numeros recebe [1, 2, 3, 4];
 
 A estrutura geral de uma atribuição é:
 
-```
+```solis
 {Tipo} {variavel} recebe {valor};
 ```
 
 ## Operadores
 
-### Operadores Matemáticos
+### Matemáticos
 
 | Operação | Operador | Exemplo |
 | --- | --- | --- |
@@ -68,11 +66,9 @@ A estrutura geral de uma atribuição é:
 | Subtração | `-` | `a - b` |
 | Multiplicação | `*` | `a * b` |
 | Divisão | `/` | `a / b` |
-| Resto | `%` | `a % b` |
+| Resto da divisão | `%` | `a % b` |
 
-### Operadores de Comparação
-
-A Solis permite utilizar símbolos ou palavras reservadas para realizar comparações.
+### Comparação
 
 | Comparação | Símbolo | Palavra reservada |
 | --- | --- | --- |
@@ -81,7 +77,7 @@ A Solis permite utilizar símbolos ou palavras reservadas para realizar compara�
 | Igual | `==` | `{igual}` |
 | Diferente | `!=` | `{diferente}` |
 
-```
+```solis
 se idade > 18 {
     Linha mensagem recebe "Maior de idade";
 }
@@ -93,7 +89,7 @@ se idade > 18 {
 
 As estruturas condicionais utilizam as palavras `se` e `senao`.
 
-```
+```solis
 se idade {maior} 17 {
     Linha resultado recebe "Acesso permitido";
 } senao {
@@ -103,9 +99,9 @@ se idade {maior} 17 {
 
 ### Enquanto
 
-O comando `enquanto` repete um bloco de código enquanto uma condição for verdadeira.
+O comando `enquanto` executa um bloco de código enquanto uma condição for verdadeira.
 
-```
+```solis
 Inteiro contador recebe 0;
 
 enquanto contador < 5 {
@@ -117,7 +113,7 @@ enquanto contador < 5 {
 
 O comando `para` percorre os elementos de um valor iterável, como uma lista.
 
-```
+```solis
 Lista nomes recebe ["Ana", "Bruno", "Carla"];
 
 para nome em nomes {
@@ -127,7 +123,7 @@ para nome em nomes {
 
 A estrutura geral é:
 
-```
+```solis
 para {variavel} em {iteravel} {
     // Código executado para cada elemento.
 }
@@ -137,7 +133,7 @@ para {variavel} em {iteravel} {
 
 O comando `pare` encerra imediatamente o loop atual.
 
-```
+```solis
 Inteiro contador recebe 0;
 
 enquanto contador < 10 {
@@ -151,7 +147,7 @@ enquanto contador < 10 {
 
 ## Exemplo Completo
 
-```
+```solis
 Linha linguagem recebe "Solis";
 Inteiro limite recebe 10;
 Inteiro contador recebe 0;
@@ -173,7 +169,7 @@ se linguagem == "Solis" {
 
 | Recurso | Sintaxe |
 | --- | --- |
-| Declaração | `{Tipo} {variavel} recebe {valor};` |
+| Declaração de variável | `{Tipo} {variavel} recebe {valor};` |
 | Condicional | `se {condicao} { ... }` |
 | Alternativa | `senao { ... }` |
 | Repetição condicional | `enquanto {condicao} { ... }` |
@@ -183,3 +179,4 @@ se linguagem == "Solis" {
 ## Contribuição
 
 Sugestões, correções e novas ideias são bem-vindas. Para contribuir, abra uma issue descrevendo a proposta ou envie uma alteração acompanhada de uma explicação clara sobre o comportamento esperado.
+
