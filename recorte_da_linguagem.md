@@ -85,12 +85,12 @@ O compilador verifica se as sintaxes estão corretas:
 ## Alfabeto da Linguagem (Σ)
 
 ```
-Σ = { funcao, pede, retorna, devolve, Classe, Possui, Faz, principal,
-      Linha, Inteiro, Quebrado, Booleano, Vazio, Lista, Dicionario,
-      {, }, (, ), [, ], :, ;,
-      mais, +, menos, -, multiplica, *, dividido-por, /, %,
-      recebe, =, igual-a, ==, menor-que, <, maior-que, >, diferente-de, !=,
-      Enquanto, Para, em, se, senao, pare }
+Σ = { 
+    a, b, c, d, e, f, g, h, i, j, k, l, m, n, 
+    o, p, q, r, s, t, u, v, w, x, y, z, ,, {, },
+    (, ), [, ], :, ;, +, -, *, /, %, =, <, >, !,
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 0, _, ', &, |
+}
 ```
 
 ---
@@ -111,6 +111,9 @@ O compilador verifica se as sintaxes estão corretas:
 | `<` | menor-que |
 | `>` | maior-que |
 | `!=` | diferente-de |
+| `&&` | e |
+| `||` | ou |
+| `!` | — |
 
 ### Palavras Reservadas
 
@@ -119,6 +122,10 @@ funcao      pede        retorna     devolve
 Classe      Possui      Faz         principal
 Linha       Inteiro     Quebrado    Booleano
 Vazio       Lista       Dicionario
+Enquanto
+Para        em
+se          senao
+pare
 ```
 
 ### Delimitadores / Pontuação
@@ -130,3 +137,4 @@ Vazio       Lista       Dicionario
 | `[` `]` | Lista |
 | `:` | Separador |
 | `;` | Fim de instrução |
+| `'` | Atribuição de String |
