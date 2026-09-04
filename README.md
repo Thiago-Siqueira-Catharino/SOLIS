@@ -1,0 +1,185 @@
+# Solis
+
+Linguagem de script compilada e fortemente tipada, escrita inteiramente em português brasileiro.
+
+## Sobre o Projeto
+
+A **Solis** é uma linguagem de programação criada para o desenvolvimento de scripts que podem ser integrados a aplicações desenvolvidas em outras linguagens.
+
+Sua sintaxe combina a organização e a segurança inspiradas em **Java** com a simplicidade e a flexibilidade de **Lua**. A linguagem também oferece suporte aos paradigmas de programação orientada a objetos e programação funcional.
+
+## Características
+
+| Característica | Detalhes |
+| --- | --- |
+| Nome | Solis |
+| Extensão | `.sol` |
+| Base | Java |
+| Inspiração | Lua |
+| Tipagem | Forte |
+| Execução | Compilada |
+| Paradigmas | Orientado a objetos e funcional |
+| Idioma | Português brasileiro |
+
+## Objetivo
+
+O objetivo da Solis é oferecer uma linguagem simples e expressiva para a criação de scripts, permitindo que eles sejam incorporados a sistemas maiores e utilizados em conjunto com outras linguagens de programação.
+
+A linguagem busca tornar o código mais acessível para desenvolvedores brasileiros, utilizando palavras-chave em português sem abrir mão de uma estrutura clara e consistente.
+
+## Tipos Primitivos
+
+A Solis possui os seguintes tipos primitivos:
+
+| Tipo | Descrição | Exemplo |
+| --- | --- | --- |
+| `Linha` | Texto ou sequência de caracteres. | `"Olá, mundo!"` |
+| `Inteiro` | Número inteiro. | `42` |
+| `Quebrado` | Número real com casas decimais. | `3.14` |
+| `Booleano` | Valor lógico verdadeiro ou falso. | `verdadeiro` |
+| `Vazio` | Ausência de valor. | `Vazio` |
+| `Lista` | Coleção ordenada de valores. | `[1, 2, 3]` |
+
+## Variáveis
+
+As variáveis são declaradas informando o tipo, o nome e o valor inicial. A palavra `recebe` é utilizada para atribuição.
+
+```
+Linha mensagem recebe "Olá, Solis!";
+Inteiro idade recebe 25;
+Quebrado altura recebe 1.75;
+Booleano ativo recebe verdadeiro;
+Lista numeros recebe [1, 2, 3, 4];
+```
+
+A estrutura geral de uma atribuição é:
+
+```
+{Tipo} {variavel} recebe {valor};
+```
+
+## Operadores
+
+### Operadores Matemáticos
+
+| Operação | Operador | Exemplo |
+| --- | --- | --- |
+| Adição | `+` | `a + b` |
+| Subtração | `-` | `a - b` |
+| Multiplicação | `*` | `a * b` |
+| Divisão | `/` | `a / b` |
+| Resto | `%` | `a % b` |
+
+### Operadores de Comparação
+
+A Solis permite utilizar símbolos ou palavras reservadas para realizar comparações.
+
+| Comparação | Símbolo | Palavra reservada |
+| --- | --- | --- |
+| Maior que | `>` | `{maior}` |
+| Menor que | `<` | `{menor}` |
+| Igual | `==` | `{igual}` |
+| Diferente | `!=` | `{diferente}` |
+
+```
+se idade > 18 {
+    Linha mensagem recebe "Maior de idade";
+}
+```
+
+## Estruturas de Controle
+
+### Condicionais
+
+As estruturas condicionais utilizam as palavras `se` e `senao`.
+
+```
+se idade {maior} 17 {
+    Linha resultado recebe "Acesso permitido";
+} senao {
+    Linha resultado recebe "Acesso negado";
+}
+```
+
+### Enquanto
+
+O comando `enquanto` repete um bloco de código enquanto uma condição for verdadeira.
+
+```
+Inteiro contador recebe 0;
+
+enquanto contador < 5 {
+    contador recebe contador + 1;
+}
+```
+
+### Para
+
+O comando `para` percorre os elementos de um valor iterável, como uma lista.
+
+```
+Lista nomes recebe ["Ana", "Bruno", "Carla"];
+
+para nome em nomes {
+    Linha atual recebe nome;
+}
+```
+
+A estrutura geral é:
+
+```
+para {variavel} em {iteravel} {
+    // Código executado para cada elemento.
+}
+```
+
+### Interrupção
+
+O comando `pare` encerra imediatamente o loop atual.
+
+```
+Inteiro contador recebe 0;
+
+enquanto contador < 10 {
+    contador recebe contador + 1;
+
+    se contador == 5 {
+        pare;
+    }
+}
+```
+
+## Exemplo Completo
+
+```
+Linha linguagem recebe "Solis";
+Inteiro limite recebe 10;
+Inteiro contador recebe 0;
+
+se linguagem == "Solis" {
+    enquanto contador < limite {
+        contador recebe contador + 1;
+
+        se contador == 5 {
+            pare;
+        }
+    }
+} senao {
+    Linha mensagem recebe "Linguagem desconhecida";
+}
+```
+
+## Sintaxe Principal
+
+| Recurso | Sintaxe |
+| --- | --- |
+| Declaração | `{Tipo} {variavel} recebe {valor};` |
+| Condicional | `se {condicao} { ... }` |
+| Alternativa | `senao { ... }` |
+| Repetição condicional | `enquanto {condicao} { ... }` |
+| Iteração | `para {variavel} em {iteravel} { ... }` |
+| Interrupção | `pare;` |
+
+## Contribuição
+
+Sugestões, correções e novas ideias são bem-vindas. Para contribuir, abra uma issue descrevendo a proposta ou envie uma alteração acompanhada de uma explicação clara sobre o comportamento esperado.
