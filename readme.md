@@ -10,7 +10,7 @@ A linguagem combina a organização e a segurança inspiradas em **Java** com a 
 
 ## Características da Linguagem
 
-| Característica | Detalhes |
+| Características | Detalhes |
 |---|---|
 | Nome | Solis |
 | Extensão de arquivo | `.sol` |
