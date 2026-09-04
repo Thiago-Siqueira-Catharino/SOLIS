@@ -1,61 +1,55 @@
-# Solis
+Solis
 
 Linguagem de script compilada e fortemente tipada, escrita inteiramente em português brasileiro.
 
-## Sobre o Projeto
+Sobre o Projeto
 
-A **Solis** é uma linguagem de programação criada para o desenvolvimento de scripts que podem ser integrados a aplicações desenvolvidas em outras linguagens.
+A Solis é uma linguagem de programação criada para o desenvolvimento de scripts que podem ser integrados a aplicações desenvolvidas em outras linguagens.
 
-Sua sintaxe combina a organização e a segurança inspiradas em **Java** com a simplicidade e a flexibilidade de **Lua**. A linguagem também oferece suporte aos paradigmas de programação orientada a objetos e programação funcional.
+A linguagem combina a organização e a segurança inspiradas em Java com a simplicidade e a flexibilidade de Lua. Seu modelo de programação contempla os paradigmas de programação orientada a objetos e programação funcional.
 
-## Características
+Características da Linguagem
 
 | Característica | Detalhes |
-| --- | --- |
+|---|---|
 | Nome | Solis |
-| Extensão | `.sol` |
-| Base | Java |
+| Extensão de arquivo | `.sol` |
+| Base conceitual | Java |
 | Inspiração | Lua |
 | Tipagem | Forte |
 | Execução | Compilada |
 | Paradigmas | Orientado a objetos e funcional |
 | Idioma | Português brasileiro |
 
-## Objetivo
-
-O objetivo da Solis é oferecer uma linguagem simples e expressiva para a criação de scripts, permitindo que eles sejam incorporados a sistemas maiores e utilizados em conjunto com outras linguagens de programação.
-
-A linguagem busca tornar o código mais acessível para desenvolvedores brasileiros, utilizando palavras-chave em português sem abrir mão de uma estrutura clara e consistente.
-
 ## Tipos Primitivos
 
-A Solis possui os seguintes tipos primitivos:
+| Tipo em Solis | Descrição | Exemplo |
+|---|---|---|
+| `Linha` | Representa textos e sequências de caracteres. | `"Olá, Solis!"` |
+| `Inteiro` | Representa números inteiros. | `42` |
+| `Quebrado` | Representa números com casas decimais. | `3.14` |
+| `Booleano` | Representa valores lógicos. | `verdadeiro` |
+| `Vazio` | Representa a ausência de valor. | `Vazio` |
+| `Lista` | Representa uma coleção ordenada de valores. | `[1, 2, 3]` |
 
-| Tipo | Descrição | Exemplo |
-| --- | --- | --- |
-| `Linha` | Texto ou sequência de caracteres. | `"Olá, mundo!"` |
-| `Inteiro` | Número inteiro. | `42` |
-| `Quebrado` | Número real com casas decimais. | `3.14` |
-| `Booleano` | Valor lógico verdadeiro ou falso. | `verdadeiro` |
-| `Vazio` | Ausência de valor. | `Vazio` |
-| `Lista` | Coleção ordenada de valores. | `[1, 2, 3]` |
+## Declaração de Variáveis
 
-## Variáveis
+As variáveis são declaradas informando o tipo, o nome da variável e o valor que será atribuído.
 
-As variáveis são declaradas informando o tipo, o nome e o valor inicial. A palavra `recebe` é utilizada para atribuição.
+A estrutura de uma declaração é:
 
+```solis
+{Tipo} {variavel} recebe {valor};
 ```
-Linha mensagem recebe "Olá, Solis!";
+
+Exemplo:
+
+```solis
+Linha nome recebe "Solis";
 Inteiro idade recebe 25;
 Quebrado altura recebe 1.75;
 Booleano ativo recebe verdadeiro;
-Lista numeros recebe [1, 2, 3, 4];
-```
-
-A estrutura geral de uma atribuição é:
-
-```
-{Tipo} {variavel} recebe {valor};
+Lista numeros recebe [1, 2, 3];
 ```
 
 ## Operadores
@@ -63,26 +57,28 @@ A estrutura geral de uma atribuição é:
 ### Operadores Matemáticos
 
 | Operação | Operador | Exemplo |
-| --- | --- | --- |
+|---|---|---|
 | Adição | `+` | `a + b` |
-| Subtração | `-` | `a - b` |
 | Multiplicação | `*` | `a * b` |
+| Subtração | `-` | `a - b` |
 | Divisão | `/` | `a / b` |
-| Resto | `%` | `a % b` |
+| Resto da divisão | `%` | `a % b` |
 
 ### Operadores de Comparação
 
-A Solis permite utilizar símbolos ou palavras reservadas para realizar comparações.
-
-| Comparação | Símbolo | Palavra reservada |
-| --- | --- | --- |
+| Comparação | Operador simbólico | Palavra reservada |
+|---|---|---|
 | Maior que | `>` | `{maior}` |
 | Menor que | `<` | `{menor}` |
 | Igual | `==` | `{igual}` |
 | Diferente | `!=` | `{diferente}` |
 
-```
-se idade > 18 {
+Exemplo:
+
+```solis
+Inteiro idade recebe 20;
+
+se idade {maior} 17 {
     Linha mensagem recebe "Maior de idade";
 }
 ```
@@ -93,7 +89,7 @@ se idade > 18 {
 
 As estruturas condicionais utilizam as palavras `se` e `senao`.
 
-```
+```solis
 se idade {maior} 17 {
     Linha resultado recebe "Acesso permitido";
 } senao {
@@ -103,9 +99,9 @@ se idade {maior} 17 {
 
 ### Enquanto
 
-O comando `enquanto` repete um bloco de código enquanto uma condição for verdadeira.
+O comando `enquanto` executa um bloco de código enquanto a condição informada for verdadeira.
 
-```
+```solis
 Inteiro contador recebe 0;
 
 enquanto contador < 5 {
@@ -115,29 +111,29 @@ enquanto contador < 5 {
 
 ### Para
 
-O comando `para` percorre os elementos de um valor iterável, como uma lista.
+O comando `para` percorre os valores de um objeto iterável, como uma lista.
 
-```
+```solis
 Lista nomes recebe ["Ana", "Bruno", "Carla"];
 
 para nome em nomes {
-    Linha atual recebe nome;
+    Linha nomeAtual recebe nome;
 }
 ```
 
 A estrutura geral é:
 
-```
+```solis
 para {variavel} em {iteravel} {
     // Código executado para cada elemento.
 }
 ```
 
-### Interrupção
+### Interrupção de Código
 
-O comando `pare` encerra imediatamente o loop atual.
+O comando `pare` interrompe a execução do loop atual.
 
-```
+```solis
 Inteiro contador recebe 0;
 
 enquanto contador < 10 {
@@ -151,16 +147,16 @@ enquanto contador < 10 {
 
 ## Exemplo Completo
 
-```
+```solis
 Linha linguagem recebe "Solis";
 Inteiro limite recebe 10;
 Inteiro contador recebe 0;
 
-se linguagem == "Solis" {
+se linguagem {igual} "Solis" {
     enquanto contador < limite {
         contador recebe contador + 1;
 
-        se contador == 5 {
+        se contador {igual} 5 {
             pare;
         }
     }
@@ -169,16 +165,37 @@ se linguagem == "Solis" {
 }
 ```
 
-## Sintaxe Principal
+## Referência de Sintaxe
 
 | Recurso | Sintaxe |
-| --- | --- |
-| Declaração | `{Tipo} {variavel} recebe {valor};` |
+|---|---|
+| Declaração de variável | `{Tipo} {variavel} recebe {valor};` |
 | Condicional | `se {condicao} { ... }` |
 | Alternativa | `senao { ... }` |
-| Repetição condicional | `enquanto {condicao} { ... }` |
-| Iteração | `para {variavel} em {iteravel} { ... }` |
-| Interrupção | `pare;` |
+| Loop condicional | `enquanto {condicao} { ... }` |
+| Loop iterável | `para {variavel} em {iteravel} { ... }` |
+| Interrupção de loop | `pare;` |
+| Finalização de instrução | `;` |
+
+## Paradigmas
+
+### Programação Orientada a Objetos
+
+A Solis possui como um de seus paradigmas a programação orientada a objetos, permitindo a organização do código por meio de objetos, classes e comportamentos relacionados.
+
+### Programação Funcional
+
+A linguagem também contempla o paradigma funcional, possibilitando a criação de soluções baseadas na composição e na reutilização de operações.
+
+## Integração com Outras Linguagens
+
+A Solis foi projetada para ser utilizada em conjunto com aplicações desenvolvidas em outras linguagens. Seu principal objetivo é permitir a criação de scripts que possam ser incorporados a sistemas maiores.
+
+A forma específica de integração depende da implementação do compilador e do ambiente de execução da linguagem.
+
+## Status do Projeto
+
+A especificação apresentada neste documento representa a definição inicial da linguagem Solis. Recursos de sintaxe, bibliotecas e mecanismos de integração podem ser ampliados conforme o projeto evoluir.
 
 ## Contribuição
 
