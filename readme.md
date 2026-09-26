@@ -178,3 +178,31 @@ funcao principal pede () e retorna Vazio {
     devolve Vazio;
 };
 ```
+## Análise Léxica
+
+Autômatos finitos determinísticos (AFD) que reconhecem as partes do alfabeto da Solis, escritos em Python a partir do modelo de AFD apresentado em aula.
+
+### Estrutura
+
+| Pasta | O que contém |
+|---|---|
+| `Afds/Afd_Solis` | Motor genérico do AFD (`afd.py`): estados, alfabeto, transições, estado inicial e estados finais |
+| `Afds/Alfabeto_0_ate_9` | AFD de dígitos |
+| `Afds/Alfabeto_A_ate_Z` | AFD de letras |
+| `Afds/Alfabeto_0_ate_Z` | AFD de letras e dígitos |
+
+### Padrões reconhecidos
+
+| AFD | Padrão | Aceita | Rejeita |
+|---|---|---|---|
+| Dígitos | `[0-9]+` | `42`, `7` | vazio, `4a`, `-5`, `4.5` |
+| Letras | `[a-zA-Z]+` | `abacate`, `Ana` | vazio, `a1`, `ana@` |
+| Letras e dígitos | `[a-zA-Z][a-zA-Z0-9]*` | `resultado`, `resultado2`, `Ana` | vazio, `1a`, `123`, `meu_nome` |
+
+### Como executar
+
+Requer Python 3. Na raiz do projeto, execute o arquivo do AFD desejado; cada um roda os próprios testes e mostra o resultado:
+
+```
+python Afds/Alfabeto_0_ate_9/afd_numeros.py
+```
