@@ -51,12 +51,12 @@ if __name__ == "__main__":
     afd = criar_afd_digitos()
 
     testes = [
-        "42", #varios digitos -> deve aceitar
-        "7", #um dígito -> deve aceitar
-        "", #vazio -> deve rejeitar (precisa de um digito obrigatório)
-        "4a", #a não está neste alfabeto(Σ) -> deve rejeitar
+        "42", #varios digitos
+        "7", #um dígito
+        "", #vazio -> rejeita (precisa de um digito obrigatório)
+        "4a", #a não está neste alfabeto(Σ)
         "-5", #Sinal de menos(-) não está neste alfabeto(Σ)
-        "4.5", #Ponto(.) não está neste alfabeto -> deve rejeitar
+        "4.5", #Ponto(.) não está neste alfabeto
     ]
 
     for palavra in testes:
