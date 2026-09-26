@@ -1,11 +1,11 @@
 """
 Um AFD é definido formalmente pela quíntupla (Q, Σ, δ, q0, F):
 
-    Q  -> conjunto de estados
-    Σ  -> alfabeto (os símbolos que o autômato conhece)
-    δ  -> função de transição: dado um estado e um símbolo, diz o próximo estado
-    q0 -> estado inicial (onde a leitura começa)
-    F  -> conjunto de estados finais (se a leitura terminar em um deles, a palavra é aceita)
+    Q  -> conjunto de estados.
+    Σ  -> alfabeto (os símbolos que o autômato conhece).
+    δ  -> função de transição: dado um estado e um símbolo, diz o próximo estado.
+    q0 -> estado inicial (onde a leitura começa).
+    F  -> conjunto de estados finais (se a leitura terminar em um deles, a palavra é aceita).
  
 Cada atributo da classe abaixo guarda uma dessas cinco peças.
 """
