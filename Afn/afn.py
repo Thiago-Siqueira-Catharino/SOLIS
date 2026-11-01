@@ -92,3 +92,22 @@ class AFN:
 
         self._validar_estado(estado, "de aceitação")
         self.aceitacao = estado
+
+    #Contagem de estados e transições
+
+    def quantidade_de_estados(self):
+        return len(self.transicoes)
+
+    def quantidade_de_transicoes(self):
+        #Soma o tamanho das listas de transições de cada estado
+        return sum(len(saidas) for saidas in self.transicoes)
+
+    def quantidade_de_transicoes_vazias(self):
+        #Percorre todas as setas e conta as que têm rótulo ε.
+
+        total = 0
+        for saidas in self.transicoes:
+            for transicao in saidas:
+                if transicao.simbolo == EPSILON:
+                    total += 1
+        return total
