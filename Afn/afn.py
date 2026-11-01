@@ -25,3 +25,18 @@ from dataclasses import dataclass
 # ε (transição vazia): muda de estado SEM consumir símbolo.
 # Usamos o caractere de código 0 porque ele não aparece num padrão escrito à mão. Assim, todo rótulo continua sendo uma string de 1 caractere.
 
+EPSILON = "\0"
+
+#Coringa (o "." do padrão): casa QUALQUER símbolo, mas não é transição vazia.
+# Precisa de uma marca própria, diferente de ε.
+
+QUALQUER = "\x01"
+
+@dataclass(frozen=True)
+class Transicao:
+
+    #Uma seta da máquina: o rótulo que ela lê e o estado para onde ela leva.
+    #Frozen=True: depois de criada, a transição não muda. Isso permite que ela seja usada como chave de dicionário.
+
+    simbolo: str
+    destino: int
