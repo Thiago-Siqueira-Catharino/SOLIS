@@ -1,8 +1,8 @@
 """
 Autômato Finito Não Determinístico (AFN) da Solis.
  
-Passo 1: a estrutura da máquina, os métodos que a montam e as contagens.
-(O fecho vazio e a simulação entram nos próximos passos.)
+Passos 1 e 2: a estrutura da máquina, os métodos que a montam, as contagens e o fecho vazio.
+(A simulação entra no Passo 3.)
  
 Diferença para o AFD (Afds/Afd_Solis/afd.py):
     - No AFD, cada par (estado, símbolo) tinha UM destino, guardado num
@@ -120,3 +120,49 @@ class AFN:
                 if transicao.simbolo == EPSILON:
                     total += 1
         return total
+
+    #Fecho vazio (fecho-ε): dado um conjunto de estados, devolve os estados que se pode alcançar a partir deles usando apenas transições vazias (ε), incluindo os próprios estados de partida.
+    
+    def fecho_vazio(self, conjunto):
+
+        #Visitado[estado] diz se o estado já entrou no resultado, sem essa marcação, um ciclo de setas ε (como em a** ou (a?)*) faria a busca girar para sempre.
+
+        visitado = [False] * len(self.transicoes)
+
+        #pilha: estados de onde ainda falta procurar setas ε.
+        
+        pilha = []
+
+        #resultado: estados do fecho, na ordem em que entraram (por isso é lista e não set)
+
+        resultado = []
+
+        #1) Os estados de partida entram primeiro
+
+        for estado in conjunto:
+            self._validar_estado(estado, "do conjunto")
+            if not visitado[estado]:
+                visitado[estado] = True
+                pilha.append(estado)
+                resultado.append(estado)
+
+        #2) Enquanto houver estados na pilha, pega um e procura setas ε saindo dele
+
+        while pilha:
+            atual = pilha.pop()
+            for transicao in self.transicoes[atual]:
+
+                #Seta que lê símbolo não entra no fecho
+
+                if transicao.simbolo != EPSILON:
+                    continue
+
+                #Destino novo, marca, empilha e acrescenta no resultado
+
+                if not visitado[transicao.destino]:
+                    visitado[transicao.destino] = True
+                    pilha.append(transicao.destino)
+                    resultado.append(transicao.destino)
+
+        #3)Pilha vazia, não há mais para onde ir só com ε
+        return resultado
