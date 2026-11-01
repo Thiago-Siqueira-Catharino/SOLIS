@@ -1,5 +1,5 @@
 """
-afn.py — Autômato Finito Não Determinístico (AFN) da Solis.
+Autômato Finito Não Determinístico (AFN) da Solis.
  
 Passo 1: a estrutura da máquina, os métodos que a montam e as contagens.
 (O fecho vazio e a simulação entram nos próximos passos.)
@@ -36,7 +36,7 @@ QUALQUER = "\x01"
 class Transicao:
 
     #Uma seta da máquina: o rótulo que ela lê e o estado para onde ela leva.
-    #Frozen=True: depois de criada, a transição não muda. Isso permite que ela seja usada como chave de dicionário.
+    #Frozen=True: depois de criada, a transição não pode ser alterada.
 
     simbolo: str
     destino: int
@@ -45,8 +45,8 @@ class AFN:
 
     def __init__(self):
 
-        # transições [estado] é a lista de seta que saem daquele estado
-        #Exemplo: transições[0] = [Transicao("a", 0), TransicaoAFN(EPSILON, 1)] significa que do estado 0 saem duas setas: uma que lê "a" e volta para 0, e outra que lê ε e vai para 1.
+        # transições [estado] é a lista de setas que saem daquele estado
+        #Exemplo: transições[0] = [Transicao("a", 0), Transicao(EPSILON, 1)] significa que do estado 0 saem duas setas: uma que lê "a" e volta para 0, e outra que lê ε e vai para 1.
         #O número de estados é o tamanho desta lista
 
         self.transicoes = []
@@ -56,14 +56,21 @@ class AFN:
         self.inicial = None
         self.aceitacao = None
 
-    #Validação: o estado deve existir, e o símbolo deve ser um caractere de 1 byte (string de tamanho 1)
+    #Validação: o estado deve existir, e o símbolo deve ser exatamente 1 caractere (string de tamanho 1)
 
     def _validar_estado(self, estado, papel):
 
         #No python, o índice de uma lista pode ser negativo, e isso é válido. Mas não queremos aceitar estados negativos.
 
         if not isinstance(estado, int) or estado < 0 or estado >= len(self.transicoes):
-            raise ValueError(f"Estado {estado} inválido para {papel}.")
+            raise ValueError(f"Estado {papel} inexistente: {estado}")
+
+    def _validar_simbolo(self, simbolo):
+
+        #O rótulo precisa ser exatamente 1 caractere, uma seta "ab" nunca casaria na simulação que lê um símbolo por vez.
+
+        if not isinstance(simbolo, str) or len(simbolo) != 1:
+            raise ValueError(f"Símbolo inválido: {simbolo!r} (precisa ser 1 caractere)")
 
     #Construção da máquina: adiciona um estado, define o inicial e o de aceitação, adiciona transições.
 
@@ -77,10 +84,11 @@ class AFN:
     def adicionar_transicao(self, origem, simbolo, destino):
 
         #Acrescenta uma seta origem -- simbolo--> destino.
-        #Diferente do AFD, nada é sobrescrito, se já ouver uma seta com o mesmo símbolo saindo da origem, as duas ficam. É isso que permite o não-determinismo.
+        #Diferente do AFD, nada é sobrescrito, se já houver uma seta com o mesmo símbolo saindo da origem, as duas ficam. É isso que permite o não-determinismo.
 
         self._validar_estado(origem, "de origem")
         self._validar_estado(destino, "de destino")
+        self._validar_simbolo(simbolo)
         self.transicoes[origem].append(Transicao(simbolo, destino))
 
     def definir_inicial(self, estado):
@@ -104,6 +112,7 @@ class AFN:
 
     def quantidade_de_transicoes_vazias(self):
         #Percorre todas as setas e conta as que têm rótulo ε.
+        #Contamos varrendo a máquina, e não com um contador somado em adicionar_transicao(), um contador contaria quantas vezes se inseriu, e não o que a máquina tem de fato
 
         total = 0
         for saidas in self.transicoes:
