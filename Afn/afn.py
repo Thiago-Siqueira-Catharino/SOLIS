@@ -1,8 +1,7 @@
 """
 Autômato Finito Não Determinístico (AFN) da Solis.
  
-Passos 1 e 2: a estrutura da máquina, os métodos que a montam, as contagens e o fecho vazio.
-(A simulação entra no Passo 3.)
+Passos 1, 2 e 3: a estrutura da máquina, os métodos que a montam, as contagens, o fecho vazio e a simulação.
  
 Diferença para o AFD (Afds/Afd_Solis/afd.py):
     - No AFD, cada par (estado, símbolo) tinha UM destino, guardado num
@@ -40,6 +39,24 @@ class Transicao:
 
     simbolo: str
     destino: int
+
+@dataclass
+class PassoDaSimulacao:
+
+    #Um passo do traço, o símbolo que acabou de ser lido e os estados ativos depois dele.
+    #No primeiro passo, antes de ler qualquer símbolo, simbolo_lido é None.
+
+    simbolo_lido: object
+    ativos: list
+
+@dataclass
+class Simulacao:
+
+    #O resultado completo de uma simulação: se aceitou, o traço (um passo por símbolo, mais o inicial) e o maior número de estados ativos ao mesmo tempo
+
+    aceitou: bool
+    passos: list
+    maior_conjunto_ativo: int
 
 class AFN:
 
@@ -166,3 +183,84 @@ class AFN:
 
         #3)Pilha vazia, não há mais para onde ir só com ε
         return resultado
+
+    #Simulação: executa a máquina sobre uma cadeia, mantendo o conjunto de estados ativos
+
+    def simular(self, cadeia):
+
+        #Sem estado inicial ou de aceitação definidos, não há o que simular
+
+        if self.inicial is None or self.aceitacao is None:
+            raise ValueError("Defina o estado inicial e o de aceitação antes de simular")
+
+        #1) O conjunto inicial é o fecho vazio do estado inicial, e não o inicial sozinho, sem isso a máquina que começa por alternância ou por fecho perderia estados.
+
+        ativos = self.fecho_vazio([self.inicial])
+        passos = [PassoDaSimulacao(None, ativos)]
+        maior = len(ativos)
+
+        #Presente[estado] diz se o estado já entrou em "próximos" neste símbolo, criada uma vez por simulação, a cada símbolo só se desmarcam as posições que entraram.
+
+        presente = [False] * len(self.transicoes)
+
+        #2) Para cada símbolo da cadeia
+
+        for simbolo in cadeia:
+
+            #proximos: estados alcançados lendo este símbolo, na ordem em que entraram
+            
+            proximos = []
+
+            for estado in ativos:
+                for transicao in self.transicoes[estado]:
+
+                    #Seta ε nunca casa com símbolo lido, a seta casa se tiver o mesmo símbolo ou se for o coringa.
+                    
+                    casa = transicao.simbolo != EPSILON and (
+                        transicao.simbolo == simbolo or transicao.simbolo == QUALQUER
+                    )
+                    if not casa:
+
+                        continue
+
+                    if not presente[transicao.destino]:
+                        presente[transicao.destino] = True
+                        proximos.append(transicao.destino)
+
+            #Desmarca só quem entrou, para o próximo símbolo começar limpo
+
+            for estado in proximos:
+                presente[estado] = False
+
+            #3) Aplica o fecho vazio e registra o passo no traço
+
+            ativos = self.fecho_vazio(proximos)
+            passos.append(PassoDaSimulacao(simbolo, ativos))
+            maior = max(maior, len(ativos))
+
+            #4) Sem estado ativo, nenhum símbolo seguinte reativa nada: pode parar
+
+            if not ativos:
+                break
+
+        #5) Aceitação por existência de caminho: basta o estado de aceitação estar entre os ativos
+
+        aceitou = self.aceitacao in ativos
+        return Simulacao(aceitou, passos, maior)
+
+    def aceita(self, cadeia):
+
+        #Forma curta de simular(): devolve só a resposta
+        return self.simular(cadeia).aceitou
+
+    def formatar_simulacao(self, cadeia, simulacao):
+
+        #Monta o traço em texto, um passo por linha
+        linhas = [f'  pattern sobre "{cadeia}"']
+        for passo in simulacao.passos:
+            inicio = "inicio" if passo.simbolo_lido is None else f"apos '{passo.simbolo_lido}'"
+            estados = ", ".join(str(e) for e in passo.ativos)
+            linhas.append(f"    {inicio} -> {{ {estados} }}")
+        resultado = "ACEITA" if simulacao.aceitou else "RECUSA"
+        linhas.append(f"  resultado: {resultado} | maior conjunto ativo: {simulacao.maior_conjunto_ativo}")
+        return "\n".join(linhas)
