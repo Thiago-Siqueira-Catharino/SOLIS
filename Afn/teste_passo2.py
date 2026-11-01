@@ -1,0 +1,103 @@
+"""
+confere o fecho vazio (fecho-ε) do AFN.
+ 
+Três verificações:
+  1. a máquina pequena de a*b do Passo 1 (conferível de cabeça);
+  2. a máquina de (a|b)*c, com o fecho conferido à mão seguindo as setas;
+  3. uma máquina com ciclo de setas ε (a**), que só termina por causa do visitado.
+"""
+
+from afn import AFN, EPSILON
+
+def conferir(descricao, obtido, esperado):
+    situacao = "OK" if obtido == esperado else "FALHOU"
+    print(f"[{situacao}] {descricao}: obtido {obtido}, esperado {esperado}")
+
+# 1) a*b do Passo 1:  0 --a--> 0,  0 --ε--> 1,  1 --b--> 2
+
+print("--- 1) máquina pequena de a*b ---")
+m = AFN()
+
+for _ in range(3):
+    m.novo_estado()
+m.adicionar_transicao(0, 'a', 0)
+m.adicionar_transicao(0, EPSILON, 1)
+m.adicionar_transicao(1, 'b', 2)
+
+conferir("fecho de {0}", m.fecho_vazio([0]), [0, 1])
+conferir("fecho de {1}", m.fecho_vazio([1]), [1])
+conferir("fecho de {2}", m.fecho_vazio([2]), [2])
+conferir("fecho de {}", m.fecho_vazio([]), [])
+
+#2) (a|b)*c, montada à mão
+
+#inicio   -> { 6, 4, 7, 8, 0, 2 }
+#apos 'a' -> { 1, 5, 4, 7, 8, 0, 2 }
+
+print("\n--- 2) (a|b)*c ---")
+t = AFN()
+for _ in range(10):
+    t.novo_estado()
+t.adicionar_transicao(0, "a", 1)       
+t.adicionar_transicao(2, "b", 3)        
+t.adicionar_transicao(4, EPSILON, 0)    
+t.adicionar_transicao(4, EPSILON, 2)
+t.adicionar_transicao(1, EPSILON, 5)
+t.adicionar_transicao(3, EPSILON, 5)
+t.adicionar_transicao(6, EPSILON, 4)    
+t.adicionar_transicao(5, EPSILON, 4)
+t.adicionar_transicao(5, EPSILON, 7)
+t.adicionar_transicao(8, "c", 9)        
+t.adicionar_transicao(7, EPSILON, 8)  
+t.definir_aceitacao(9)
+ 
+conferir("estados", t.quantidade_de_estados(), 10)
+conferir("transições", t.quantidade_de_transicoes(), 12)
+conferir("transições vazias", t.quantidade_de_transicoes_vazias(), 9)
+conferir("fecho do inicial {6}", t.fecho_vazio([6]), [6, 4, 7, 8, 0, 2])
+# Depois de ler 'a', o único estado alcançado pela seta 'a' é o 1:
+conferir("fecho de {1} (após 'a')", t.fecho_vazio([1]), [1, 5, 4, 7, 8, 0, 2])
+
+# 3) a**: o fecho de dentro tem um ciclo SÓ de setas ε (2 -> 3 -> 2)
+
+print("\n--- 3) ciclo de setas ε em a** ---")
+c = AFN()
+
+for _ in range(6):
+    c.novo_estado()
+c.adicionar_transicao(0, "a", 1)
+c.adicionar_transicao(2, EPSILON, 0)
+c.adicionar_transicao(2, EPSILON, 3)
+c.adicionar_transicao(1, EPSILON, 0)
+c.adicionar_transicao(1, EPSILON, 3)
+c.adicionar_transicao(4, EPSILON, 2)
+c.adicionar_transicao(4, EPSILON, 5)
+c.adicionar_transicao(3, EPSILON, 2)
+c.adicionar_transicao(3, EPSILON, 5)
+
+conferir("fecho de {4} terminou", sorted(c.fecho_vazio([4])), [0, 2, 3, 4, 5])
+
+#Sem o visitado, a mesma busca limitada a 50 voltas para não travar o teste
+
+def fecho_sem_visitado(afn, conjunto, limite=50):
+    pilha = list(conjunto)
+    voltas = 0
+    while pilha and voltas < limite:
+        atual = pilha.pop()
+        voltas += 1
+        for transicao in afn.transicoes[atual]:
+            if transicao.simbolo == EPSILON:
+                pilha.append(transicao.destino)
+
+    return voltas, len(pilha)
+
+voltas, sobrando = fecho_sem_visitado(c, [4])
+print(f"sem visitado: parou à força depois de {voltas} voltas, com {sobrando} estados ainda na pilha")
+
+#Validação herdada do Passo 1
+
+print("\n--- validação ---")
+try:
+    m.fecho_vazio([-1])
+except ValueError as erro:
+    print("Erro:", erro)
