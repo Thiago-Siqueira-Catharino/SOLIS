@@ -40,3 +40,18 @@ class Transicao:
 
     simbolo: str
     destino: int
+
+class AFN:
+
+    def __init__(self):
+
+        # transições [estado] é a lista de seta que saem daquele estado
+        #Exemplo: transições[0] = [Transicao("a", 0), TransicaoAFN(EPSILON, 1)] significa que do estado 0 saem duas setas: uma que lê "a" e volta para 0, e outra que lê ε e vai para 1.
+        #O número de estados é o tamanho desta lista
+
+        self.transicoes = []
+
+        #Estado inicial e estado de aceitação, começam como None, por que ainda não se sabe quais serão
+
+        self.inicial = None
+        self.aceitacao = None
