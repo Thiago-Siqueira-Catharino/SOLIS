@@ -64,3 +64,31 @@ class AFN:
 
         if not isinstance(estado, int) or estado < 0 or estado >= len(self.transicoes):
             raise ValueError(f"Estado {estado} inválido para {papel}.")
+
+    #Construção da máquina: adiciona um estado, define o inicial e o de aceitação, adiciona transições.
+
+    def novo_estado(self):
+
+        #Cria um estado acrescentando uma lista vazia de transições e devolve o número dele (a posição dessa lista)
+
+        self.transicoes.append([])
+        return len(self.transicoes) - 1
+
+    def adicionar_transicao(self, origem, simbolo, destino):
+
+        #Acrescenta uma seta origem -- simbolo--> destino.
+        #Diferente do AFD, nada é sobrescrito, se já ouver uma seta com o mesmo símbolo saindo da origem, as duas ficam. É isso que permite o não-determinismo.
+
+        self._validar_estado(origem, "de origem")
+        self._validar_estado(destino, "de destino")
+        self.transicoes[origem].append(Transicao(simbolo, destino))
+
+    def definir_inicial(self, estado):
+
+        self._validar_estado(estado, "inicial")
+        self.inicial = estado
+
+    def definir_aceitacao(self, estado):
+
+        self._validar_estado(estado, "de aceitação")
+        self.aceitacao = estado
