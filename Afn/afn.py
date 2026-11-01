@@ -55,3 +55,12 @@ class AFN:
 
         self.inicial = None
         self.aceitacao = None
+
+    #Validação: o estado deve existir, e o símbolo deve ser um caractere de 1 byte (string de tamanho 1)
+
+    def _validar_estado(self, estado, papel):
+
+        #No python, o índice de uma lista pode ser negativo, e isso é válido. Mas não queremos aceitar estados negativos.
+
+        if not isinstance(estado, int) or estado < 0 or estado >= len(self.transicoes):
+            raise ValueError(f"Estado {estado} inválido para {papel}.")
