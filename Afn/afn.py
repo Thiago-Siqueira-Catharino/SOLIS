@@ -18,3 +18,10 @@ Diferença para o AFD (Afds/Afd_Solis/afd.py):
 A classe AFD não é reaproveitada aqui: a forma de guardar as transições é outra.
 """
 
+from dataclasses import dataclass
+
+# Rótulos especiais de transição
+
+# ε (transição vazia): muda de estado SEM consumir símbolo.
+# Usamos o caractere de código 0 porque ele não aparece num padrão escrito à mão. Assim, todo rótulo continua sendo uma string de 1 caractere.
+
