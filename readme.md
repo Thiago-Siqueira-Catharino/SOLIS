@@ -206,3 +206,47 @@ Requer Python 3. Na raiz do projeto, execute o arquivo do AFD desejado; cada um 
 ```
 python Afds/Alfabeto_0_ate_9/afd_numeros.py
 ```
+
+---
+
+## Autômato Finito Não Determinístico (AFN)
+
+A pasta `Afn/` transforma o texto de um padrão numa máquina não determinística, pela construção de
+Thompson, e executa essa máquina sobre uma cadeia. O registro das decisões está em
+`docs/diario_construcao.md`.
+
+### Estrutura
+
+| Arquivo | O que faz |
+|---|---|
+| `Afn/afn.py` | a máquina: estados, transições, fecho vazio e simulação |
+| `Afn/arvore.py` | os 6 tipos de nó da árvore de um padrão |
+| `Afn/leitor_padroes.py` | transforma o texto do padrão (ex.: `[0-9]+`) na árvore |
+| `Afn/thompson.py` | transforma a árvore na máquina |
+| `Afn/bateria.py` | roda os casos de `casos_afn.txt` e compara com o veredito |
+| `Afn/casos_afn.txt` | os casos de teste, com vereditos decididos à mão |
+| `Afn/teste_passo1.py` a `teste_passo4.py` | testes de cada etapa da construção |
+
+### Como executar
+
+Requer Python 3. Na raiz do projeto:
+
+```
+python Afn/bateria.py
+```
+
+A saída esperada é `Bateria conferida à mão: 50/50 casos passaram.` Se algum caso falhar, a bateria
+mostra o arquivo, a linha, o veredito esperado e o obtido, e termina com código de saída 1.
+
+Os testes de cada etapa rodam da mesma forma, por exemplo `python Afn/teste_passo3.py`.
+
+### Acrescentar um caso de teste
+
+Cada linha de `Afn/casos_afn.txt` tem três campos separados por **Tab**:
+
+```
+padrão <Tab> cadeia <Tab> aceita|recusa
+```
+
+A cadeia vazia é o campo vazio entre dois Tabs, e linhas começando com `#` são comentários. O
+veredito precisa ser decidido à mão, seguindo o padrão, **antes** de rodar a bateria.
