@@ -1,0 +1,86 @@
+# Formato: padrão <TAB> cadeia <TAB> aceita|recusa
+# A cadeia vazia é o campo vazio entre dois TABs.
+#
+# Cada veredito foi decidido SEM rodar o programa, seguindo o padrão à mão.
+# É isso que faz desta bateria um teste: ela compara o programa com algo
+# que não veio dele.
+
+# --- casos base: um símbolo só, e a diferença entre ele e a cadeia vazia
+a	a	aceita
+a		recusa
+a	b	recusa
+a	aa	recusa
+
+# --- concatenação: um depois do outro, na ordem
+ab	ab	aceita
+ab	a	recusa
+ab	ba	recusa
+
+# --- alternância: um OU outro, nunca os dois
+a|b	a	aceita
+a|b	b	aceita
+a|b	ab	recusa
+
+# --- fecho: o único operador que aceita a cadeia vazia
+a*		aceita
+a*	aaaa	aceita
+a*	ab	recusa
+# a** tem um ciclo só de transições vazias: só termina por causa do visitado
+a**	aa	aceita
+
+# --- fecho positivo, reduzido a concat(x, fecho(x)) na leitura
+a+		recusa
+a+	aaa	aceita
+
+# --- opcional, reduzido a alt(x, vazio) na leitura
+a?		aceita
+a?	aa	recusa
+
+# --- coringa: casa um símbolo qualquer, mas exige um símbolo
+a.c	a9c	aceita
+a.c	ac	recusa
+
+# --- Inteiro da Solis: o sinal fica com a gramática, e o ponto é do Quebrado
+[0-9]+	2	aceita
+[0-9]+	240	aceita
+[0-9]+		recusa
+[0-9]+	-5	recusa
+[0-9]+	3.14	recusa
+[0-9]+	4a	recusa
+
+# --- letras, com maiúsculas
+[a-zA-Z]+	Matematica	aceita
+[a-zA-Z]+	x1	recusa
+
+# --- Identificador: começa com letra, depois letras ou dígitos
+[a-zA-Z][a-zA-Z0-9]*	resultado	aceita
+[a-zA-Z][a-zA-Z0-9]*	x	aceita
+[a-zA-Z][a-zA-Z0-9]*	Colaboradores	aceita
+[a-zA-Z][a-zA-Z0-9]*	a1b2	aceita
+[a-zA-Z][a-zA-Z0-9]*	1a	recusa
+[a-zA-Z][a-zA-Z0-9]*	meu_nome	recusa
+
+# --- operadores aritméticos: + e * precisam de barra, porque são especiais no padrão
+\+|-|\*|/|%	+	aceita
+\+|-|\*|/|%	*	aceita
+\+|-|\*|/|%	%	aceita
+\+|-|\*|/|%	++	recusa
+
+# --- operadores de comparação: alternativas com mais de um símbolo
+==|!=|<|>	==	aceita
+==|!=|<|>	!=	aceita
+==|!=|<|>	=	recusa
+==|!=|<|>	<>	recusa
+
+# --- palavras reservadas (amostra): se e senao começam igual, e a escrita é exata
+se|senao|pare|funcao	se	aceita
+se|senao|pare|funcao	senao	aceita
+se|senao|pare|funcao	sen	recusa
+se|senao|pare|funcao	Se	recusa
+se|senao|pare|funcao	senaox	recusa
+
+# --- delimitadores: classe com [ e ] escapados pela barra
+# a vírgula está no alfabeto, mas não na lista de delimitadores de classes_lexicas.md
+[{}()\[\];:]	[	aceita
+[{}()\[\];:]	;	aceita
+[{}()\[\];:]	,	recusa
