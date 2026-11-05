@@ -14,13 +14,14 @@ estão em [`alfabeto.md`](alfabeto.md).
 | Literal Quebrado | `[0-9]+\.[0-9]+` |
 | Literal Linha | `'[^'\n]*' \| "[^"\n]*"` |
 | Literal Booleano | `verdadeiro \| falso` |
-| Delimitadores/Pontuação | lista fechada (ver lista) |
+| Delimitadores/Pontuação | lista fechada (ver tabela) |
 
 ---
 
 ## Operadores
 
-Cada operador pode ser escrito com o símbolo ou por extenso.
+Os operadores podem ser escritos com o símbolo ou por extenso, menos `%` e `!`, que só têm o
+símbolo.
 
 | Símbolo | Por extenso |
 |---|---|
@@ -34,11 +35,15 @@ Cada operador pode ser escrito com o símbolo ou por extenso.
 | `<` | `menor-que` |
 | `>` | `maior-que` |
 | `!=` | `diferente-de` |
+| `&&` | `e` |
+| `\|\|` | `ou` |
+| `!` | — |
 
 ## Palavras reservadas
 
 `funcao` · `pede` · `retorna` · `devolve` · `Classe` · `Possui` · `Faz` · `principal` · `Linha` ·
-`Inteiro` · `Quebrado` · `Booleano` · `Vazio` · `Lista` · `Dicionario`
+`Inteiro` · `Quebrado` · `Booleano` · `Vazio` · `Lista` · `Dicionario` · `enquanto` · `para` ·
+`em` · `se` · `senao` · `pare`
 
 ## Identificadores
 
@@ -105,7 +110,14 @@ mesmo jeito que uma palavra reservada vale como reservada.
 
 ## Delimitadores/Pontuação
 
-`{` · `}` · `(` · `)` · `[` · `]` · `:` · `;`
+| Símbolo | Função |
+|---|---|
+| `{` `}` | bloco |
+| `(` `)` | agrupamento / parâmetros |
+| `[` `]` | lista |
+| `:` | separador |
+| `;` | fim de instrução |
+| `,` | separa parâmetros e itens de lista |
 
 ---
 
