@@ -14,9 +14,15 @@ Custo de cada peça:
     - fecho:         2 estados, 4 setas ε
 """
 
+import os
+import sys
 from dataclasses import dataclass
 
 from afn import AFN, EPSILON, QUALQUER
+
+#A árvore fica na pasta Leitor_De_Padroes, ao lado desta pasta Afn: o leitor
+#de padrões é a peça anterior, e o AFN só consome a árvore que ele monta.
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Leitor_De_Padroes"))
 from arvore import TipoDeNo
 
 
