@@ -8,7 +8,13 @@ Seis verificações:
   6. o padrão vazio e um tipo de nó desconhecido.
 """
 
+import os
+import sys
+
 from afn import AFN, EPSILON
+
+#A árvore fica na pasta Leitor_De_Padroes, ao lado desta pasta Afn.
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Leitor_De_Padroes"))
 from arvore import (No, TipoDeNo, simbolo, qualquer, vazio, concatenacao,
                     alternancia, fecho, contar_nos)
 from thompson import construir_thompson

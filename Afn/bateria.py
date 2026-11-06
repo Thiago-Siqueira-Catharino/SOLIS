@@ -18,6 +18,8 @@ import os
 import sys
 from dataclasses import dataclass
 
+#O leitor de padrões fica na pasta Leitor_De_Padroes, ao lado desta pasta Afn.
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Leitor_De_Padroes"))
 from leitor_padroes import ler_padrao, ErroDeLeitura
 from thompson import construir_thompson
 

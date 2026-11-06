@@ -211,7 +211,8 @@ python Afds/Alfabeto_0_ate_9/afd_numeros.py
 
 ## Autômato Finito Não Determinístico (AFN)
 
-A pasta `Afn/` transforma o texto de um padrão numa máquina não determinística, pela construção de
+A pasta `Afn/` recebe a árvore de um padrão, montada pelo leitor de padrões da pasta
+`Leitor_De_Padroes/`, transforma essa árvore numa máquina não determinística, pela construção de
 Thompson, e executa essa máquina sobre uma cadeia. O registro das decisões está em
 `docs/diario_construcao.md`.
 
@@ -219,9 +220,9 @@ Thompson, e executa essa máquina sobre uma cadeia. O registro das decisões est
 
 | Arquivo | O que faz |
 |---|---|
+| `Leitor_De_Padroes/leitor_padroes.py` | transforma o texto do padrão (ex.: `[0-9]+`) na árvore |
+| `Leitor_De_Padroes/arvore.py` | os 6 tipos de nó da árvore de um padrão |
 | `Afn/afn.py` | a máquina: estados, transições, fecho vazio e simulação |
-| `Afn/arvore.py` | os 6 tipos de nó da árvore de um padrão |
-| `Afn/leitor_padroes.py` | transforma o texto do padrão (ex.: `[0-9]+`) na árvore |
 | `Afn/thompson.py` | transforma a árvore na máquina |
 | `Afn/bateria.py` | roda os casos de `casos_afn.txt` e compara com o veredito |
 | `Afn/casos_afn.txt` | os casos de teste, com vereditos decididos à mão |
