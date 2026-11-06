@@ -14,8 +14,12 @@ O açúcar é reduzido aqui, na leitura, e não chega na árvore:
     [abc]  ->  alternancia(alternancia(a, b), c)
     [a-c]  ->  a mesma enumeração, com a faixa expandida símbolo por símbolo
 
-Um padrão malformado gera ErroDeLeitura com a posição (contada a partir de 1)
-do símbolo que causou o problema.
+Um padrão malformado gera ErroDeLeitura com duas posições, contadas a partir de 1:
+    posicao  ->  onde a leitura constatou o problema. Quando algo abre e não
+                 fecha, é o fim do texto, onde a pessoa vai digitar a correção.
+    origem   ->  onde o defeito começou (o "(" ou o "[" que ficou aberto),
+                 quando é diferente da posição constatada.
+mostrar_erro repete o texto e põe a marca ^ embaixo da posição constatada.
 """
 
 from arvore import simbolo, qualquer, vazio, concatenacao, alternancia, fecho
@@ -28,11 +32,23 @@ from arvore import simbolo, qualquer, vazio, concatenacao, alternancia, fecho
 class ErroDeLeitura(ValueError):
 
     #Erro de um padrão malformado: a mensagem e a posição do problema.
+    #origem fica None quando o defeito começa no mesmo lugar em que foi constatado.
 
-    def __init__(self, mensagem, posicao):
+    def __init__(self, mensagem, posicao, origem=None):
         super().__init__(f"posição {posicao}: {mensagem}")
         self.mensagem = mensagem
         self.posicao = posicao
+        self.origem = origem
+
+
+def mostrar_erro(texto, erro):
+
+    #Repete o texto e põe a marca ^ na linha de baixo, sob a posição constatada.
+    #Assim quem escreveu não precisa contar caracteres com o dedo.
+    #Quando a falta é constatada no fim, a marca fica depois do último caractere.
+
+    marca = " " * (erro.posicao - 1) + "^"
+    return f"{texto}\n{marca} {erro.mensagem} (posição {erro.posicao})"
 
 
 def ler_padrao(texto):
@@ -117,7 +133,8 @@ class _Leitor:
             self.avancar()
             interior = self.alternancia()
             if self.no_fim() or self.atual() != ")":
-                raise ErroDeLeitura("Grupo aberto não foi fechado antes do fim do padrão", inicio + 1)
+                raise ErroDeLeitura(f"Grupo aberto na posição {inicio + 1} não foi fechado antes do fim do padrão",
+                                    self.pos + 1, origem=inicio + 1)
             self.avancar()
             return interior
 
@@ -131,7 +148,8 @@ class _Leitor:
         if caractere == "\\":
             self.avancar()
             if self.no_fim():
-                raise ErroDeLeitura("Barra no fim do padrão, sem símbolo depois dela", inicio + 1)
+                raise ErroDeLeitura(f"Barra na posição {inicio + 1} está no fim do padrão, sem símbolo depois dela",
+                                    self.pos + 1, origem=inicio + 1)
             return simbolo(self.avancar())
 
         return simbolo(self.avancar())
@@ -141,10 +159,11 @@ class _Leitor:
         self.avancar()   # o "["
 
         if not self.no_fim() and self.atual() == "^":
-            raise ErroDeLeitura("Classe negada ([^...]) não é aceita", inicio + 1)
+            raise ErroDeLeitura("Classe negada ([^...]) não é aceita", self.pos + 1, origem=inicio + 1)
 
         simbolos = []
         while not self.no_fim() and self.atual() != "]":
+            inicio_da_faixa = self.pos
             primeiro = self._simbolo_da_classe()
 
             #Faixa: "a-c". O "-" só é faixa se houver um símbolo depois dele antes do "]".
@@ -153,20 +172,24 @@ class _Leitor:
                 self.avancar()   # o "-"
                 ultimo = self._simbolo_da_classe()
                 if ord(ultimo) < ord(primeiro):
-                    raise ErroDeLeitura(f"Faixa invertida: {primeiro}-{ultimo}", inicio + 1)
+                    #Constatada no último símbolo da faixa; começa no primeiro.
+                    raise ErroDeLeitura(f"Faixa invertida: {primeiro}-{ultimo}", self.pos,
+                                        origem=inicio_da_faixa + 1)
                 for codigo in range(ord(primeiro), ord(ultimo) + 1):
                     simbolos.append(chr(codigo))
             else:
                 simbolos.append(primeiro)
 
         if self.no_fim():
-            raise ErroDeLeitura("Classe aberta não foi fechada com ]", inicio + 1)
+            raise ErroDeLeitura(f"Classe aberta na posição {inicio + 1} não foi fechada com ]",
+                                self.pos + 1, origem=inicio + 1)
         self.avancar()   # o "]"
 
         #Um símbolo repetido ([aa] ou [a-ca]) entra uma vez só.
         sem_repetir = list(dict.fromkeys(simbolos))
         if not sem_repetir:
-            raise ErroDeLeitura("Classe vazia", inicio + 1)
+            #Constatada no "]", que fecha a classe sem nada dentro.
+            raise ErroDeLeitura("Classe vazia", self.pos, origem=inicio + 1)
 
         #[abc] -> alternancia(alternancia(a, b), c): aninhada pela esquerda
         no = simbolo(sem_repetir[0])
@@ -179,6 +202,7 @@ class _Leitor:
         caractere = self.avancar()
         if caractere == "\\":
             if self.no_fim():
-                raise ErroDeLeitura("Barra no fim do padrão, sem símbolo depois dela", self.pos)
+                raise ErroDeLeitura(f"Barra na posição {self.pos} está no fim do padrão, sem símbolo depois dela",
+                                    self.pos + 1, origem=self.pos)
             caractere = self.avancar()
         return caractere
