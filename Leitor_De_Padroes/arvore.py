@@ -86,13 +86,15 @@ def fecho(interior):
 def forma_linear(no):
 
     #Escreve a árvore como texto: o rótulo do nó e, entre parênteses, os filhos.
+    #Os rótulos são os mesmos do material do professor (qualquer, vazio, concat,
+    #alt, fecho), para que a saída possa ser comparada caractere por caractere.
 
     if no.tipo == TipoDeNo.SIMBOLO:
         return repr(no.simbolo)
     if no.tipo == TipoDeNo.QUALQUER:
         return "qualquer"
     if no.tipo == TipoDeNo.VAZIO:
-        return "ε"
+        return "vazio"
     if no.tipo == TipoDeNo.CONCATENACAO:
         return f"concat({forma_linear(no.esquerda)}, {forma_linear(no.direita)})"
     if no.tipo == TipoDeNo.ALTERNANCIA:
