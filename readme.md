@@ -209,6 +209,51 @@ python Afds/Alfabeto_0_ate_9/afd_numeros.py
 
 ---
 
+## Leitor de Padrões
+
+A pasta `Leitor_De_Padroes/` é a primeira peça do compilador: lê o texto de um padrão, como
+`[0-9]+`, decide se ele é um padrão, monta a árvore dele e, quando o texto é malformado, diz em que
+posição a leitura constatou o problema. A árvore que ele monta é a que a construção de Thompson,
+na pasta `Afn/`, consome.
+
+### Estrutura
+
+| Arquivo | O que faz |
+|---|---|
+| `Leitor_De_Padroes/leitor_padroes.py` | lê o padrão por descida recursiva e reduz o açúcar (`x+`, `x?`, `[abc]`, `[a-c]`) na leitura |
+| `Leitor_De_Padroes/arvore.py` | os 6 tipos de nó, a forma da árvore em texto e a contagem de nós |
+| `Leitor_De_Padroes/demonstrar_leitor.py` | mostra o leitor funcionando, com o resultado esperado ao lado de cada linha |
+
+### Como executar
+
+Requer Python 3. Na raiz do projeto:
+
+```
+python Leitor_De_Padroes/demonstrar_leitor.py
+```
+
+A saída tem quatro partes, na ordem da seção 1.8 do material:
+
+1. as cinco expressões do material, com a forma da árvore e o número de nós (1, 3, 5, 6 e 16);
+2. os padrões das classes léxicas da Solis, com os nós contados à mão antes de rodar: Inteiro 40,
+   Quebrado 83, Identificador 232, Booleano 29, Delimitador 17, Palavra reservada 241 e
+   Operador 187;
+3. a convergência: `a+` e `aa*`, `[abc]` e `a|b|c`, `[a-c]` e `[abc]`, `(ab)c` e `abc`, `[0-9]+` e
+   `[0-9][0-9]*` dão a mesma árvore; `[a-z0-9]` e `([a-z]|[0-9])` dão árvores diferentes, com os
+   mesmos 71 nós;
+4. oito textos malformados, cada um com a marca `^` sob a posição do problema.
+
+A última linha esperada é `Leitor de padrões: 36/36 verificações passaram.` Se alguma verificação
+falhar, a linha correspondente mostra `[FALHOU]` com o valor obtido e o esperado, e o programa
+termina com código de saída 1.
+
+As posições são contadas a partir de 1. Quando algo abre e não fecha, a marca fica no fim do texto,
+onde a falta foi constatada, e a mensagem diz em que posição o grupo ou a classe abriu.
+
+**Limite conhecido:** a Linha (`'[^'\n]*'`) usa classe negada, que o leitor não aceita.
+
+---
+
 ## Autômato Finito Não Determinístico (AFN)
 
 A pasta `Afn/` recebe a árvore de um padrão, montada pelo leitor de padrões da pasta
