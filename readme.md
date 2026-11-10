@@ -58,7 +58,7 @@ A linguagem combina a organização e a segurança inspiradas em **Java** com a 
 Declaração e atribuição seguem o formato:
 
 ```sol
-{Tipo} {variavel} recebe {valor};
+<Tipo> <variavel> recebe <valor>;
 ```
 
 Exemplo:
@@ -72,11 +72,11 @@ Linha x recebe "texto aleatorio";
 ### Condicionais
 
 ```sol
-se (condicao) (
+se (condicao) {
     // bloco executado se verdadeiro
-) senao (
+} senao {
     // bloco executado se falso
-);
+};
 ```
 
 ### Loops
@@ -84,17 +84,17 @@ se (condicao) (
 **Enquanto** (equivalente ao `while`):
 
 ```sol
-enquanto (condicao) (
+enquanto (condicao) {
     // corpo do loop
-);
+};
 ```
 
 **Para** (equivalente ao `for ... in`):
 
 ```sol
-para {variavel} em {iteravel} (
+para <variavel> em <iteravel> {
     // corpo do loop
-);
+};
 ```
 
 Interromper um loop:
@@ -117,7 +117,7 @@ funcao <nome_da_funcao> pede (<tipo> <arg>, ...) e retorna <tipo> {
 Exemplo:
 
 ```sol
-funcao soma pede (a, b) e retorna Quebrado {
+funcao soma pede (Quebrado a, Quebrado b) e retorna Quebrado {
     devolve a + b;
 };
 ```
@@ -131,10 +131,10 @@ Classe Matematica {
     Possui {
     };
     Faz {
-        funcao soma pede (a, b) e retorna Quebrado {
+        funcao soma pede (Quebrado a, Quebrado b) e retorna Quebrado {
             devolve a + b;
         };
-        funcao multiplicar pede (a, b) e retorna Quebrado {
+        funcao multiplicar pede (Quebrado a, Quebrado b) e retorna Quebrado {
             devolve a * b;
         };
     };
@@ -152,7 +152,7 @@ Matematica mat recebe Novo Matematica;
 ## Exemplo Completo
 
 ```sol
-funcao soma pede (a, b) e retorna Quebrado {
+funcao soma pede (Quebrado a, Quebrado b) e retorna Quebrado {
     devolve a + b;
 };
 
@@ -160,10 +160,10 @@ Classe Matematica {
     Possui {
     };
     Faz {
-        funcao soma pede (a, b) e retorna Quebrado {
+        funcao soma pede (Quebrado a, Quebrado b) e retorna Quebrado {
             devolve a + b;
         };
-        funcao multiplicar pede (a, b) e retorna Quebrado {
+        funcao multiplicar pede (Quebrado a, Quebrado b) e retorna Quebrado {
             devolve a * b;
         };
     };
