@@ -48,8 +48,8 @@ Lista Colaboradores recebe lista ['Ana', 'Beatriz', 'Luana'];
 Inteiro A pede 'Digite um número :';
 
 Se (A % 2 igual-a 0) {
-    imprime 'O número é par';
+    imprime('O número é par');
 } senao {
-    imprime 'O número é ímpar';
+    imprime('O número é ímpar');
 };
 ```
