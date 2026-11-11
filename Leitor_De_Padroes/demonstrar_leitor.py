@@ -1,19 +1,12 @@
 """
 Demonstração do leitor de padrões: mostra, com o resultado esperado ao lado
-de cada linha, que o leitor cumpre as tarefas do módulo
-"Expressões Regulares e Linguagens Regulares".
+de cada linha.
 
-Quatro partes, na mesma ordem da seção 1.8 do material do professor:
-  1. as cinco expressões do material: forma da árvore e número de nós;
-  2. os padrões das classes léxicas da Solis: número de nós;
+Quatro partes:
+  1. as cinco expressões: forma da árvore e número de nós;
+  2. os padrões das classes léxicas: número de nós;
   3. a convergência: escritas diferentes que chegam (ou não) à mesma árvore;
   4. as recusas: texto malformado, com a marca ^ na posição do problema.
-
-Todo valor esperado foi decidido ANTES de rodar: os da parte 1 vêm impressos
-no material; os da parte 2 foram contados à mão, pela tabela de nós do
-material (seção 1.8.3); os das partes 3 e 4 vêm do material e do trabalho
-"Do padrão à árvore". Um valor copiado da própria saída do programa
-conferiria o programa com ele mesmo.
 
 Ao terminar, devolve código 1 se alguma verificação falhar e 0 se todas
 passarem.
@@ -62,12 +55,13 @@ EXPRESSOES_DO_MATERIAL = [
 #     Identificador      classe de 53 = 105; classe de 63 = 125, + * = 126; + 1 junção = 232
 #     Booleano           verdadeiro 19 + falso 9 + 1 barra                              = 29
 #     Delimitador        9 símbolos + 8 barras                                          = 17
-#     Palavra reservada  21 palavras com 121 letras: 2x121 - 21 = 221; + 20 barras      = 241
+#     Palavra reservada  31 palavras com 169 letras: 2x169 - 31 = 307; + 30 barras      = 337
 #     Operador           símbolos 21 + palavras 2x77 - 11 = 143 + 23 barras             = 187
 #   Os símbolos especiais do leitor (+ * | ( ) [ ]) vão escapados com \.
 
 PALAVRAS_RESERVADAS = ("funcao|pede|retorna|devolve|Classe|Possui|Faz|principal|Linha|Inteiro"
-                       "|Quebrado|Booleano|Vazio|Lista|Dicionario|enquanto|para|em|se|senao|pare")
+                       "|Quebrado|Booleano|Vazio|Lista|Dicionario|Novo|lista|Imprime|imprime"
+                       "|enquanto|Enquanto|para|Para|em|Em|se|Se|senao|Senao|pare|Pare")
 
 PADROES_DA_SOLIS = [
     ("Inteiro", r"[0-9]+", 40),
@@ -75,7 +69,7 @@ PADROES_DA_SOLIS = [
     ("Identificador", r"[a-zA-Z_][a-zA-Z0-9_]*", 232),
     ("Booleano", r"verdadeiro|falso", 29),
     ("Delimitador", r"{|}|\(|\)|\[|\]|:|;|,", 17),
-    ("Palavra reservada", PALAVRAS_RESERVADAS, 241),
+    ("Palavra reservada", PALAVRAS_RESERVADAS, 337),
     ("Operador", r"\+|-|\*|/|%|=|==|<|>|!=|&&|\|\||!"
                  r"|mais|menos|multiplica|dividido-por|recebe|igual-a|menor-que|maior-que|diferente-de|e|ou", 187),
 ]
@@ -135,8 +129,8 @@ def parte2():
     #O padrão mais longo do projeto: caracteres escritos e nós, lado a lado
     #(a conta que o material pede no fim da seção 1.8).
     print("    O padrão mais longo é o das palavras reservadas:")
-    conferir("caracteres escritos (121 letras + 20 barras)", len(PALAVRAS_RESERVADAS), 141)
-    conferir("nós da árvore", contar_nos(ler_padrao(PALAVRAS_RESERVADAS)), 241)
+    conferir("caracteres escritos (169 letras + 30 barras)", len(PALAVRAS_RESERVADAS), 199)
+    conferir("nós da árvore", contar_nos(ler_padrao(PALAVRAS_RESERVADAS)), 337)
 
     #Limite conhecido: a Linha usa classe negada, que o leitor não aceita.
     linha = "'[^'\n]*'"
