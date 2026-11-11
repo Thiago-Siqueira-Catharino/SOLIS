@@ -22,7 +22,7 @@ funcao sub pede (Quebrado P, Quebrado L) e retorna Quebrado {
 };
 
 funcao mult pede (Inteiro a, Inteiro C) e retorna Inteiro {
-    Inteiro resultado recebe a multiplica c;
+    Inteiro resultado recebe a multiplica C;
     devolve resultado;
 };
 
@@ -43,13 +43,13 @@ funcao div pede (Inteiro V, Inteiro Q) e retorna Inteiro {
 ## Exemplo de lista e de um verificador de Par e Impar
 
 ```
-Linha Colaboradores recebe lista ['Ana', 'Beatriz', 'Luana'];
+Lista Colaboradores recebe lista ['Ana', 'Beatriz', 'Luana'];
 
-Linha A pede 'Digite um número :';
+Inteiro A pede 'Digite um número :';
 
-Se A%2 igual-a 0 (
-    imprime 'O número é primo';
-) senao (
+Se (A % 2 igual-a 0) {
     imprime 'O número é par';
-);
+} senao {
+    imprime 'O número é ímpar';
+};
 ```
