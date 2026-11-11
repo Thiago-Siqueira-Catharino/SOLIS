@@ -42,8 +42,16 @@ símbolo.
 ## Palavras reservadas
 
 `funcao` · `pede` · `retorna` · `devolve` · `Classe` · `Possui` · `Faz` · `principal` · `Linha` ·
-`Inteiro` · `Quebrado` · `Booleano` · `Vazio` · `Lista` · `Dicionario` · `enquanto` · `para` ·
-`em` · `se` · `senao` · `pare`
+`Inteiro` · `Quebrado` · `Booleano` · `Vazio` · `Lista` · `Dicionario` · `Novo` · `lista` ·
+`Imprime` · `imprime` · `enquanto` · `Enquanto` · `para` · `Para` · `em` · `Em` · `se` · `Se` ·
+`senao` · `Senao` · `pare` · `Pare`
+
+- As palavras de controle (`se`, `senao`, `enquanto`, `para`, `em`, `pare`) valem com a inicial
+  minúscula ou maiúscula: `se` e `Se` são a mesma palavra. As outras têm uma grafia só.
+- `Imprime` e `imprime` são a mesma palavra, e a chamada é sempre com parênteses:
+  `Imprime(soma(x, y));`.
+- `Novo` cria um objeto: `Matematica mat recebe Novo Matematica;`. `lista` cria uma Lista:
+  `Lista Colaboradores recebe lista ['Ana', 'Beatriz', 'Luana'];`. `Lista`, com maiúscula, é o tipo.
 
 ## Identificadores
 
@@ -97,7 +105,7 @@ pode conter aspa simples, e o contrário.
 
 | Válidos | Inválidos |
 |---|---|
-| `'Ana'`, `"Olá, Solis!"`, `'O número é primo'`, `"it's"` | `'Ana"` (aspas diferentes), `'Ana` (não fecha) |
+| `'Ana'`, `"Olá, Solis!"`, `'O número é ímpar'`, `"it's"` | `'Ana"` (aspas diferentes), `'Ana` (não fecha) |
 
 ### Booleano
 
