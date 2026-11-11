@@ -60,10 +60,10 @@ Se escritos numa mesma frase, *maior ou igual* / *menor ou igual*, o compilador 
 
 | Estrutura | Sintaxe |
 |---|---|
-| Loop (equivalente ao `while` do Python) | `enquanto` |
-| Loop (equivalente ao `for` do Python) | `para {variável} em {iterável}` |
-| Atribuição de variável | `{Tipo} {variável} recebe {valor};` |
-| Condicionais | `se` / `senao` |
+| Loop (equivalente ao `while` do Python) | `enquanto (<condição>) { ... }` |
+| Loop (equivalente ao `for` do Python) | `para <variável> em <iterável> { ... }` |
+| Atribuição de variável | `<Tipo> <variável> recebe <valor>;` |
+| Condicionais | `se (<condição>) { ... } senao { ... }` |
 | Interrupção de loop | `pare` |
 
 **Exemplo de atribuição:**
