@@ -236,7 +236,7 @@ A saída tem quatro partes, na ordem da seção 1.8 do material:
 
 1. as cinco expressões do material, com a forma da árvore e o número de nós (1, 3, 5, 6 e 16);
 2. os padrões das classes léxicas da Solis, com os nós contados à mão antes de rodar: Inteiro 40,
-   Quebrado 83, Identificador 232, Booleano 29, Delimitador 17, Palavra reservada 241 e
+   Quebrado 83, Identificador 232, Booleano 29, Delimitador 17, Palavra reservada 337 e
    Operador 187;
 3. a convergência: `a+` e `aa*`, `[abc]` e `a|b|c`, `[a-c]` e `[abc]`, `(ab)c` e `abc`, `[0-9]+` e
    `[0-9][0-9]*` dão a mesma árvore; `[a-z0-9]` e `([a-z]|[0-9])` dão árvores diferentes, com os
