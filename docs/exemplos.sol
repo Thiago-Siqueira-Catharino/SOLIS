@@ -1,4 +1,4 @@
-funcao soma pede (a,b) e retorna Quebrado {
+funcao soma pede (Quebrado a, Quebrado b) e retorna Quebrado {
     devolve a + b;
 };
 
@@ -7,11 +7,11 @@ Classe Matematica {
 
     };
     Faz {
-            funcao soma pede (a,b) e retorna Quebrado {
+            funcao soma pede (Quebrado a, Quebrado b) e retorna Quebrado {
                 devolve a + b;
             };
 
-            funcao multiplicar pede (a,b) e retorna Quebrado {
+            funcao multiplicar pede (Quebrado a, Quebrado b) e retorna Quebrado {
                 devolve a * b;
             };
     };
