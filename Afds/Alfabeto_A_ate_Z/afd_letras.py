@@ -52,15 +52,24 @@ def criar_afd_letras():
 if __name__ == "__main__" :
     afd = criar_afd_letras()
 
+    #Cada caso tem a palavra e o veredito esperado, decidido à mão pelo padrão [a-zA-Z]+
     testes = [
-        "abacate", #varias letras
-        "a", #Uma letra
-        "", #vazio, recusa pois precisa de uma letra obrigatoriamente
-        "a1", #O número 1 não está nesse alfabeto(Σ)
-        "ana@", #O caracter @ não está no alfabeto(Σ)
-        "Ana", #A letra A em maiúsculo está no alfabeto
+        ("abacate", "Aceita"), #varias letras
+        ("a", "Aceita"), #Uma letra
+        ("", "Rejeitada"), #vazio, recusa pois precisa de uma letra obrigatoriamente
+        ("a1", "Rejeitada"), #O número 1 não está nesse alfabeto(Σ)
+        ("ana@", "Rejeitada"), #O caracter @ não está no alfabeto(Σ)
+        ("Ana", "Aceita"), #A letra A em maiúsculo está no alfabeto
     ]
 
-    for palavra in testes:
-        resultado = "Aceita" if afd.aceita(palavra) else "Rejeitada"
-        print(f"{palavra!r:<10} -> {resultado}")
+    passaram = 0
+    for palavra, esperado in testes:
+        obtido = "Aceita" if afd.aceita(palavra) else "Rejeitada"
+        situacao = "OK" if obtido == esperado else "FALHOU"
+        if obtido == esperado:
+            passaram += 1
+        print(f"[{situacao}] {palavra!r}: obtido {obtido}, esperado {esperado}")
+
+    #Placar: código de saída 1 se algum caso falhar, para quem roda tudo de uma vez saber
+    print(f"AFD de letras: {passaram}/{len(testes)} casos passaram.")
+    sys.exit(0 if passaram == len(testes) else 1)
