@@ -178,6 +178,40 @@ funcao principal pede () e retorna Vazio {
     devolve Vazio;
 };
 ```
+
+---
+
+## Como rodar tudo
+
+Requer Python 3. Na raiz do projeto, um comando roda todas as verificações do projeto:
+
+```
+python rodar_tudo.py
+```
+
+O script roda, uma a uma, as nove partes descritas nas seções abaixo, na ordem em que as peças do
+compilador foram construídas. Cada parte confere o próprio resultado e termina com código 0 quando
+tudo passou, ou 1 quando alguma verificação falhou. A saída esperada é:
+
+```
+[OK]     AFD de dígitos                 6/6 casos passaram.
+[OK]     AFD de letras                  6/6 casos passaram.
+[OK]     AFD de letras e dígitos        8/8 casos passaram.
+[OK]     Leitor de padrões              36/36 verificações passaram.
+[OK]     AFN, passo 1: estrutura        9/9 verificações passaram.
+[OK]     AFN, passo 2: fecho vazio      11/11 verificações passaram.
+[OK]     AFN, passo 3: simulação        26/26 verificações passaram.
+[OK]     AFN, passo 4: Thompson         38/38 verificações passaram.
+[OK]     AFN, bateria conferida à mão   50/50 casos passaram.
+
+Solis: 9/9 partes passaram.
+```
+
+Se uma parte falhar, a linha dela começa com `[FALHOU]`, logo abaixo aparecem as verificações que
+falharam e o comando para ver a saída completa daquela parte, e o script termina com código 1.
+
+---
+
 ## Análise Léxica
 
 Autômatos finitos determinísticos (AFD) que reconhecem as partes do alfabeto da Solis, escritos em Python a partir do modelo de AFD apresentado em aula.
@@ -201,11 +235,32 @@ Autômatos finitos determinísticos (AFD) que reconhecem as partes do alfabeto d
 
 ### Como executar
 
-Requer Python 3. Na raiz do projeto, execute o arquivo do AFD desejado; cada um roda os próprios testes e mostra o resultado:
+Requer Python 3. Na raiz do projeto, execute o arquivo do AFD desejado. Cada um roda os próprios
+testes e mostra, para cada palavra, o veredito obtido e o esperado:
 
 ```
 python Afds/Alfabeto_0_ate_9/afd_numeros.py
 ```
+
+Saída esperada:
+
+```
+[OK] '42': obtido Aceita, esperado Aceita
+[OK] '7': obtido Aceita, esperado Aceita
+[OK] '': obtido Rejeitada, esperado Rejeitada
+[OK] '4a': obtido Rejeitada, esperado Rejeitada
+[OK] '-5': obtido Rejeitada, esperado Rejeitada
+[OK] '4.5': obtido Rejeitada, esperado Rejeitada
+AFD de dígitos: 6/6 casos passaram.
+```
+
+| Arquivo | Última linha esperada |
+|---|---|
+| `Afds/Alfabeto_0_ate_9/afd_numeros.py` | `AFD de dígitos: 6/6 casos passaram.` |
+| `Afds/Alfabeto_A_ate_Z/afd_letras.py` | `AFD de letras: 6/6 casos passaram.` |
+| `Afds/Alfabeto_0_ate_Z/afd_letras_numeros.py` | `AFD de letras e dígitos: 8/8 casos passaram.` |
+
+Se algum caso falhar, a linha dele mostra `[FALHOU]` e o programa termina com código de saída 1.
 
 ---
 
@@ -284,7 +339,18 @@ python Afn/bateria.py
 A saída esperada é `Bateria conferida à mão: 50/50 casos passaram.` Se algum caso falhar, a bateria
 mostra o arquivo, a linha, o veredito esperado e o obtido, e termina com código de saída 1.
 
-Os testes de cada etapa rodam da mesma forma, por exemplo `python Afn/teste_passo3.py`.
+Os testes de cada etapa rodam da mesma forma, por exemplo `python Afn/teste_passo3.py`. Cada linha
+mostra o valor obtido e o esperado, e os erros provocados de propósito aparecem como
+`[OK] erro esperado (...)`. A última linha esperada de cada um:
+
+| Arquivo | O que testa | Última linha esperada |
+|---|---|---|
+| `Afn/teste_passo1.py` | estados, setas, contagens e validações | `teste_passo1: 9/9 verificações passaram.` |
+| `Afn/teste_passo2.py` | o fecho vazio | `teste_passo2: 11/11 verificações passaram.` |
+| `Afn/teste_passo3.py` | a simulação | `teste_passo3: 26/26 verificações passaram.` |
+| `Afn/teste_passo4.py` | a construção de Thompson | `teste_passo4: 38/38 verificações passaram.` |
+
+Se alguma verificação falhar, a linha dela mostra `[FALHOU]` e o teste termina com código de saída 1.
 
 ### Acrescentar um caso de teste
 
