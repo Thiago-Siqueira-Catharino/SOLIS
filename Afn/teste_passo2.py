@@ -7,11 +7,36 @@ Três verificações:
   3. uma máquina com ciclo de setas ε (a**), que só termina por causa do visitado.
 """
 
+import sys
+
 from afn import AFN, EPSILON
+
+#Guarda o resultado de cada verificação, para o placar do fim.
+resultados = []
+
 
 def conferir(descricao, obtido, esperado):
     situacao = "OK" if obtido == esperado else "FALHOU"
+    resultados.append(obtido == esperado)
     print(f"[{situacao}] {descricao}: obtido {obtido}, esperado {esperado}")
+
+
+def conferir_erro(descricao, acao, mensagem_esperada):
+
+    #Verifica um erro proposital: passa se a ação gerar exatamente esse erro.
+    #Se a ação não gerar erro nenhum, ou gerar outro, a verificação falha.
+
+    try:
+        acao()
+        obtido = "nenhum erro"
+    except ValueError as erro:
+        obtido = str(erro)
+    passou = obtido == mensagem_esperada
+    resultados.append(passou)
+    if passou:
+        print(f"[OK] erro esperado ({descricao}): {obtido}")
+    else:
+        print(f"[FALHOU] erro esperado ({descricao}): obtido {obtido}, esperado {mensagem_esperada}")
 
 # 1) a*b do Passo 1:  0 --a--> 0,  0 --ε--> 1,  1 --b--> 2
 
@@ -99,7 +124,9 @@ print(f"sem visitado: parou à força depois de {voltas} voltas, com {sobrando} 
 #Validação herdada do Passo 1
 
 print("\n--- validação ---")
-try:
-    m.fecho_vazio([-1])
-except ValueError as erro:
-    print("Erro:", erro)
+conferir_erro("fecho de um estado que não existe", lambda: m.fecho_vazio([-1]),
+              "Estado do conjunto inexistente: -1")
+
+#Placar: código de saída 1 se alguma verificação falhar, para quem roda tudo de uma vez saber.
+print(f"\nteste_passo2: {sum(resultados)}/{len(resultados)} verificações passaram.")
+sys.exit(0 if all(resultados) else 1)
