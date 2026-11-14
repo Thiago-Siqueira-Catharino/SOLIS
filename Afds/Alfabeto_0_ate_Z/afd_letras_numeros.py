@@ -54,17 +54,26 @@ def criar_afd_letras_digitos():
 if __name__ == "__main__" :
     afd = criar_afd_letras_digitos()
 
+    #Cada caso tem a palavra e o veredito esperado, decidido à mão pelo padrão [a-zA-Z][a-zA-Z0-9]*
     testes = [
-        "resultado", #varias letras
-        "a", #Uma letra
-        "resultado2", #letras com um numero
-        "Ana", #Nome com letra maiúscula
-        "", #vazio
-        "1a", #O 1 está no alfabeto(Σ), mas não existe transição de q0 com dígito, vai ser rejeitado
-        "123", #Vai ser rejeitado, pois começa com digito e não existe transição de q0 com dígito
-        "meu_nome", #Vai ser rejeitado, pois o (_) não está no alfabeto(Σ)
+        ("resultado", "Aceita"), #varias letras
+        ("a", "Aceita"), #Uma letra
+        ("resultado2", "Aceita"), #letras com um numero
+        ("Ana", "Aceita"), #Nome com letra maiúscula
+        ("", "Rejeitada"), #vazio
+        ("1a", "Rejeitada"), #O 1 está no alfabeto(Σ), mas não existe transição de q0 com dígito, vai ser rejeitado
+        ("123", "Rejeitada"), #Vai ser rejeitado, pois começa com digito e não existe transição de q0 com dígito
+        ("meu_nome", "Rejeitada"), #Vai ser rejeitado, pois o (_) não está no alfabeto(Σ)
     ]
 
-    for palavra in testes:
-        resultado = "Aceita" if afd.aceita(palavra) else "Rejeitada"
-        print(f"{palavra!r:<14} -> {resultado}")
+    passaram = 0
+    for palavra, esperado in testes:
+        obtido = "Aceita" if afd.aceita(palavra) else "Rejeitada"
+        situacao = "OK" if obtido == esperado else "FALHOU"
+        if obtido == esperado:
+            passaram += 1
+        print(f"[{situacao}] {palavra!r}: obtido {obtido}, esperado {esperado}")
+
+    #Placar: código de saída 1 se algum caso falhar, para quem roda tudo de uma vez saber
+    print(f"AFD de letras e dígitos: {passaram}/{len(testes)} casos passaram.")
+    sys.exit(0 if passaram == len(testes) else 1)
