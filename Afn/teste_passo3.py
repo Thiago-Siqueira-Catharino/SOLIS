@@ -8,12 +8,37 @@ Seis verificações:
   6. simular sem estado inicial definido gera erro.
 """
 
+import sys
+
 from afn import AFN, EPSILON, QUALQUER
+
+
+#Guarda o resultado de cada verificação, para o placar do fim.
+resultados = []
 
 
 def conferir(descricao, obtido, esperado):
     situacao = "OK" if obtido == esperado else "FALHOU"
+    resultados.append(obtido == esperado)
     print(f"[{situacao}] {descricao}: obtido {obtido}, esperado {esperado}")
+
+
+def conferir_erro(descricao, acao, mensagem_esperada):
+
+    #Verifica um erro proposital: passa se a ação gerar exatamente esse erro.
+    #Se a ação não gerar erro nenhum, ou gerar outro, a verificação falha.
+
+    try:
+        acao()
+        obtido = "nenhum erro"
+    except ValueError as erro:
+        obtido = str(erro)
+    passou = obtido == mensagem_esperada
+    resultados.append(passou)
+    if passou:
+        print(f"[OK] erro esperado ({descricao}): {obtido}")
+    else:
+        print(f"[FALHOU] erro esperado ({descricao}): obtido {obtido}, esperado {mensagem_esperada}")
 
 
 # ---------------------------------------------------------------
@@ -127,7 +152,9 @@ conferir("cadeia com o caractere \\0", v.aceita("\0"), False)
 print("\n--- 6) simular sem inicial ---")
 sem_inicial = AFN()
 sem_inicial.novo_estado()
-try:
-    sem_inicial.simular("a")
-except ValueError as erro:
-    print("Erro:", erro)
+conferir_erro("simular sem estado inicial", lambda: sem_inicial.simular("a"),
+              "Defina o estado inicial e o de aceitação antes de simular")
+
+#Placar: código de saída 1 se alguma verificação falhar, para quem roda tudo de uma vez saber.
+print(f"\nteste_passo3: {sum(resultados)}/{len(resultados)} verificações passaram.")
+sys.exit(0 if all(resultados) else 1)
