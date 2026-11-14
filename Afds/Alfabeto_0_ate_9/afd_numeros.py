@@ -50,15 +50,24 @@ def criar_afd_digitos():
 if __name__ == "__main__":
     afd = criar_afd_digitos()
 
+    #Cada caso tem a palavra e o veredito esperado, decidido à mão pelo padrão [0-9]+
     testes = [
-        "42", #varios digitos
-        "7", #um dígito
-        "", #vazio -> rejeita (precisa de um digito obrigatório)
-        "4a", #a não está neste alfabeto(Σ)
-        "-5", #Sinal de menos(-) não está neste alfabeto(Σ)
-        "4.5", #Ponto(.) não está neste alfabeto
+        ("42", "Aceita"), #varios digitos
+        ("7", "Aceita"), #um dígito
+        ("", "Rejeitada"), #vazio -> rejeita (precisa de um digito obrigatório)
+        ("4a", "Rejeitada"), #a não está neste alfabeto(Σ)
+        ("-5", "Rejeitada"), #Sinal de menos(-) não está neste alfabeto(Σ)
+        ("4.5", "Rejeitada"), #Ponto(.) não está neste alfabeto
     ]
 
-    for palavra in testes:
-        resultado = "Aceita" if afd.aceita(palavra) else "Rejeitada"
-        print(f"{palavra!r:<8} -> {resultado}")
+    passaram = 0
+    for palavra, esperado in testes:
+        obtido = "Aceita" if afd.aceita(palavra) else "Rejeitada"
+        situacao = "OK" if obtido == esperado else "FALHOU"
+        if obtido == esperado:
+            passaram += 1
+        print(f"[{situacao}] {palavra!r}: obtido {obtido}, esperado {esperado}")
+
+    #Placar: código de saída 1 se algum caso falhar, para quem roda tudo de uma vez saber
+    print(f"AFD de dígitos: {passaram}/{len(testes)} casos passaram.")
+    sys.exit(0 if passaram == len(testes) else 1)
