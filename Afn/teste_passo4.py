@@ -20,9 +20,32 @@ from arvore import (No, TipoDeNo, simbolo, qualquer, vazio, concatenacao,
 from thompson import construir_thompson
 
 
+#Guarda o resultado de cada verificação, para o placar do fim.
+resultados = []
+
+
 def conferir(descricao, obtido, esperado):
     situacao = "OK" if obtido == esperado else "FALHOU"
+    resultados.append(obtido == esperado)
     print(f"[{situacao}] {descricao}: obtido {obtido}, esperado {esperado}")
+
+
+def conferir_erro(descricao, acao, mensagem_esperada):
+
+    #Verifica um erro proposital: passa se a ação gerar exatamente esse erro.
+    #Se a ação não gerar erro nenhum, ou gerar outro, a verificação falha.
+
+    try:
+        acao()
+        obtido = "nenhum erro"
+    except ValueError as erro:
+        obtido = str(erro)
+    passou = obtido == mensagem_esperada
+    resultados.append(passou)
+    if passou:
+        print(f"[OK] erro esperado ({descricao}): {obtido}")
+    else:
+        print(f"[FALHOU] erro esperado ({descricao}): obtido {obtido}, esperado {mensagem_esperada}")
 
 
 def custo(afn):
@@ -171,7 +194,9 @@ print("\n--- 6) padrão vazio e tipo desconhecido ---")
 p = construir_thompson(None)
 conferir("padrão vazio: estados", p.quantidade_de_estados(), 1)
 conferir("padrão vazio sobre '' e 'a'", [p.aceita(""), p.aceita("a")], [True, False])
-try:
-    construir_thompson(No("inventado"))
-except ValueError as erro:
-    print("Erro:", erro)
+conferir_erro("tipo de nó que não existe", lambda: construir_thompson(No("inventado")),
+              "Tipo de nó desconhecido: inventado")
+
+#Placar: código de saída 1 se alguma verificação falhar, para quem roda tudo de uma vez saber.
+print(f"\nteste_passo4: {sum(resultados)}/{len(resultados)} verificações passaram.")
+sys.exit(0 if all(resultados) else 1)
