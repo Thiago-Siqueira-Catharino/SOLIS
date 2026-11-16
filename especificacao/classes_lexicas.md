@@ -9,7 +9,7 @@ estão em [`alfabeto.md`](alfabeto.md).
 |---|---|
 | Operadores | lista fechada (ver tabela) |
 | Palavras reservadas | lista fechada (ver lista) |
-| Identificadores | `[a-zA-Z_][a-zA-Z0-9_]*` |
+| Identificadores | `[a-zA-Z][a-zA-Z0-9_]* \| _+[a-zA-Z0-9][a-zA-Z0-9_]*` |
 | Literal Inteiro | `[0-9]+` |
 | Literal Quebrado | `[0-9]+\.[0-9]+` |
 | Literal Linha | `'[^'\n]*' \| "[^"\n]*"` |
@@ -56,15 +56,15 @@ símbolo.
 ## Identificadores
 
 ```
-[a-zA-Z_][a-zA-Z0-9_]*
+[a-zA-Z][a-zA-Z0-9_]* | _+[a-zA-Z0-9][a-zA-Z0-9_]*
 ```
 
 Começa com letra (minúscula ou maiúscula) ou `_`, depois zero ou mais letras, dígitos ou `_`.
-Sem acento.
+Precisa ter pelo menos uma letra ou um dígito: um nome feito só de `_` não vale. Sem acento.
 
 | Válidos | Inválidos |
 |---|---|
-| `resultado`, `resultado2`, `x`, `mat`, `Matematica`, `meu_nome`, `_nome` | `1a` (começa com dígito), `meu-nome` (tem `-`), `número` (tem acento) |
+| `resultado`, `resultado2`, `x`, `mat`, `Matematica`, `meu_nome`, `_nome`, `nome_`, `_1` | `1a` e `2_nome` (começam com dígito), `meu-nome` (tem `-`), `número` (tem acento), `_` e `___` (só `_`) |
 
 ## Constantes/Literais
 
