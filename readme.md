@@ -196,7 +196,7 @@ tudo passou, ou 1 quando alguma verificação falhou. A saída esperada é:
 ```
 [OK]     AFD de dígitos                 6/6 casos passaram.
 [OK]     AFD de letras                  6/6 casos passaram.
-[OK]     AFD de letras e dígitos        8/8 casos passaram.
+[OK]     AFD de letras e dígitos        14/14 casos passaram.
 [OK]     Leitor de padrões              36/36 verificações passaram.
 [OK]     AFN, passo 1: estrutura        9/9 verificações passaram.
 [OK]     AFN, passo 2: fecho vazio      11/11 verificações passaram.
@@ -231,7 +231,7 @@ Autômatos finitos determinísticos (AFD) que reconhecem as partes do alfabeto d
 |---|---|---|---|
 | Dígitos | `[0-9]+` | `42`, `7` | vazio, `4a`, `-5`, `4.5` |
 | Letras | `[a-zA-Z]+` | `abacate`, `Ana` | vazio, `a1`, `ana@` |
-| Letras e dígitos | `[a-zA-Z][a-zA-Z0-9]*` | `resultado`, `resultado2`, `Ana` | vazio, `1a`, `123`, `meu_nome` |
+| Letras e dígitos | `[a-zA-Z][a-zA-Z0-9_]* \| _+[a-zA-Z0-9][a-zA-Z0-9_]*` | `resultado`, `Ana`, `meu_nome`, `_nome`, `_1` | vazio, `1a`, `2_nome`, `_`, `___` |
 
 ### Como executar
 
@@ -258,7 +258,7 @@ AFD de dígitos: 6/6 casos passaram.
 |---|---|
 | `Afds/Alfabeto_0_ate_9/afd_numeros.py` | `AFD de dígitos: 6/6 casos passaram.` |
 | `Afds/Alfabeto_A_ate_Z/afd_letras.py` | `AFD de letras: 6/6 casos passaram.` |
-| `Afds/Alfabeto_0_ate_Z/afd_letras_numeros.py` | `AFD de letras e dígitos: 8/8 casos passaram.` |
+| `Afds/Alfabeto_0_ate_Z/afd_letras_numeros.py` | `AFD de letras e dígitos: 14/14 casos passaram.` |
 
 Se algum caso falhar, a linha dele mostra `[FALHOU]` e o programa termina com código de saída 1.
 
@@ -291,7 +291,7 @@ A saída tem quatro partes, na ordem da seção 1.8 do material:
 
 1. as cinco expressões do material, com a forma da árvore e o número de nós (1, 3, 5, 6 e 16);
 2. os padrões das classes léxicas da Solis, com os nós contados à mão antes de rodar: Inteiro 40,
-   Quebrado 83, Identificador 232, Booleano 29, Delimitador 17, Palavra reservada 337 e
+   Quebrado 83, Identificador 486, Booleano 29, Delimitador 17, Palavra reservada 337 e
    Operador 187;
 3. a convergência: `a+` e `aa*`, `[abc]` e `a|b|c`, `[a-c]` e `[abc]`, `(ab)c` e `abc`, `[0-9]+` e
    `[0-9][0-9]*` dão a mesma árvore; `[a-z0-9]` e `([a-z]|[0-9])` dão árvores diferentes, com os
