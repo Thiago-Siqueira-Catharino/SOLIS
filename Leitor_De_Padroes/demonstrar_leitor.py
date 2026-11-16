@@ -52,7 +52,9 @@ EXPRESSOES_DO_MATERIAL = [
 #   Os nós esperados foram contados à mão:
 #     Inteiro            [0-9] = 19; o + repete e soma 2         -> 19 + 19 + 2         = 40
 #     Quebrado           40 + 1 (o \.) + 40 + 2 junções                                 = 83
-#     Identificador      classe de 53 = 105; classe de 63 = 125, + * = 126; + 1 junção = 232
+#     Identificador      esquerda: classe de 52 = 103; classe de 63 = 125, + * = 126; + 1 junção = 230
+#                        direita: _+ = 4; classe de 62 = 123; 126; + 2 junções                     = 255
+#                        230 + 255 + 1 barra                                                       = 486
 #     Booleano           verdadeiro 19 + falso 9 + 1 barra                              = 29
 #     Delimitador        9 símbolos + 8 barras                                          = 17
 #     Palavra reservada  31 palavras com 169 letras: 2x169 - 31 = 307; + 30 barras      = 337
@@ -66,7 +68,7 @@ PALAVRAS_RESERVADAS = ("funcao|pede|retorna|devolve|Classe|Possui|Faz|principal|
 PADROES_DA_SOLIS = [
     ("Inteiro", r"[0-9]+", 40),
     ("Quebrado", r"[0-9]+\.[0-9]+", 83),
-    ("Identificador", r"[a-zA-Z_][a-zA-Z0-9_]*", 232),
+    ("Identificador", r"[a-zA-Z][a-zA-Z0-9_]*|_+[a-zA-Z0-9][a-zA-Z0-9_]*", 486),
     ("Booleano", r"verdadeiro|falso", 29),
     ("Delimitador", r"{|}|\(|\)|\[|\]|:|;|,", 17),
     ("Palavra reservada", PALAVRAS_RESERVADAS, 337),
