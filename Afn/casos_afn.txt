@@ -52,13 +52,21 @@ a.c	ac	recusa
 [a-zA-Z]+	Matematica	aceita
 [a-zA-Z]+	x1	recusa
 
-# --- Identificador: começa com letra, depois letras ou dígitos
+# --- Identificador do trabalho "Do padrão à árvore": começa com letra, depois letras ou dígitos
 [a-zA-Z][a-zA-Z0-9]*	resultado	aceita
 [a-zA-Z][a-zA-Z0-9]*	x	aceita
 [a-zA-Z][a-zA-Z0-9]*	Colaboradores	aceita
 [a-zA-Z][a-zA-Z0-9]*	a1b2	aceita
 [a-zA-Z][a-zA-Z0-9]*	1a	recusa
 [a-zA-Z][a-zA-Z0-9]*	meu_nome	recusa
+
+# --- Identificador da Solis hoje: o _ entra em qualquer posição, mas um nome feito só de _ não vale
+[a-zA-Z][a-zA-Z0-9_]*|_+[a-zA-Z0-9][a-zA-Z0-9_]*	meu_nome	aceita
+[a-zA-Z][a-zA-Z0-9_]*|_+[a-zA-Z0-9][a-zA-Z0-9_]*	_nome	aceita
+[a-zA-Z][a-zA-Z0-9_]*|_+[a-zA-Z0-9][a-zA-Z0-9_]*	_1	aceita
+[a-zA-Z][a-zA-Z0-9_]*|_+[a-zA-Z0-9][a-zA-Z0-9_]*	2_nome	recusa
+[a-zA-Z][a-zA-Z0-9_]*|_+[a-zA-Z0-9][a-zA-Z0-9_]*	_	recusa
+[a-zA-Z][a-zA-Z0-9_]*|_+[a-zA-Z0-9][a-zA-Z0-9_]*	___	recusa
 
 # --- operadores aritméticos: + e * precisam de barra, porque são especiais no padrão
 \+|-|\*|/|%	+	aceita
@@ -79,8 +87,8 @@ se|senao|pare|funcao	sen	recusa
 se|senao|pare|funcao	Se	recusa
 se|senao|pare|funcao	senaox	recusa
 
-# --- delimitadores: classe com [ e ] escapados pela barra
-# a vírgula está no alfabeto, mas não na lista de delimitadores de classes_lexicas.md
-[{}()\[\];:]	[	aceita
-[{}()\[\];:]	;	aceita
+# --- delimitadores: classe com [ e ] escapados pela barra, e a vírgula, que separa parâmetros e itens de lista
+[{}()\[\];:,]	[	aceita
+[{}()\[\];:,]	;	aceita
+[{}()\[\];:,]	,	aceita
 [{}()\[\];:]	,	recusa
