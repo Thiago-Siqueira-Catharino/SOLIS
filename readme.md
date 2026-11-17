@@ -34,24 +34,42 @@ A linguagem combina a organização e a segurança inspiradas em **Java** com a 
 
 ## Operadores
 
+Quase todo operador pode ser escrito com o símbolo ou por extenso: `a + b` e `a mais b` são a mesma
+coisa. Só `%` e `!` não têm forma por extenso. A lista completa está em
+`especificacao/classes_lexicas.md`.
+
 ### Matemáticos
 
-| Operador | Significado |
-|---|---|
-| `+` | adição |
-| `-` | subtração |
-| `*` | multiplicação |
-| `/` | divisão |
-| `%` | resto |
+| Operador | Por extenso | Significado |
+|---|---|---|
+| `+` | `mais` | adição |
+| `-` | `menos` | subtração |
+| `*` | `multiplica` | multiplicação |
+| `/` | `dividido-por` | divisão |
+| `%` | — | resto |
+
+### Atribuição
+
+| Operador | Por extenso | Significado |
+|---|---|---|
+| `=` | `recebe` | guarda um valor na variável |
+
+### Comparação
+
+| Operador | Por extenso | Significado |
+|---|---|---|
+| `>` | `maior-que` | maior que |
+| `<` | `menor-que` | menor que |
+| `==` | `igual-a` | igual |
+| `!=` | `diferente-de` | diferente |
 
 ### Lógicos
 
-| Operador | Forma alternativa | Significado |
+| Operador | Por extenso | Significado |
 |---|---|---|
-| `>` | `{maior}` | maior que |
-| `<` | `{menor}` | menor que |
-| `==` | `{igual}` | igual |
-| `!=` | `{diferente}` | diferença |
+| `&&` | `e` | e lógico |
+| `\|\|` | `ou` | ou lógico |
+| `!` | — | negação |
 
 ## Variáveis
 
