@@ -11,7 +11,7 @@
 | Operadores | `+` `-` `*` `/` `%` `=` `<` `>` `!` `&` `\|` | 11 | `a + b`, `a * b` |
 | Delimitadores | `{` `}` `(` `)` `[` `]` `:` `;` `,` | 9 | `{ ... };`, `(a,b)` |
 | Ponto | `.` | 1 | o Quebrado `3.14` e o acesso a método `mat.multiplicar` |
-| Sublinhado | `_` | 1 | (nenhum exemplo usa ainda; o uso é definido nas classes léxicas) |
+| Sublinhado | `_` | 1 | nomes como `meu_nome` e `_nome`; um nome feito só de `_` não vale |
 | Aspas | `'` `"` | 2 | `'Ana'`, `"Olá, Solis!"` |
 | Espaços em branco | espaço, Tab, quebra de linha | 3 | entre as palavras e no fim de cada linha |
 | Letras acentuadas | `á` `à` `â` `ã` `é` `ê` `í` `ó` `ô` `õ` `ú` `ç` e as maiúsculas `Á` `À` `Â` `Ã` `É` `Ê` `Í` `Ó` `Ô` `Õ` `Ú` `Ç` | 24 | só dentro de Linha: `'Digite um número :'` |
