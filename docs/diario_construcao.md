@@ -161,3 +161,137 @@ resposta certa.
   apareça em listas e parâmetros.
 - **A Linha** (`'[^']*'`) depende de classe negada, que o leitor recusa.
 - **O Quebrado** depende do `.`, que não está no alfabeto.
+
+---
+
+## Correções a partir do feedback do professor
+
+Depois do módulo do AFN, o professor revisou o repositório e deixou comentários em cada atividade.
+Esta seção registra o que mudou por causa deles, na ordem em que foi feito, com o número do pull
+request entre parênteses.
+
+### O alfabeto e as classes léxicas
+
+O feedback: "Faltam maiúsculas, espaço, `"` e `.` no alfabeto, e Identificadores e Literais estão
+vazios."
+
+**O alfabeto passou a ter 113 símbolos** (#54). As decisões, tiradas dos exemplos que o próprio
+repositório já usava:
+
+- **as duas aspas** valem, porque o recorte usa `"texto aleatorio"` e o README usa `'Ana'`;
+- **espaço, Tab e quebra de linha** entram. O Tab entra para que um arquivo indentado com Tab não
+  seja recusado;
+- **letras acentuadas** entram, mas só valem dentro de uma Linha (`'O número é ímpar'`). Palavras
+  reservadas e identificadores continuam sem acento.
+
+**Identificadores e Literais foram preenchidos com padrões** (#55, #57). Descartado: descrever a
+classe só em texto. Uma classe infinita não se lista, e a frase sozinha deixa brecha ("letra"
+inclui acento?); o padrão é o que entra direto no leitor de padrões. Cada padrão ficou com uma
+frase que o explica e com exemplos válidos e inválidos.
+
+- **Quebrado:** `[0-9]+\.[0-9]+`, com dígito dos dois lados do ponto. `.5` e `3.` são recusados.
+- **Inteiro sem sinal:** o negativo vem do operador `-`, na gramática.
+
+**O recorte deixou de copiar o alfabeto e as classes** (#56). Ficou um resumo e o link para
+`especificacao/`. Descartado: manter a cópia completa. Foi a cópia que deixou o recorte diferente
+da especificação, e com uma cópia só isso não se repete.
+
+### Os exemplos escritos em Solis
+
+Antes da especificação, os exemplos tinham de concordar entre si (#64 a #70):
+
+- **bloco é `{ }`** também em `se`, `senao`, `enquanto` e `para`, como em `funcao` e `Classe`. Os
+  marcadores de lugar passaram de `{Tipo}` para `<Tipo>`, porque `{ }` agora é bloco;
+- **parâmetro tem tipo** (`pede (Quebrado a, Quebrado b)`), porque a linguagem é fortemente tipada;
+- **Inteiro entra onde se espera Quebrado; o contrário é recusado.** É o que permite
+  `soma(x, y)` com `y` Inteiro;
+- **as palavras de controle valem com inicial maiúscula ou minúscula** (`se`/`Se`, `senao`/`Senao`,
+  `enquanto`/`Enquanto`, `para`/`Para`, `em`/`Em`, `pare`/`Pare`). As outras palavras têm uma
+  grafia só;
+- entraram **`Imprime`/`imprime`**, sempre chamados com parênteses, **`Novo`** e **`lista`**, que os
+  exemplos já usavam. As palavras reservadas passaram de 21 para 31.
+
+O `parte1.md` tinha erros que um compilador recusaria: a variável `c` que não existia (o parâmetro
+era `C`), uma Linha usada com `%`, uma lista guardada numa Linha e as mensagens do verificador
+trocadas. Foram corrigidos. Os dois primeiros são o tipo de erro que a especificação deve
+descrever na seção de verificação antes de rodar.
+
+### O leitor de padrões
+
+O feedback da atividade "Expressões Regulares e Linguagens Regulares": "Faltam o código do parser e
+as 7 seções." O parser já existia, escrito durante o AFN, mas estava dentro de `Afn/` e nada
+mostrava que ele cumpria a tarefa.
+
+**Pasta própria, `Leitor_De_Padroes/`** (#59). Descartado: deixar dentro de `Afn/`, que dá menos
+trabalho. A pasta própria deixa o repositório na ordem em que as peças acontecem: o leitor monta a
+árvore, e o AFN só a consome. Os dois arquivos foram movidos sem alteração.
+
+**A folha vazia passou a se escrever `vazio`, e não `ε`** (#60), para que a árvore possa ser
+comparada com a do material caractere por caractere. A seta vazia do AFN continua `ε`: é outro
+conceito.
+
+**A recusa tem duas posições** (#61): onde a leitura constatou o problema e onde ele começou. Em
+`a(b|c`, a falta é constatada no fim do texto (posição 6), onde a pessoa vai digitar a correção, e o
+grupo abriu na posição 2. Descartado: só a posição do material, o fim, porque perderia a decisão do
+trabalho "Do padrão à árvore", que apontava o `(` aberto; e só a nossa, porque o material pede a
+posição constatada. As posições continuam contadas a partir de 1, e a marca `^` vai na linha de
+baixo.
+
+**O `demonstrar_leitor.py`** (#62) mostra o leitor cumprindo as tarefas: as cinco expressões do
+material, os padrões da Solis, a convergência e as recusas. Os nós esperados dos padrões da Solis
+foram contados à mão, em quizzes, antes de rodar. Descartado: tirar o esperado da própria saída do
+programa, que conferiria o programa com ele mesmo.
+
+**O núcleo mínimo foi reescrito** (#73). O arquivo antigo tratava dos operadores aritméticos, mas a
+tarefa pede os operadores de padrão: concatenação, alternância e fecho, e as reduções em pares.
+
+### O resultado esperado e o script que roda tudo
+
+O feedback: "Deixem explícito o resultado esperado e incluam um script que rode tudo."
+
+**Cada parte mostra o esperado e termina com código 0 ou 1** (#74 a #80). Os AFDs só mostravam o
+resultado obtido; os testes do AFN terminavam com uma linha `Erro: ...` proposital, que parecia
+falha, e com código 0 mesmo quando mostravam `[FALHOU]`. Agora cada caso sai com `[OK]` ou
+`[FALHOU]` e o esperado ao lado, os erros propositais aparecem como `[OK] erro esperado (...)`, e
+cada programa termina com placar e código 1 se algo falhar. Isso resolve o limite registrado na
+seção do AFN.
+
+**O `rodar_tudo.py`, na raiz** (#81), roda as nove partes e mostra um placar geral. Ele decide se
+cada parte passou pelo código de saída, e não lendo o texto que ela imprime. Força UTF-8 na saída
+das partes, porque no Windows a saída redirecionada não usa UTF-8 e o `ε` dos testes do AFN
+quebraria. Descartado: `.bat` ou `.sh`, porque um script Python funciona igual em Windows e Linux.
+
+O README ganhou a seção "Como rodar tudo", com a saída esperada completa (#82).
+
+### O `_` no identificador
+
+O identificador passou a aceitar `_` em qualquer posição, mas um nome feito só de `_` (`_`, `___`)
+não vale (#83 a #89). O padrão ficou `[a-zA-Z][a-zA-Z0-9_]* | _+[a-zA-Z0-9][a-zA-Z0-9_]*`, e `_1`
+vale. O analisador léxico não sabe se um nome é de variável, função ou classe; quem sabe é a
+análise sintática. Por isso a regra vale para todo nome.
+
+**A mesma regra custou muito diferente em cada peça.** No AFD, custou **um estado a mais** (o `q2`,
+"até agora só leu `_`"). Na árvore, o Identificador foi de **232 para 486 nós**: a regra "pelo
+menos uma letra ou dígito" não se escreve com um caminho só, e cada um dos dois caminhos repete as
+classes grandes. O AFD foi conferido contra o padrão em todas as 3.906 palavras de até 5 símbolos
+sobre {a, Z, 0, _, -}, sem diferença.
+
+A bateria do AFN manteve os casos do identificador antigo, que continuam certos para aquele padrão,
+e ganhou um grupo com o identificador de hoje e a vírgula nos delimitadores: de 50 para 57 casos.
+
+### O que a seção do AFN registrava e foi resolvido
+
+- os testes dos passos terminarem com código 0 (#74 a #80);
+- o `Se` com maiúscula, que agora é palavra reservada (#68);
+- a vírgula fora dos delimitadores (#57);
+- o `.` fora do alfabeto (#54).
+
+### Pendências
+
+- **As 7 seções da especificação**, da atividade "Expressões Regulares e Linguagens Regulares",
+  esperam o grupo decidir o assunto do Projeto Integrador. A seção 1, domínio e cena, depende dele,
+  e os exemplos das outras seções dependem da seção 1.
+- **A Linha** depende de classe negada (`[^...]`), que o leitor ainda recusa.
+- **A faixa numérica**, sugerida pelo professor para o requisito que parece sair da classe, na
+  seção 5 do trabalho "Do padrão à árvore".
+- **O cabeçalho do `afd_letras.py`** diz `[a-z]+`, mas o padrão reconhecido é `[a-zA-Z]+`.
