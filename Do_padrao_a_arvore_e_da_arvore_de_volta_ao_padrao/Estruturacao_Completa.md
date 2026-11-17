@@ -74,8 +74,40 @@ Isso diz que comparar árvores (forma linear idêntica) é um teste suficiente, 
 
 | Requisito | Sai da classe? | Expressão / o que precisaria lembrar |
 |---|---|---|
-| Palavra é reservada ou é Identificador? | Não sai — tem teto fixo (21 palavras) | `funcao\|pede\|retorna\|devolve\|Classe\|Possui\|Faz\|principal\|Linha\|Inteiro\|Quebrado\|Booleano\|Vazio\|Lista\|Dicionario\|Enquanto\|Para\|em\|se\|senao\|pare` (já é a peça "Palavra reservada" da tabela do item 1) |
+| O literal Inteiro cabe no `int` (de 0 a 2147483647)? | Parece sair, mas não sai — o teto é declarado | parece que a máquina teria de comparar o valor do número com o limite, e um valor não cabe em estados. Mas o teto é o do `int` do Java, base da Solis, e o `Inteiro` equivale a ele (recorte da linguagem). A máquina só precisa lembrar quantos dígitos significativos já leu (no máximo 10) e se, até ali, o número está igual ao limite ou já ficou abaixo dele. Isso é finito, e a expressão está logo abaixo da tabela |
 | Variável usada foi declarada antes? | Sai de verdade | precisaria lembrar todos os nomes de variável já vistos no programa até aquele ponto; esse número não tem teto porque cresce junto com o tamanho do programa — um programa de 5 linhas declara poucas variáveis, um de 5 mil pode declarar milhares, e nada na linguagem limita esse total. Fica fora do léxico, resolvido depois por análise semântica (tabela de símbolos) |
+
+**A expressão da faixa do `int`**, com uma alternativa por linha só para facilitar a leitura (para o
+leitor de padrões, ela é uma linha só, sem os espaços e as quebras):
+
+```
+0*(
+    0
+  | [1-9][0-9]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?
+  | 1[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]
+  | 20[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]
+  | 21[0-3][0-9][0-9][0-9][0-9][0-9][0-9][0-9]
+  | 214[0-6][0-9][0-9][0-9][0-9][0-9][0-9]
+  | 2147[0-3][0-9][0-9][0-9][0-9][0-9]
+  | 21474[0-7][0-9][0-9][0-9][0-9]
+  | 214748[0-2][0-9][0-9][0-9]
+  | 2147483[0-5][0-9][0-9]
+  | 21474836[0-3][0-9]
+  | 214748364[0-6]
+  | 2147483647
+)
+```
+
+- `0*` aceita zeros à esquerda, como o padrão do Inteiro (`[0-9]+`): `007` vale 7.
+- As duas primeiras alternativas cobrem o 0 e os números de 1 a 9 dígitos, que sempre cabem.
+- Com 10 dígitos, cada alternativa segue o limite `2147483647` até uma posição e põe ali um dígito
+  menor; depois dele, qualquer dígito serve. A última é o próprio limite.
+- São 13 alternativas e 392 caracteres; o leitor de padrões conta 1.298 nós na árvore. Conferida com o leitor de padrões e a construção
+  de Thompson do projeto contra o valor real de 2.515 números, com e sem zeros à esquerda, sem
+  nenhum erro.
+
+O teto faz o requisito caber na classe, mas o preço aparece no tamanho: cada dígito do limite vira
+uma alternativa.
 
 ---
 
