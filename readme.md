@@ -202,7 +202,7 @@ tudo passou, ou 1 quando alguma verificação falhou. A saída esperada é:
 [OK]     AFN, passo 2: fecho vazio      11/11 verificações passaram.
 [OK]     AFN, passo 3: simulação        26/26 verificações passaram.
 [OK]     AFN, passo 4: Thompson         38/38 verificações passaram.
-[OK]     AFN, bateria conferida à mão   50/50 casos passaram.
+[OK]     AFN, bateria conferida à mão   57/57 casos passaram.
 
 Solis: 9/9 partes passaram.
 ```
@@ -336,7 +336,7 @@ Requer Python 3. Na raiz do projeto:
 python Afn/bateria.py
 ```
 
-A saída esperada é `Bateria conferida à mão: 50/50 casos passaram.` Se algum caso falhar, a bateria
+A saída esperada é `Bateria conferida à mão: 57/57 casos passaram.` Se algum caso falhar, a bateria
 mostra o arquivo, a linha, o veredito esperado e o obtido, e termina com código de saída 1.
 
 Os testes de cada etapa rodam da mesma forma, por exemplo `python Afn/teste_passo3.py`. Cada linha
