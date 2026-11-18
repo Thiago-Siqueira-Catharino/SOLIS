@@ -295,3 +295,60 @@ e ganhou um grupo com o identificador de hoje e a vírgula nos delimitadores: de
 - **A faixa numérica**, sugerida pelo professor para o requisito que parece sair da classe, na
   seção 5 do trabalho "Do padrão à árvore".
 - **O cabeçalho do `afd_letras.py`** diz `[a-z]+`, mas o padrão reconhecido é `[a-zA-Z]+`.
+
+### Segunda leva de correções
+
+Depois de fechar os feedbacks, uma varredura no repositório inteiro procurou o que tinha ficado para
+trás: padrões antigos, números que mudaram e exemplos que não batiam com as decisões.
+
+**O requisito que parece sair da classe** (#92, #93). O professor sugeriu uma faixa numérica para a
+seção 5 do trabalho "Do padrão à árvore". O requisito "palavra reservada ou identificador", que
+nem parecia sair da classe, foi trocado por "o literal Inteiro cabe no `int` (de 0 a 2147483647)?".
+Ele parece sair, porque a máquina teria de comparar o valor do número, mas não sai: o teto é o do
+`int` do Java, base da Solis, e a máquina só precisa lembrar quantos dígitos leu e se o número está
+igual ao limite ou abaixo dele. A expressão aceita zeros à esquerda (`0*`), como o Inteiro. Tem 13
+alternativas e 392 caracteres, e o leitor conta 1.298 nós; foi conferida contra o valor real de
+2.515 números, sem erro. Descartado: a faixa de 0 a 255, mais curta, mas que não vem de nenhuma
+decisão da Solis; e acrescentar a faixa como terceiro requisito, porque a seção pede dois, um de
+cada lado.
+
+**Os operadores do README** (#94) passaram a ser os do `classes_lexicas.md`: `maior-que` no lugar
+de `{maior}`, a forma por extenso de cada operador e as tabelas de atribuição e de operadores
+lógicos. Os 13 pares símbolo e forma por extenso foram conferidos um a um contra as classes
+léxicas.
+
+**O `Dicionario` saiu das palavras reservadas** (#96 a #98). Nenhum arquivo dizia o que ele é nem
+como se escreve, e o grupo decidiu tirá-lo. As palavras reservadas passaram
+de 31 para 30; os nós esperados do padrão, contados à mão antes de rodar, passaram de 337 para 317.
+Descartado: pôr na tabela de tipos com a sintaxe "a definir", que registraria um tipo sem nenhuma
+decisão por trás.
+
+**A descrição do primeiro módulo** (`docs/descricao_linguagem.md`) ficou como estava, com um aviso
+de registro histórico no topo apontando para o recorte e para `especificacao/` (#99). Descartado:
+atualizar o arquivo. Duas descrições para manter foi o que deixou as duas diferentes.
+
+**A classe do comentário** (#100 a #103). Os exemplos do README usavam `//`, mas não existia classe
+para ele, e o analisador leria `//` como duas divisões. O comentário começa com `//`, vai até o fim
+da linha, pode ter acento e é descartado como os espaços em branco: o padrão é `//[^\n]*`. Pelo
+casamento mais longo, `//` começa um comentário e uma `/` sozinha é a divisão. Descartado: tirar
+os `//` dos exemplos. Como a Linha, o padrão usa classe negada, que o leitor ainda não aceita, então
+foi conferido montando a máquina à mão sobre os 113 símbolos do alfabeto.
+
+Também entraram ajustes menores: o cabeçalho do `afd_letras.py` passou a dizer `[a-zA-Z]+` (#91),
+e o alfabeto passou a mostrar o uso do sublinhado (#95).
+
+**Ficou como está, de propósito:** a parte 5 do `teste_passo4.py` continua testando o identificador
+antigo (`[a-zA-Z][a-zA-Z0-9]*`). O teste está certo para aquele padrão, e o identificador de hoje
+já é conferido no `demonstrar_leitor.py`.
+
+### Pendências, depois da segunda leva
+
+- **As 7 seções da especificação**, da atividade "Expressões Regulares e Linguagens Regulares",
+  esperam o grupo decidir o assunto do Projeto Integrador.
+- **A Linha e o comentário** dependem de classe negada (`[^...]`), que o leitor ainda recusa.
+- **Para a análise sintática:** `e` é operador lógico e também parte da sintaxe de função
+  (`pede (...) e retorna`), e `pede` marca os parâmetros e também a leitura de entrada
+  (`Inteiro A pede '...'`). Para o analisador léxico, cada um é um token só; a gramática vai
+  precisar distinguir os dois usos.
+
+A faixa numérica e o cabeçalho do `afd_letras.py`, da lista anterior, foram resolvidos nesta leva.
