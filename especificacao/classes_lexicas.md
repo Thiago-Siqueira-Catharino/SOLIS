@@ -15,6 +15,7 @@ estão em [`alfabeto.md`](alfabeto.md).
 | Literal Linha | `'[^'\n]*' \| "[^"\n]*"` |
 | Literal Booleano | `verdadeiro \| falso` |
 | Delimitadores/Pontuação | lista fechada (ver tabela) |
+| Comentário (descartado) | `//[^\n]*` |
 
 ---
 
@@ -126,6 +127,22 @@ mesmo jeito que uma palavra reservada vale como reservada.
 | `:` | separador |
 | `;` | fim de instrução |
 | `,` | separa parâmetros e itens de lista |
+
+## Comentários
+
+```
+//[^\n]*
+```
+
+Começa com `//` e vai até o fim da linha. Dentro, vale qualquer símbolo do alfabeto, inclusive
+letras acentuadas, menos a quebra de linha. Não existe comentário de várias linhas.
+
+O comentário **não vira token**: é descartado, como os espaços em branco. Vale o casamento mais
+longo: `//` começa um comentário, e uma `/` sozinha é o operador de divisão.
+
+| É comentário | Não é comentário |
+|---|---|
+| `// corpo do loop`, `// número de alunos`, `//` (vazio) | `/ texto` (uma barra só é a divisão) |
 
 ---
 
