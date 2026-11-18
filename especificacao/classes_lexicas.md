@@ -42,7 +42,7 @@ símbolo.
 ## Palavras reservadas
 
 `funcao` · `pede` · `retorna` · `devolve` · `Classe` · `Possui` · `Faz` · `principal` · `Linha` ·
-`Inteiro` · `Quebrado` · `Booleano` · `Vazio` · `Lista` · `Dicionario` · `Novo` · `lista` ·
+`Inteiro` · `Quebrado` · `Booleano` · `Vazio` · `Lista` · `Novo` · `lista` ·
 `Imprime` · `imprime` · `enquanto` · `Enquanto` · `para` · `Para` · `em` · `Em` · `se` · `Se` ·
 `senao` · `Senao` · `pare` · `Pare`
 
