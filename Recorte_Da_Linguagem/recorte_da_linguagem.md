@@ -104,6 +104,7 @@ A lista completa, com as regras de uso, está em
 | Identificadores | `[a-zA-Z][a-zA-Z0-9_]* \| _+[a-zA-Z0-9][a-zA-Z0-9_]*` |
 | Literais | Inteiro `[0-9]+`, Quebrado `[0-9]+\.[0-9]+`, Linha `'[^'\n]*' \| "[^"\n]*"`, Booleano `verdadeiro \| falso` |
 | Delimitadores / Pontuação | `{` `}` `(` `)` `[` `]` `:` `;` `,` |
+| Comentário (descartado) | `//` até o fim da linha |
 
 A lista completa de cada classe, com exemplos válidos e inválidos, está em
 [`especificacao/classes_lexicas.md`](../especificacao/classes_lexicas.md).
