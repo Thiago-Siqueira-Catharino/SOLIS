@@ -1,3 +1,7 @@
+> **Registro histórico.** Esta é a primeira descrição da Solis, escrita no início do projeto e mantida
+> como estava. Várias decisões mudaram depois. A versão atual está no recorte da linguagem
+> (`Recorte_Da_Linguagem/recorte_da_linguagem.md`) e na especificação (`especificacao/`).
+
 ## Sobre a lingugem
 Nome: solis
 Extencao: .sol
