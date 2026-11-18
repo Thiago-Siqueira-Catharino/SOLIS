@@ -14,7 +14,7 @@
 | Sublinhado | `_` | 1 | nomes como `meu_nome` e `_nome`; um nome feito só de `_` não vale |
 | Aspas | `'` `"` | 2 | `'Ana'`, `"Olá, Solis!"` |
 | Espaços em branco | espaço, Tab, quebra de linha | 3 | entre as palavras e no fim de cada linha |
-| Letras acentuadas | `á` `à` `â` `ã` `é` `ê` `í` `ó` `ô` `õ` `ú` `ç` e as maiúsculas `Á` `À` `Â` `Ã` `É` `Ê` `Í` `Ó` `Ô` `Õ` `Ú` `Ç` | 24 | só dentro de Linha: `'Digite um número :'` |
+| Letras acentuadas | `á` `à` `â` `ã` `é` `ê` `í` `ó` `ô` `õ` `ú` `ç` e as maiúsculas `Á` `À` `Â` `Ã` `É` `Ê` `Í` `Ó` `Ô` `Õ` `Ú` `Ç` | 24 | só dentro de Linha ou de comentário: `'Digite um número :'`, `// número de alunos` |
 
 **Total: 113 símbolos.**
 
@@ -22,8 +22,10 @@
 
 - **Espaços em branco** separam os símbolos da linguagem e são descartados pelo analisador
   léxico: não viram token. O Tab entra para que um arquivo indentado com Tab não seja recusado.
-- **Letras acentuadas** pertencem a Σ, mas só são válidas **dentro de uma Linha**. Palavras
-  reservadas e identificadores continuam sem acento.
+- **Letras acentuadas** pertencem a Σ, mas só são válidas **dentro de uma Linha ou de um
+  comentário**. Palavras reservadas e identificadores continuam sem acento.
+- **Comentários** começam com `//` e vão até o fim da linha. Como os espaços em branco, são
+  descartados pelo analisador léxico e não viram token.
 - **O ponto tem dois usos.** Entre dígitos, faz parte do Quebrado (`3.14`); depois de um
   identificador, é acesso a membro (`mat.multiplicar`). O analisador léxico distingue os dois pelo
   casamento mais longo.
