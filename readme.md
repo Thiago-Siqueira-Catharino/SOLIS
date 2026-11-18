@@ -85,6 +85,15 @@ Exemplo:
 Linha x recebe "texto aleatorio";
 ```
 
+## Comentários
+
+Um comentário começa com `//` e vai até o fim da linha. Ele não muda nada no programa: o
+analisador léxico o descarta, como os espaços em branco. Pode ter acento.
+
+```sol
+Linha x recebe "texto aleatorio"; // daqui até o fim da linha é comentário
+```
+
 ## Estruturas de Controle
 
 ### Condicionais
