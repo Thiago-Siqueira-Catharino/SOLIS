@@ -352,3 +352,68 @@ já é conferido no `demonstrar_leitor.py`.
   precisar distinguir os dois usos.
 
 A faixa numérica e o cabeçalho do `afd_letras.py`, da lista anterior, foram resolvidos nesta leva.
+
+### Terceira leva: a revisão do projeto inteiro
+
+Uma revisão de todos os arquivos procurou o que ainda estava diferente entre o código, a
+especificação e os exemplos. A conferência nova desta leva foi **passar todo exemplo de código Solis
+do repositório pelas classes léxicas que o próprio grupo definiu**: o `exemplos.sol`, os blocos do
+README, o `parte1.md` e o recorte, lidos pelo casamento mais longo. Foi a primeira vez que os
+exemplos e a especificação se encontraram de verdade.
+
+**O ponto de acesso a membro não tinha classe** (#113 a #117). A varredura achou um símbolo só sem
+classe: o `.` de `mat.multiplicar`. O alfabeto dizia que o ponto tem dois usos, mas as classes só
+cobriam o do Quebrado, e o analisador léxico recusaria o exemplo completo do README. O `.` entrou
+nos **delimitadores**, com a função "acesso a membro". Descartado: pôr nos operadores. Depois do
+ponto vem sempre um nome, e não uma expressão qualquer (`mat.multiplicar`, nunca `mat.(x + y)`):
+é uma regra de forma, não de cálculo, e assim a tabela de precedência fica só com operadores de
+verdade. O Java, base da Solis, também lista o `.` entre os separadores. Pelo casamento mais longo,
+o ponto entre dígitos continua sendo parte do Quebrado (`3.14`). No padrão da demonstração ele vai
+escapado (`\.`), porque sozinho seria o coringa; o Delimitador passou de 17 para 19 nós. A bateria
+do AFN ganhou dois casos: `.` aceita e `a` recusa, que prova que, dentro dos colchetes, o ponto é
+símbolo comum. Ela passou de 57 para 59 casos. Depois da mudança, nenhum exemplo do repositório
+tem símbolo sem classe.
+
+**A `lista` minúscula saiu** (#105 a #109). `Lista` é o tipo e aparece só na declaração; os itens
+vêm direto entre colchetes: `Lista Colaboradores recebe ['Ana', 'Beatriz', 'Luana'];`. As
+palavras reservadas passaram de 30 para 29, e o padrão delas, de 317 para 307 nós, contados à mão
+antes de rodar.
+
+**O `devolve` tem duas formas** (#110 a #112): `devolve <valor>;` numa função que retorna um valor,
+e `devolve;` sozinho numa função que retorna `Vazio`. `Vazio` é só tipo. Descartado: `devolve
+Vazio;`, que deixaria a gramática com uma forma só, mas faria `Vazio` ser tipo e valor ao mesmo
+tempo, e a verificação de tipos precisaria de uma regra para impedir `Inteiro x recebe Vazio;`. O
+grupo preferiu pagar o custo agora, na gramática, a deixar essa exceção para a verificação.
+
+**A classe termina com `}`, sem `;`.** Funções, `Possui`, `Faz` e os blocos de controle terminam
+com `};`. Os exemplos já seguiam essa regra, que entra escrita na especificação.
+
+**O paradigma é também funcional** (#118). O recorte registrava só a orientação a objetos, e o
+README dizia "orientado a objetos e funcional". Agora o recorte diz que um programa em Solis pode
+ser escrito só com funções, sem nenhuma classe, como a `soma` e a `principal` do `exemplos.sol`.
+
+### O assunto do Projeto Integrador
+
+A Tarefa 1 do módulo "Expressões Regulares e Linguagens Regulares" pede começar pelo domínio que o
+recorte fixou, e diz que o assunto é a decisão mais cara de desfazer do percurso. O recorte fixou
+uma linguagem para scripts, integrável com outras linguagens, em português e inspirada em Lua. O
+material também lista quatro sinais de um assunto que "parece bom e falha": executar direto sem
+gravar objeto, comandos de formato fixo sem aninhamento, todo valor da mesma natureza e usar um
+reconhecedor pronto de biblioteca. A Solis passa nos quatro, desde que a especificação diga o que
+o compilador grava e quem executa depois.
+
+O que falta é a cena: quem escreveria em Solis e para obter o quê. Foram levantados três caminhos:
+o do Lua, de scripts embutidos num programa maior, para quem usa esse programa automatizá-lo ou
+personalizá-lo em português; o do ensino de programação em português; e um dos vinte assuntos do
+Projeto Integrador. **O caminho escolhido para o grupo discutir é o primeiro**, por ser o que menos
+contradiz o recorte e o que já foi construído. Falta escolher o programa e a pessoa, e conferir a
+escolha contra as cinco perguntas de "O Teste que Fecha a Escolha", que estão no texto do Projeto
+Integrador.
+
+### Pendências, depois da terceira leva
+
+- **As 7 seções da especificação**, que esperam a cena do caminho escolhido.
+- **A Linha e o comentário** dependem de classe negada (`[^...]`), que o leitor ainda recusa.
+- **Para a análise sintática:** os dois usos de `e` (operador lógico e `pede (...) e retorna`) e de
+  `pede` (parâmetros e leitura de entrada); a regra de que o valor de `devolve` combina com o tipo
+  de retorno da função; e a classe terminada em `}`, sem `;`.
