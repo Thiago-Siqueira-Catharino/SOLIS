@@ -25,5 +25,5 @@ funcao principal pede () e retorna Vazio {
     Imprime(soma(x,y));
     Imprime(mat.multiplicar(x,y));
 
-    devolve Vazio;
+    devolve;
 };
