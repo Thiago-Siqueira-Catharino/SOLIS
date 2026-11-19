@@ -56,7 +56,7 @@ EXPRESSOES_DO_MATERIAL = [
 #                        direita: _+ = 4; classe de 62 = 123; 126; + 2 junções                     = 255
 #                        230 + 255 + 1 barra                                                       = 486
 #     Booleano           verdadeiro 19 + falso 9 + 1 barra                              = 29
-#     Delimitador        9 símbolos + 8 barras                                          = 17
+#     Delimitador        10 símbolos (o \. conta como um só) + 9 barras                 = 19
 #     Palavra reservada  29 palavras com 154 letras: 2x154 - 29 = 279; + 28 barras      = 307
 #     Operador           símbolos 21 + palavras 2x77 - 11 = 143 + 23 barras             = 187
 #   Os símbolos especiais do leitor (+ * | ( ) [ ]) vão escapados com \.
@@ -70,7 +70,7 @@ PADROES_DA_SOLIS = [
     ("Quebrado", r"[0-9]+\.[0-9]+", 83),
     ("Identificador", r"[a-zA-Z][a-zA-Z0-9_]*|_+[a-zA-Z0-9][a-zA-Z0-9_]*", 486),
     ("Booleano", r"verdadeiro|falso", 29),
-    ("Delimitador", r"{|}|\(|\)|\[|\]|:|;|,", 17),
+    ("Delimitador", r"{|}|\(|\)|\[|\]|:|;|,|\.", 19),
     ("Palavra reservada", PALAVRAS_RESERVADAS, 307),
     ("Operador", r"\+|-|\*|/|%|=|==|<|>|!=|&&|\|\||!"
                  r"|mais|menos|multiplica|dividido-por|recebe|igual-a|menor-que|maior-que|diferente-de|e|ou", 187),
