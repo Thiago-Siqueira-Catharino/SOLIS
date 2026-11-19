@@ -103,7 +103,7 @@ A lista completa, com as regras de uso, está em
 | Palavras reservadas | palavras de funções (`funcao`, `devolve`...), de classes (`Classe`, `Possui`, `Faz`, `Novo`), os tipos (`Linha`, `Inteiro`...), as de controle (`se`, `senao`, `enquanto`, `para`, `em`, `pare`, com inicial minúscula ou maiúscula) e `Imprime` |
 | Identificadores | `[a-zA-Z][a-zA-Z0-9_]* \| _+[a-zA-Z0-9][a-zA-Z0-9_]*` |
 | Literais | Inteiro `[0-9]+`, Quebrado `[0-9]+\.[0-9]+`, Linha `'[^'\n]*' \| "[^"\n]*"`, Booleano `verdadeiro \| falso` |
-| Delimitadores / Pontuação | `{` `}` `(` `)` `[` `]` `:` `;` `,` |
+| Delimitadores / Pontuação | `{` `}` `(` `)` `[` `]` `:` `;` `,` `.` |
 | Comentário (descartado) | `//` até o fim da linha |
 
 A lista completa de cada classe, com exemplos válidos e inválidos, está em
