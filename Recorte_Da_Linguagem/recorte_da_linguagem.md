@@ -26,6 +26,7 @@ O usuário dispensa a necessidade de utilizar o operador ternário, pois será n
 
 **Decisão — Paradigma**
 Base em POO (Programação Orientada a Objetos), para que classes possam ser reutilizadas em outras dependências filhas, com definições simples de métodos e declarações de instâncias.
+Também funcional: um programa em Solis pode ser escrito só com funções, sem nenhuma classe. As funções existem fora das classes, como `soma` e `principal` em `docs/exemplos.sol`.
 
 **Decisão — Operadores e tipos primitivos**
 Por se tratar de uma linguagem para scripts, os operadores básicos são:
