@@ -141,6 +141,8 @@ funcao <nome_da_funcao> pede (<tipo> <arg>, ...) e retorna <tipo> {
 };
 ```
 
+Uma função que retorna `Vazio` termina com `devolve;` sozinho, sem valor: `Vazio` é só tipo.
+
 Exemplo:
 
 ```sol
@@ -202,7 +204,7 @@ funcao principal pede () e retorna Vazio {
     Matematica mat recebe Novo Matematica;
     Imprime(soma(x, y));
     Imprime(mat.multiplicar(x, y));
-    devolve Vazio;
+    devolve;
 };
 ```
 
