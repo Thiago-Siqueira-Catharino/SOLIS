@@ -43,7 +43,7 @@ símbolo.
 ## Palavras reservadas
 
 `funcao` · `pede` · `retorna` · `devolve` · `Classe` · `Possui` · `Faz` · `principal` · `Linha` ·
-`Inteiro` · `Quebrado` · `Booleano` · `Vazio` · `Lista` · `Novo` · `lista` ·
+`Inteiro` · `Quebrado` · `Booleano` · `Vazio` · `Lista` · `Novo` ·
 `Imprime` · `imprime` · `enquanto` · `Enquanto` · `para` · `Para` · `em` · `Em` · `se` · `Se` ·
 `senao` · `Senao` · `pare` · `Pare`
 
@@ -51,8 +51,9 @@ símbolo.
   minúscula ou maiúscula: `se` e `Se` são a mesma palavra. As outras têm uma grafia só.
 - `Imprime` e `imprime` são a mesma palavra, e a chamada é sempre com parênteses:
   `Imprime(soma(x, y));`.
-- `Novo` cria um objeto: `Matematica mat recebe Novo Matematica;`. `lista` cria uma Lista:
-  `Lista Colaboradores recebe lista ['Ana', 'Beatriz', 'Luana'];`. `Lista`, com maiúscula, é o tipo.
+- `Novo` cria um objeto: `Matematica mat recebe Novo Matematica;`.
+- `Lista` é o tipo e aparece só na declaração. Os itens vêm direto entre colchetes:
+  `Lista Colaboradores recebe ['Ana', 'Beatriz', 'Luana'];`.
 
 ## Identificadores
 
