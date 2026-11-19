@@ -54,6 +54,8 @@ símbolo.
 - `Novo` cria um objeto: `Matematica mat recebe Novo Matematica;`.
 - `Lista` é o tipo e aparece só na declaração. Os itens vêm direto entre colchetes:
   `Lista Colaboradores recebe ['Ana', 'Beatriz', 'Luana'];`.
+- `devolve` tem duas formas: `devolve <valor>;` numa função que retorna um valor, e `devolve;`
+  sozinho numa função que retorna `Vazio`. `Vazio` é só tipo: não é escrito como valor.
 
 ## Identificadores
 
