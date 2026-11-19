@@ -87,8 +87,11 @@ se|senao|pare|funcao	sen	recusa
 se|senao|pare|funcao	Se	recusa
 se|senao|pare|funcao	senaox	recusa
 
-# --- delimitadores: classe com [ e ] escapados pela barra, e a vírgula, que separa parâmetros e itens de lista
-[{}()\[\];:,]	[	aceita
-[{}()\[\];:,]	;	aceita
-[{}()\[\];:,]	,	aceita
+# --- delimitadores: classe com [ e ] escapados pela barra, a vírgula, que separa parâmetros e itens de lista,
+# e o ponto de acesso a membro (dentro da classe, o ponto é símbolo comum, não o coringa)
+[{}()\[\];:,.]	[	aceita
+[{}()\[\];:,.]	;	aceita
+[{}()\[\];:,.]	,	aceita
+[{}()\[\];:,.]	.	aceita
+[{}()\[\];:,.]	a	recusa
 [{}()\[\];:]	,	recusa
