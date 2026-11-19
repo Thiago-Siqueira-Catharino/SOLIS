@@ -43,7 +43,7 @@ funcao div pede (Inteiro V, Inteiro Q) e retorna Inteiro {
 ## Exemplo de lista e de um verificador de Par e Impar
 
 ```
-Lista Colaboradores recebe lista ['Ana', 'Beatriz', 'Luana'];
+Lista Colaboradores recebe ['Ana', 'Beatriz', 'Luana'];
 
 Inteiro A pede 'Digite um número :';
 
