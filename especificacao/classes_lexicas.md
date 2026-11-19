@@ -130,6 +130,10 @@ mesmo jeito que uma palavra reservada vale como reservada.
 | `:` | separador |
 | `;` | fim de instrução |
 | `,` | separa parâmetros e itens de lista |
+| `.` | acesso a membro: `mat.multiplicar` |
+
+O `.` também aparece dentro do Quebrado (`3.14`). Vale o casamento mais longo: entre dígitos, o
+ponto faz parte do número; depois de um nome, é o delimitador de acesso a membro.
 
 ## Comentários
 
