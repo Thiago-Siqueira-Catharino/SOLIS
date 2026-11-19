@@ -57,12 +57,12 @@ EXPRESSOES_DO_MATERIAL = [
 #                        230 + 255 + 1 barra                                                       = 486
 #     Booleano           verdadeiro 19 + falso 9 + 1 barra                              = 29
 #     Delimitador        9 símbolos + 8 barras                                          = 17
-#     Palavra reservada  30 palavras com 159 letras: 2x159 - 30 = 288; + 29 barras      = 317
+#     Palavra reservada  29 palavras com 154 letras: 2x154 - 29 = 279; + 28 barras      = 307
 #     Operador           símbolos 21 + palavras 2x77 - 11 = 143 + 23 barras             = 187
 #   Os símbolos especiais do leitor (+ * | ( ) [ ]) vão escapados com \.
 
 PALAVRAS_RESERVADAS = ("funcao|pede|retorna|devolve|Classe|Possui|Faz|principal|Linha|Inteiro"
-                       "|Quebrado|Booleano|Vazio|Lista|Novo|lista|Imprime|imprime"
+                       "|Quebrado|Booleano|Vazio|Lista|Novo|Imprime|imprime"
                        "|enquanto|Enquanto|para|Para|em|Em|se|Se|senao|Senao|pare|Pare")
 
 PADROES_DA_SOLIS = [
@@ -71,7 +71,7 @@ PADROES_DA_SOLIS = [
     ("Identificador", r"[a-zA-Z][a-zA-Z0-9_]*|_+[a-zA-Z0-9][a-zA-Z0-9_]*", 486),
     ("Booleano", r"verdadeiro|falso", 29),
     ("Delimitador", r"{|}|\(|\)|\[|\]|:|;|,", 17),
-    ("Palavra reservada", PALAVRAS_RESERVADAS, 317),
+    ("Palavra reservada", PALAVRAS_RESERVADAS, 307),
     ("Operador", r"\+|-|\*|/|%|=|==|<|>|!=|&&|\|\||!"
                  r"|mais|menos|multiplica|dividido-por|recebe|igual-a|menor-que|maior-que|diferente-de|e|ou", 187),
 ]
@@ -131,8 +131,8 @@ def parte2():
     #O padrão mais longo do projeto: caracteres escritos e nós, lado a lado
     #(a conta que o material pede no fim da seção 1.8).
     print("    O padrão mais longo é o das palavras reservadas:")
-    conferir("caracteres escritos (159 letras + 29 barras)", len(PALAVRAS_RESERVADAS), 188)
-    conferir("nós da árvore", contar_nos(ler_padrao(PALAVRAS_RESERVADAS)), 317)
+    conferir("caracteres escritos (154 letras + 28 barras)", len(PALAVRAS_RESERVADAS), 182)
+    conferir("nós da árvore", contar_nos(ler_padrao(PALAVRAS_RESERVADAS)), 307)
 
     #Limite conhecido: a Linha usa classe negada, que o leitor não aceita.
     linha = "'[^'\n]*'"
