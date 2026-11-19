@@ -231,7 +231,7 @@ tudo passou, ou 1 quando alguma verificação falhou. A saída esperada é:
 [OK]     AFN, passo 2: fecho vazio      11/11 verificações passaram.
 [OK]     AFN, passo 3: simulação        26/26 verificações passaram.
 [OK]     AFN, passo 4: Thompson         38/38 verificações passaram.
-[OK]     AFN, bateria conferida à mão   57/57 casos passaram.
+[OK]     AFN, bateria conferida à mão   59/59 casos passaram.
 
 Solis: 9/9 partes passaram.
 ```
@@ -320,7 +320,7 @@ A saída tem quatro partes, na ordem da seção 1.8 do material:
 
 1. as cinco expressões do material, com a forma da árvore e o número de nós (1, 3, 5, 6 e 16);
 2. os padrões das classes léxicas da Solis, com os nós contados à mão antes de rodar: Inteiro 40,
-   Quebrado 83, Identificador 486, Booleano 29, Delimitador 17, Palavra reservada 307 e
+   Quebrado 83, Identificador 486, Booleano 29, Delimitador 19, Palavra reservada 307 e
    Operador 187;
 3. a convergência: `a+` e `aa*`, `[abc]` e `a|b|c`, `[a-c]` e `[abc]`, `(ab)c` e `abc`, `[0-9]+` e
    `[0-9][0-9]*` dão a mesma árvore; `[a-z0-9]` e `([a-z]|[0-9])` dão árvores diferentes, com os
@@ -365,7 +365,7 @@ Requer Python 3. Na raiz do projeto:
 python Afn/bateria.py
 ```
 
-A saída esperada é `Bateria conferida à mão: 57/57 casos passaram.` Se algum caso falhar, a bateria
+A saída esperada é `Bateria conferida à mão: 59/59 casos passaram.` Se algum caso falhar, a bateria
 mostra o arquivo, a linha, o veredito esperado e o obtido, e termina com código de saída 1.
 
 Os testes de cada etapa rodam da mesma forma, por exemplo `python Afn/teste_passo3.py`. Cada linha
