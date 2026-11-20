@@ -26,6 +26,9 @@ PARTES = [
     ("AFN, passo 3: simulação", "Afn/teste_passo3.py"),
     ("AFN, passo 4: Thompson", "Afn/teste_passo4.py"),
     ("AFN, bateria conferida à mão", "Afn/bateria.py"),
+    ("Determinização", "Determinizacao/teste_determinizacao.py"),
+    ("Minimização", "Determinizacao/teste_minimizacao.py"),
+    ("Três máquinas e explosão", "Determinizacao/demonstrar_determinizacao.py"),
 ]
 
 RAIZ = os.path.dirname(os.path.abspath(__file__))
