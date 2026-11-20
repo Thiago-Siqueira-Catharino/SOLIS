@@ -229,7 +229,7 @@ tudo passou, ou 1 quando alguma verificação falhou. A saída esperada é:
 [OK]     Leitor de padrões              36/36 verificações passaram.
 [OK]     AFN, passo 1: estrutura        9/9 verificações passaram.
 [OK]     AFN, passo 2: fecho vazio      11/11 verificações passaram.
-[OK]     AFN, passo 3: simulação        26/26 verificações passaram.
+[OK]     AFN, passo 3: simulação        35/35 verificações passaram.
 [OK]     AFN, passo 4: Thompson         38/38 verificações passaram.
 [OK]     AFN, bateria conferida à mão   59/59 casos passaram.
 
@@ -376,7 +376,7 @@ mostra o valor obtido e o esperado, e os erros provocados de propósito aparecem
 |---|---|---|
 | `Afn/teste_passo1.py` | estados, setas, contagens e validações | `teste_passo1: 9/9 verificações passaram.` |
 | `Afn/teste_passo2.py` | o fecho vazio | `teste_passo2: 11/11 verificações passaram.` |
-| `Afn/teste_passo3.py` | a simulação | `teste_passo3: 26/26 verificações passaram.` |
+| `Afn/teste_passo3.py` | a simulação e o movimento por símbolo | `teste_passo3: 35/35 verificações passaram.` |
 | `Afn/teste_passo4.py` | a construção de Thompson | `teste_passo4: 38/38 verificações passaram.` |
 
 Se alguma verificação falhar, a linha dela mostra `[FALHOU]` e o teste termina com código de saída 1.
