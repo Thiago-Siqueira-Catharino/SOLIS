@@ -57,12 +57,12 @@ EXPRESSOES_DO_MATERIAL = [
 #                        230 + 255 + 1 barra                                                       = 486
 #     Booleano           verdadeiro 19 + falso 9 + 1 barra                              = 29
 #     Delimitador        10 símbolos (o \. conta como um só) + 9 barras                 = 19
-#     Palavra reservada  29 palavras com 154 letras: 2x154 - 29 = 279; + 28 barras      = 307
-#     Operador           símbolos 21 + palavras 2x77 - 11 = 143 + 23 barras             = 187
+#     Palavra reservada  30 palavras com 160 letras: 2x160 - 30 = 290; + 29 barras      = 319
+#     Operador           símbolos 27 + palavras 2x109 - 13 = 205 + 27 barras            = 259
 #   Os símbolos especiais do leitor (+ * | ( ) [ ]) vão escapados com \.
 
 PALAVRAS_RESERVADAS = ("funcao|pede|retorna|devolve|Classe|Possui|Faz|principal|Linha|Inteiro"
-                       "|Quebrado|Booleano|Vazio|Lista|Novo|Imprime|imprime"
+                       "|Quebrado|Booleano|Vazio|Lista|Padrao|Novo|Imprime|imprime"
                        "|enquanto|Enquanto|para|Para|em|Em|se|Se|senao|Senao|pare|Pare")
 
 PADROES_DA_SOLIS = [
@@ -71,9 +71,10 @@ PADROES_DA_SOLIS = [
     ("Identificador", r"[a-zA-Z][a-zA-Z0-9_]*|_+[a-zA-Z0-9][a-zA-Z0-9_]*", 486),
     ("Booleano", r"verdadeiro|falso", 29),
     ("Delimitador", r"{|}|\(|\)|\[|\]|:|;|,|\.", 19),
-    ("Palavra reservada", PALAVRAS_RESERVADAS, 307),
-    ("Operador", r"\+|-|\*|/|%|=|==|<|>|!=|&&|\|\||!"
-                 r"|mais|menos|multiplica|dividido-por|recebe|igual-a|menor-que|maior-que|diferente-de|e|ou", 187),
+    ("Palavra reservada", PALAVRAS_RESERVADAS, 319),
+    ("Operador", r"\+|-|\*|/|%|=|==|<|>|>=|<=|!=|&&|\|\||!"
+                 r"|mais|menos|multiplica|dividido-por|recebe|igual-a|menor-que|maior-que"
+                 r"|maior-ou-igual-a|menor-ou-igual-a|diferente-de|e|ou", 259),
 ]
 
 #3) Pares de escritas. Os quatro primeiros são do material (seção 1.8);
@@ -131,8 +132,8 @@ def parte2():
     #O padrão mais longo do projeto: caracteres escritos e nós, lado a lado
     #(a conta que o material pede no fim da seção 1.8).
     print("    O padrão mais longo é o das palavras reservadas:")
-    conferir("caracteres escritos (154 letras + 28 barras)", len(PALAVRAS_RESERVADAS), 182)
-    conferir("nós da árvore", contar_nos(ler_padrao(PALAVRAS_RESERVADAS)), 307)
+    conferir("caracteres escritos (160 letras + 29 barras)", len(PALAVRAS_RESERVADAS), 189)
+    conferir("nós da árvore", contar_nos(ler_padrao(PALAVRAS_RESERVADAS)), 319)
 
     #Limite conhecido: a Linha usa classe negada, que o leitor não aceita.
     linha = "'[^'\n]*'"
@@ -143,6 +144,16 @@ def parte2():
     except ErroDeLeitura:
         recusada = True
     conferir("a Linha é recusada pelo leitor", recusada, True)
+
+    #O mesmo limite vale para o literal Padrão, que também usa classe negada.
+    padrao = "`[^`\n]*`"
+    print("\n    Padrão: `[^`\\n]*`  (limite conhecido: usa classe negada)")
+    try:
+        ler_padrao(padrao)
+        recusada = False
+    except ErroDeLeitura:
+        recusada = True
+    conferir("o literal Padrão é recusado pelo leitor", recusada, True)
 
 
 def parte3():
