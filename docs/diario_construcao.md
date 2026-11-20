@@ -417,3 +417,154 @@ Integrador.
 - **Para a análise sintática:** os dois usos de `e` (operador lógico e `pede (...) e retorna`) e de
   `pede` (parâmetros e leitura de entrada); a regra de que o valor de `devolve` combina com o tipo
   de retorno da função; e a classe terminada em `}`, sem `;`.
+
+---
+
+## Módulo: Determinização e minimização
+
+O código deste módulo fica em `Determinizacao/`. Ele segue o guia "Implementação em C++: Thompson,
+determinização e minimização", passos 12 a 25 do roteiro; os passos 1 a 11 são os do módulo do
+AFN, na pasta `Afn/`.
+
+### O que a observação do módulo do AFN previu
+
+No módulo do AFN, este diário registrou que a definição tinha virado código quase sem adaptação, e
+que isso não ia se repetir. **Não se repetiu.** A construção de subconjuntos não é indutiva: ela
+calcula conjuntos até não aparecer nenhum novo, e o código precisou de escolhas que a definição
+não faz: como guardar um conjunto para reconhecê-lo depois, em que ordem tirar os pendentes, o que
+fazer com o conjunto vazio, qual é o alfabeto. A minimização também: o que fazer com os estados
+que nenhuma cadeia alcança, e quando parar. Cada uma dessas escolhas está registrada abaixo, com a
+alternativa descartada.
+
+### A ordem da construção
+
+| Passo do roteiro | Arquivo | O que entrou | Teste |
+|---|---|---|---|
+| 12 a 16 | `afd.py`, `determinizacao.py` | o AFD, o catálogo, o estado inicial, movimento seguido de fecho, o laço dos pendentes e o vazio | `teste_determinizacao.py` |
+| 17 | `teste_determinizacao.py` | a equivalência entre o AFN e o AFD sobre o alfabeto | 39/39 |
+| 18 a 23 | `minimizacao.py` | completar, inacessíveis, partição inicial, assinaturas, ponto fixo e reconstrução | `teste_minimizacao.py`, 36/36 |
+| 24 e 25 | `demonstrar_determinizacao.py` | as três máquinas comparadas e a explosão de estados | 71/71 |
+
+Um detalhe da ordem: o passo 2 do roteiro cria as estruturas do AFN, do AFD e do Bloco juntas.
+Aqui o AFD só foi criado no passo 12, quando a determinização passou a usá-lo. O resultado não
+muda.
+
+---
+
+### Decisões e o que elas descartaram
+
+#### O AFD (`afd.py`)
+
+**Um AFD novo, com estados numerados e um dicionário `{símbolo: destino}` por estado.**
+Gravar de novo o mesmo símbolo substitui o destino, e é isso que mantém um destino só por par
+(estado, símbolo). Descartado: reaproveitar o AFD de `Afds/Afd_Solis/`, que tem estados com nome
+(`"q0"`) e não tem estado de erro; a determinização cria os estados um a um, e o número de cada um
+é a ordem em que o conjunto apareceu. Descartado também: a lista de setas do AFN, que aceitaria
+dois destinos para o mesmo símbolo.
+
+**Uma seta com símbolo fora do alfabeto é recusada na hora**, porque a determinização e a
+minimização só percorrem o alfabeto, e essa seta nunca seria usada.
+
+#### A determinização (`determinizacao.py`)
+
+**O alfabeto é fechado: os símbolos das setas do AFN, sem ε e sem o coringa.**
+O coringa vira, no AFD, uma seta para cada símbolo desse alfabeto. A consequência, que o guia
+avisa: em `a.c` o alfabeto é {a, c}, o AFN aceita `abc` pelo coringa e o AFD recusa. Por isso as
+máquinas só são comparadas em cadeias sobre o alfabeto, e na bateria do AFN 12 dos 59 casos ficam
+de fora da comparação.
+
+**A chave do catálogo é uma tupla com os estados sem repetição e em ordem.**
+Assim `[0, 2, 4]` e `[4, 0, 2]` caem na mesma chave. Descartado: a lista, que não serve de chave de
+dicionário no Python. O `frozenset` também serviria de chave, mas não tem ordem, e a tupla em
+ordem é a forma que aparece na tabela do guia e na tela.
+
+**Os pendentes são uma pilha: sai o último que entrou**, como no guia. A ordem não muda a máquina,
+só a numeração dos estados; com a mesma ordem do guia, a numeração também sai igual, e a tabela
+de `(a|b)*c` pôde ser conferida estado por estado (D0 a D4).
+
+**O conjunto vazio não tem caso especial: na primeira vez que aparece, recebe número e vira o
+estado de erro.** O AFD sai completo. Descartado: criar o estado de erro de antemão, como faz o
+projeto do material. Com ele, o erro existiria mesmo quando nenhuma cadeia chega nele, e as
+contagens mudariam: em `(a|b)*abb`, 6 estados em vez de 5. As duas formas aceitam as mesmas
+cadeias; a escolhida conta só estados que alguma cadeia alcança.
+
+#### A minimização (`minimizacao.py`)
+
+**A minimização trabalha numa cópia do AFD.** Completar acrescenta estado e setas; sem a cópia, o
+AFD recebido mudaria por baixo de quem o passou. Em Python a cópia é explícita (`deepcopy`), porque
+passar um objeto não o copia; no guia, a cópia vem de receber o AFD por valor.
+
+**Os estados inacessíveis são descartados antes do refinamento.** O resultado é o autômato
+mínimo. Descartado: conservar o erro inalcançável, como o material faz, o que entrega a máquina
+que ele chama de reduzida, com um estado a mais (`(a|b)*abb`: 5 em vez de 4).
+
+**O ponto fixo é detectado comparando o número de grupos com o da rodada anterior.** Uma rodada só
+divide grupos, nunca junta; se o número não mudou, nada se dividiu. Descartado: parar quando a
+contagem chega a um número esperado, que pode deixar estados distinguíveis no mesmo grupo.
+
+**O refinamento é o simples do guia, com a busca do grupo de cada estado feita grupo por grupo.**
+Descartado, por enquanto: o algoritmo de Hopcroft e o vetor que guarda o grupo de cada estado. O
+guia pede a versão simples primeiro, conferida com a bateria, e o maior AFD da bateria, o do
+Identificador, tem 244 estados.
+
+**Os subgrupos de uma rodada entram em ordem de assinatura**, como no `map` do guia. A ordem não
+muda a máquina, mas deixa a numeração sempre igual, e os grupos podem ser conferidos com os do
+exemplo do guia ({A}, {B, C}, {D, E}).
+
+**No código, o grupo da partição se chama `grupo`**, como no guia, para não confundir com o
+`Bloco` da construção de Thompson.
+
+---
+
+### Como os valores esperados foram decididos
+
+Os testes só usam valores que existiam antes de o código rodar:
+
+- **do guia:** a tabela de `(a|b)*c` (seção 1.5.6), as sete cadeias da seção 1.5.9, o exemplo de
+  minimização das seções 1.6.2 e 1.6.3, as contagens da seção 1.7.3 e a bateria da seção 1.8.5
+  (121 cadeias, 15 aceitas);
+- **do material:** os conjuntos 0 e 2 de `(a|b)*abb` no mesmo grupo, a partição de um grupo só
+  quando todos os estados aceitam, e as fórmulas da explosão;
+- **contados à mão:** o AFD escrito com setas faltando e um estado inacessível, com a conta escrita
+  ao lado de cada verificação.
+
+**Os números do material não foram usados direto.** O material cria o estado de erro de antemão e
+o conserva na minimização, e por isso conta um estado a mais no AFD e no mínimo sempre que o vazio
+não é alcançável. O guia mostra essa diferença em `(a|b)*abb` (6 e 5 no material, 5 e 4 aqui). Nos
+casos em que o vazio é alcançável, como `a.c`, as contagens coincidem.
+
+**Na explosão, a conferência não depende de nenhuma das máquinas.** As três são comparadas com a
+definição da linguagem escrita direto em Python ("a cadeia tem pelo menos n símbolos e o n-ésimo
+contado do fim é `a`"), em todas as 2047 cadeias sobre {a, b} até o comprimento 10.
+
+### A explosão de estados
+
+| n | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---|---|---|---|---|---|---|---|---|
+| AFN | 10 | 16 | 22 | 28 | 34 | 40 | 46 | 52 |
+| AFD | 3 | 5 | 9 | 17 | 33 | 65 | 129 | 257 |
+| Mínimo | 2 | 4 | 8 | 16 | 32 | 64 | 128 | 256 |
+
+O AFN cresce 6 estados por n (6n + 4); o AFD dobra (2ⁿ + 1). Até n = 5 o AFD ainda é menor que o
+AFN (33 contra 34); a partir de n = 6, é maior. O mínimo fica exatamente no piso de 2ⁿ que o
+material prova, e então o crescimento é da linguagem, e não do algoritmo: nenhum AFD reconhece essa
+linguagem com menos estados. No material, as duas colunas empatam em n = 5 (34 e 34), porque o AFD
+de lá conta o estado de erro inalcançável.
+
+---
+
+### Limites conhecidos
+
+- O refinamento simples tem custo cúbico no número de estados, no pior caso (seção 1.9 do guia).
+  Os AFDs do projeto ficam longe de pesar; para AFDs grandes, o caminho é o algoritmo de Hopcroft.
+- O alfabeto fechado vale para comparar máquinas de um padrão só. Para o analisador léxico, o
+  alfabeto precisa ser o da Solis (`especificacao/alfabeto.md`), e não o de cada padrão: uma
+  classe negada como a da Linha (`[^'\n]`) só tem sentido em relação ao alfabeto inteiro.
+
+### Pendências, depois deste módulo
+
+- **As 7 seções da especificação**, que esperam a cena do caminho escolhido para o assunto.
+- **A Linha e o comentário** dependem de classe negada (`[^...]`), que o leitor ainda recusa, e do
+  alfabeto inteiro da Solis, que a determinização ainda não recebe.
+- **Para a análise sintática:** os dois usos de `e` e de `pede`; a regra de que o valor de
+  `devolve` combina com o tipo de retorno; e a classe terminada em `}`, sem `;`.
