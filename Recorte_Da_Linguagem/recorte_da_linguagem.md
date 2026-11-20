@@ -107,8 +107,8 @@ O compilador verifica o texto antes de gravar o objeto:
 ## Alfabeto da Linguagem (Σ)
 
 Σ tem **116 símbolos**: letras minúsculas e maiúsculas, dígitos, operadores, delimitadores, ponto,
-sublinhado, aspas simples e dupla, crase, espaços em branco (espaço, Tab e quebra de linha), letras
-acentuadas, que só valem dentro de uma `Linha`, e `?` e `\`, que só valem dentro de um padrão.
+sublinhado, aspas simples e dupla, crase, espaços em branco (espaço, Tab e quebra de linha), e
+letras acentuadas, `?` e `\`, que só valem dentro de uma `Linha`, de um comentário ou de um padrão.
 
 A lista completa, com as regras de uso, está em
 [`especificacao/alfabeto.md`](../especificacao/alfabeto.md).
