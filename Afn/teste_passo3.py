@@ -155,6 +155,27 @@ sem_inicial.novo_estado()
 conferir_erro("simular sem estado inicial", lambda: sem_inicial.simular("a"),
               "Defina o estado inicial e o de aceitação antes de simular")
 
+# ---------------------------------------------------------------
+# 7) Movimento por símbolo, sozinho (passo 10 do guia)
+# ---------------------------------------------------------------
+#Os destinos esperados saem das setas desenhadas acima: em (a|b)*c, só 0 lê a, só 2 lê b e só 8
+#lê c; em a.c, a seta do coringa sai do 2. O movimento não aplica o fecho vazio.
+print("\n--- 7) movimento por símbolo ---")
+inicio = t.fecho_vazio([6])
+conferir("mover(início, 'a')", t.mover(inicio, "a"), [1])
+conferir("mover(início, 'b')", t.mover(inicio, "b"), [3])
+conferir("mover(início, 'c')", t.mover(inicio, "c"), [9])
+conferir("mover(início, 'x'): nenhuma seta lê x", t.mover(inicio, "x"), [])
+conferir("mover({6}, 'a'): o 6 só tem setas ε, e o movimento não segue ε", t.mover([6], "a"), [])
+conferir("coringa: mover({2}, 'z')", k.mover([2], "z"), [3])
+conferir("coringa: mover({2, 4}, 'c') junta o coringa e o c", k.mover([2, 4], "c"), [3, 5])
+
+marcacao = [False] * 10
+t.mover(inicio, "a", marcacao)
+conferir("a marcação passada volta limpa", marcacao, [False] * 10)
+conferir_erro("mover de um estado que não existe", lambda: t.mover([-1], "a"),
+              "Estado do conjunto inexistente: -1")
+
 #Placar: código de saída 1 se alguma verificação falhar, para quem roda tudo de uma vez saber.
 print(f"\nteste_passo3: {sum(resultados)}/{len(resultados)} verificações passaram.")
 sys.exit(0 if all(resultados) else 1)
