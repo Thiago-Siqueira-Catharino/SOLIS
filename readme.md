@@ -218,7 +218,7 @@ Requer Python 3. Na raiz do projeto, um comando roda todas as verificações do 
 python rodar_tudo.py
 ```
 
-O script roda, uma a uma, as nove partes descritas nas seções abaixo, na ordem em que as peças do
+O script roda, uma a uma, as doze partes descritas nas seções abaixo, na ordem em que as peças do
 compilador foram construídas. Cada parte confere o próprio resultado e termina com código 0 quando
 tudo passou, ou 1 quando alguma verificação falhou. A saída esperada é:
 
@@ -232,8 +232,11 @@ tudo passou, ou 1 quando alguma verificação falhou. A saída esperada é:
 [OK]     AFN, passo 3: simulação        35/35 verificações passaram.
 [OK]     AFN, passo 4: Thompson         38/38 verificações passaram.
 [OK]     AFN, bateria conferida à mão   59/59 casos passaram.
+[OK]     Determinização                 39/39 verificações passaram.
+[OK]     Minimização                    36/36 verificações passaram.
+[OK]     Três máquinas e explosão       71/71 verificações passaram.
 
-Solis: 9/9 partes passaram.
+Solis: 12/12 partes passaram.
 ```
 
 Se uma parte falhar, a linha dela começa com `[FALHOU]`, logo abaixo aparecem as verificações que
@@ -391,3 +394,82 @@ padrão <Tab> cadeia <Tab> aceita|recusa
 
 A cadeia vazia é o campo vazio entre dois Tabs, e linhas começando com `#` são comentários. O
 veredito precisa ser decidido à mão, seguindo o padrão, **antes** de rodar a bateria.
+
+---
+
+## Determinização e Minimização
+
+A pasta `Determinizacao/` recebe o AFN da construção de Thompson, da pasta `Afn/`, e o transforma
+num AFD pela construção de subconjuntos. Depois, reduz esse AFD ao autômato mínimo pelo
+refinamento de partições. Segue o guia "Implementação em C++: Thompson, determinização e
+minimização", passos 12 a 25 do roteiro, traduzido para Python.
+
+### Estrutura
+
+| Arquivo | O que faz |
+|---|---|
+| `Determinizacao/afd.py` | o AFD: estados numerados, um destino por estado e símbolo, vários estados de aceitação |
+| `Determinizacao/determinizacao.py` | a construção de subconjuntos: cada conjunto de estados do AFN vira um estado do AFD |
+| `Determinizacao/minimizacao.py` | completa o AFD, descarta os inacessíveis e junta os estados equivalentes |
+| `Determinizacao/teste_determinizacao.py` | testa a determinização com os valores do guia |
+| `Determinizacao/teste_minimizacao.py` | testa a minimização com os valores do guia |
+| `Determinizacao/demonstrar_determinizacao.py` | compara as três máquinas e monta a explosão de estados |
+
+O conjunto vazio não tem caso especial: quando aparece, recebe número como os outros e vira o
+estado de erro, e o AFD sai completo. Quando nenhuma cadeia leva ao vazio, ele não é criado.
+
+### Como executar
+
+Requer Python 3. Na raiz do projeto:
+
+```
+python Determinizacao/demonstrar_determinizacao.py
+```
+
+A saída tem três partes:
+
+1. os padrões do guia, com os estados antes e depois da minimização, e as três máquinas comparadas
+   em todas as cadeias sobre o alfabeto até um comprimento;
+2. os 59 casos de `Afn/casos_afn.txt` rodados nas três máquinas e comparados com o veredito decidido
+   à mão (47 comparados; 12 ignorados por terem símbolos fora do alfabeto do padrão, onde o AFN e o
+   AFD seguem regras diferentes);
+3. a explosão de estados, para n de 1 a 8.
+
+| Arquivo | Última linha esperada |
+|---|---|
+| `Determinizacao/teste_determinizacao.py` | `teste_determinizacao: 39/39 verificações passaram.` |
+| `Determinizacao/teste_minimizacao.py` | `teste_minimizacao: 36/36 verificações passaram.` |
+| `Determinizacao/demonstrar_determinizacao.py` | `demonstrar_determinizacao: 71/71 verificações passaram.` |
+
+Se alguma verificação falhar, a linha dela mostra `[FALHOU]` e o programa termina com código de
+saída 1.
+
+### Estados antes e depois da minimização
+
+| Padrão | AFN | AFD | Mínimo |
+|---|---|---|---|
+| `(a\|b)*c` | 10 | 5 | 3 |
+| `(a\|b)*abb` | 14 | 5 | 4 |
+| `a.c` | 6 | 5 | 5 |
+
+São os números do guia (seções 1.7.3, 1.8.1 e 1.8.5). O material dá 6 e 5 para o AFD e o mínimo de
+`(a|b)*abb` porque cria o estado de erro de antemão e o conta mesmo quando nenhuma seta chega nele;
+aqui ele só existe quando é alcançável. As linguagens são as mesmas.
+
+### Explosão de estados
+
+A linguagem das cadeias sobre {a, b} em que o n-ésimo símbolo contado do fim é `a`, com o padrão
+`(a|b)*a` seguido de n − 1 cópias de `(a|b)`:
+
+| n | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | Fórmula |
+|---|---|---|---|---|---|---|---|---|---|
+| AFN | 10 | 16 | 22 | 28 | 34 | 40 | 46 | 52 | 6n + 4 |
+| AFD | 3 | 5 | 9 | 17 | 33 | 65 | 129 | 257 | 2ⁿ + 1 |
+| Mínimo | 2 | 4 | 8 | 16 | 32 | 64 | 128 | 256 | 2ⁿ |
+
+O AFN cresce 6 estados por n, e o AFD dobra: até n = 5 o AFD ainda é menor que o AFN (33 contra 34);
+a partir de n = 6, é maior. O mínimo fica exatamente no piso de 2ⁿ estados que o material prova, e
+por isso o crescimento é da linguagem, e não do algoritmo: nenhum AFD reconhece essa linguagem com
+menos estados. O material mede 2ⁿ + 2 e 2ⁿ + 1 porque conta o estado de erro inalcançável; aqui ele
+não é criado. A demonstração confere as três máquinas contra a definição da linguagem, escrita
+sem máquina nenhuma, em todas as 2047 cadeias sobre {a, b} até o comprimento 10.
