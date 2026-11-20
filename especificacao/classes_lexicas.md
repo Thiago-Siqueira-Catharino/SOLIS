@@ -14,6 +14,7 @@ estão em [`alfabeto.md`](alfabeto.md).
 | Literal Quebrado | `[0-9]+\.[0-9]+` |
 | Literal Linha | `'[^'\n]*' \| "[^"\n]*"` |
 | Literal Booleano | `verdadeiro \| falso` |
+| Literal Padrão | `` `[^`\n]*` `` |
 | Delimitadores/Pontuação | lista fechada (ver tabela) |
 | Comentário (descartado) | `//[^\n]*` |
 
@@ -35,15 +36,19 @@ símbolo.
 | `==` | `igual-a` |
 | `<` | `menor-que` |
 | `>` | `maior-que` |
+| `>=` | `maior-ou-igual-a` |
+| `<=` | `menor-ou-igual-a` |
 | `!=` | `diferente-de` |
 | `&&` | `e` |
 | `\|\|` | `ou` |
 | `!` | — |
 
+Vale o casamento mais longo: `>=` é um operador só, e não `>` seguido de `=`.
+
 ## Palavras reservadas
 
 `funcao` · `pede` · `retorna` · `devolve` · `Classe` · `Possui` · `Faz` · `principal` · `Linha` ·
-`Inteiro` · `Quebrado` · `Booleano` · `Vazio` · `Lista` · `Novo` ·
+`Inteiro` · `Quebrado` · `Booleano` · `Vazio` · `Lista` · `Padrao` · `Novo` ·
 `Imprime` · `imprime` · `enquanto` · `Enquanto` · `para` · `Para` · `em` · `Em` · `se` · `Se` ·
 `senao` · `Senao` · `pare` · `Pare`
 
@@ -54,6 +59,9 @@ símbolo.
 - `Novo` cria um objeto: `Matematica mat recebe Novo Matematica;`.
 - `Lista` é o tipo e aparece só na declaração. Os itens vêm direto entre colchetes:
   `Lista Colaboradores recebe ['Ana', 'Beatriz', 'Luana'];`.
+- `Padrao` é o tipo de um padrão: ``Padrao numero recebe `[0-9]+`;``. As operações do padrão,
+  `casa` e `procura`, são métodos chamados com o `.` (`numero.casa(campo)`), e por isso não são
+  palavras reservadas: o analisador léxico os lê como identificadores.
 - `devolve` tem duas formas: `devolve <valor>;` numa função que retorna um valor, e `devolve;`
   sozinho numa função que retorna `Vazio`. `Vazio` é só tipo: não é escrito como valor.
 
@@ -119,6 +127,23 @@ verdadeiro | falso
 
 As duas palavras exatas. Como também casam o padrão de Identificador, valem como Booleano, do
 mesmo jeito que uma palavra reservada vale como reservada.
+
+### Padrão
+
+```
+`[^`\n]*`
+```
+
+Abre e fecha com crase, numa linha só. Dentro, vale qualquer símbolo do alfabeto, inclusive letras
+acentuadas, `?` e `\`, menos a crase e a quebra de linha. O analisador léxico só separa o padrão
+do resto do texto: se o que está entre as crases é um padrão bem escrito, quem decide é o leitor
+de padrões, com o núcleo de operadores de [`docs/02nucleo_minimo.md`](../docs/02nucleo_minimo.md).
+Um padrão malformado entre crases é um token Padrão válido e é recusado depois, pelo leitor, com a
+posição do problema.
+
+| Válidos | Inválidos |
+|---|---|
+| `` `[0-9]+` ``, `` `-?[0-9]+` ``, `` `São Paulo` ``, `` `[0-9]+\.[0-9]+` `` | `` `[0-9]+ `` (não fecha na mesma linha), `'[0-9]+'` (é uma Linha, e não um padrão) |
 
 ## Delimitadores/Pontuação
 
