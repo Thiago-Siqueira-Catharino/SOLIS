@@ -184,6 +184,42 @@ class AFN:
         #3)Pilha vazia, não há mais para onde ir só com ε
         return resultado
 
+    #Movimento por símbolo: dado um conjunto de estados e um símbolo, devolve os destinos das setas que leem esse símbolo, sem aplicar o fecho vazio. É o mover(S, a) do guia, usado pela simulação e pela determinização.
+
+    def mover(self, conjunto, simbolo, presente=None):
+
+        #Presente[estado] diz se o destino já entrou no resultado. Quem chama muitas vezes seguidas (a simulação) passa a própria marcação, criada uma vez só; quem não passa recebe uma nova.
+
+        if presente is None:
+            presente = [False] * len(self.transicoes)
+
+        #resultado: destinos alcançados lendo o símbolo, na ordem em que entraram
+
+        resultado = []
+
+        for estado in conjunto:
+            self._validar_estado(estado, "do conjunto")
+            for transicao in self.transicoes[estado]:
+
+                #Seta ε nunca casa com símbolo lido, a seta casa se tiver o mesmo símbolo ou se for o coringa.
+
+                casa = transicao.simbolo != EPSILON and (
+                    transicao.simbolo == simbolo or transicao.simbolo == QUALQUER
+                )
+                if not casa:
+                    continue
+
+                if not presente[transicao.destino]:
+                    presente[transicao.destino] = True
+                    resultado.append(transicao.destino)
+
+        #Desmarca só quem entrou, para a marcação voltar limpa a quem a passou
+
+        for estado in resultado:
+            presente[estado] = False
+
+        return resultado
+
     #Simulação: executa a máquina sobre uma cadeia, mantendo o conjunto de estados ativos
 
     def simular(self, cadeia):
@@ -207,30 +243,9 @@ class AFN:
 
         for simbolo in cadeia:
 
-            #proximos: estados alcançados lendo este símbolo, na ordem em que entraram
-            
-            proximos = []
+            #proximos: estados alcançados lendo este símbolo, na ordem em que entraram. O movimento devolve a marcação limpa, pronta para o próximo símbolo.
 
-            for estado in ativos:
-                for transicao in self.transicoes[estado]:
-
-                    #Seta ε nunca casa com símbolo lido, a seta casa se tiver o mesmo símbolo ou se for o coringa.
-                    
-                    casa = transicao.simbolo != EPSILON and (
-                        transicao.simbolo == simbolo or transicao.simbolo == QUALQUER
-                    )
-                    if not casa:
-
-                        continue
-
-                    if not presente[transicao.destino]:
-                        presente[transicao.destino] = True
-                        proximos.append(transicao.destino)
-
-            #Desmarca só quem entrou, para o próximo símbolo começar limpo
-
-            for estado in proximos:
-                presente[estado] = False
+            proximos = self.mover(ativos, simbolo, presente)
 
             #3) Aplica o fecho vazio e registra o passo no traço
 
