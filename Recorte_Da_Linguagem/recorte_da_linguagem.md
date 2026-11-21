@@ -76,6 +76,14 @@ Quem escreve em Solis declara padrões: descrições da forma que um trecho de t
 **Decisão — Separar os campos**
 `separa` é um método da `Linha`: divide o texto nos pedaços entre cada ocorrência do separador e devolve uma `Lista` de `Linha`: `registro.separa(';')`. O separador é escolhido por quem escreve o script. Como `casa` e `procura`, é chamado com o `.` e não é palavra reservada.
 
+**Decisão — Converter um campo em número**
+Todo campo é uma `Linha`, mesmo quando parece um número. Para fazer conta com ele, a `Linha` tem dois métodos, que também não são palavras reservadas:
+
+- `inteiro()` devolve o `Inteiro` escrito no texto, que precisa ser só dígitos: `'3'` dá `3`.
+- `quebrado()` devolve o `Quebrado` escrito no texto, com vírgula ou com ponto: `'120,50'` e `'120.50'` dão `120.50`. Não há separador de milhar: `'1.234,56'` não é um número.
+
+O conteúdo de um registro só existe na execução, então converter um texto que não é número (um campo `'abc'` com `campo.quebrado()`) não pode ser apontado antes de rodar: é um **erro de execução**. O executor para de processar aquele registro, o descarta, entrega ao projeto uma mensagem dizendo qual texto não era número e segue para o próximo registro. Um registro ruim não derruba os outros. Para evitar o erro, o script testa a forma do campo com um padrão antes de converter.
+
 **Decisão — O pedido que o padrão não atende**
 Parênteses balanceados, em que cada `(` tem o seu `)` mais adiante, em qualquer profundidade, são um pedido natural de quem escreve padrões, e nenhum padrão da Solis o reconhece. É a demonstração do limite do reconhecimento por autômato finito.
 
