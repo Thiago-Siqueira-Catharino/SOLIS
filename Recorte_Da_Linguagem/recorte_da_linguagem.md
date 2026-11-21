@@ -9,7 +9,7 @@
 | | |
 |---|---|
 | **Nome** | Solis |
-| **Extensão** | `.sol` |
+| **Extensão** | `.solx` (o script) e `.solxo` (o objeto gravado) |
 | **Base** | Java |
 | **Inspiração** | Lua (compilada e fortemente tipada) |
 | **Objetivo** | Linguagem para scripts, integrável com outras linguagens, inteiramente em português brasileiro |
@@ -28,7 +28,7 @@ O usuário dispensa a necessidade de utilizar o operador ternário: a escolha en
 
 **Decisão — Paradigma**
 Base em POO (Programação Orientada a Objetos), para que classes possam ser reutilizadas criando objetos com `Novo`, com definições simples de métodos e declarações de instâncias. Não há herança: uma classe não herda de outra. A herança fica fora do escopo por agora e pode entrar depois.
-Também funcional: um programa em Solis pode ser escrito só com funções, sem nenhuma classe. As funções existem fora das classes, como `soma` e `principal` em `docs/exemplos.sol`.
+Também funcional: um programa em Solis pode ser escrito só com funções, sem nenhuma classe. As funções existem fora das classes, como `soma` e `principal` em `docs/exemplos.solx`.
 
 **Decisão — Operadores e tipos primitivos**
 Por se tratar de uma linguagem para scripts, os operadores básicos são:
@@ -133,7 +133,10 @@ Uma variável declarada dentro de um bloco `{ ... }` (de uma função, de um `se
 Ao ser compilado, o sistema grava um **objeto**: um arquivo com as tabelas dos autômatos dos padrões declarados e as instruções do script. O compilador termina aí, sem executar nada.
 
 **Decisão — A ordem do objeto**
-O objeto guarda, nesta ordem: o cabeçalho (a marca de que é um objeto Solis e a versão do formato), a máquina de cada padrão, na ordem em que os padrões foram declarados, e as instruções do script, a começar pela `principal`.
+O objeto guarda, nesta ordem: o cabeçalho (a marca de que é um objeto Solis e a versão do formato), a máquina de cada padrão, na ordem em que os padrões foram declarados, e as instruções do script, a começar pela `principal`. Cada instrução leva o número da linha do script de onde veio, para que uma mensagem de erro de execução diga em que linha o problema aconteceu: `registro 3, linha 17: o texto 'sem preço' não é um número`.
+
+**Decisão — As extensões**
+O script que a pessoa escreve tem a extensão `.solx`, e não `.sol`, que já é a extensão dos contratos da linguagem Solidity. O objeto gravado tem a extensão `.solxo` (o "o" de objeto): compilar `filtro.solx` grava `filtro.solxo`, sem escrever por cima do script.
 
 Quem executa é outro componente, o **executor**: uma máquina virtual própria, embutida no projeto que incorpora o script. Depois, e com o compilador já encerrado, o executor lê o objeto e o roda sobre os registros reais que o projeto recebe. O objeto não depende do sistema operacional.
 
@@ -158,7 +161,7 @@ letras acentuadas, os símbolos de registro (`@`, `#`, `$`, `º`, `ª`, `°`), `
 dentro de uma `Linha`, de um comentário ou de um padrão.
 
 **Decisão — O alfabeto dos registros**
-Σ é o alfabeto do que se escreve no arquivo `.sol`. Os registros que o executor lê podem ter
+Σ é o alfabeto do que se escreve no arquivo `.solx`. Os registros que o executor lê podem ter
 qualquer símbolo: os que estão fora de Σ contam como um único símbolo a mais, o **outro**, que só o
 coringa `.` reconhece. Nenhum registro é recusado por causa dos símbolos que tem.
 
