@@ -17,7 +17,7 @@ Classe Matematica {
     };
 }
 
-funcao principal pede () e retorna Vazio {
+funcao principal pede (Linha registro) e retorna Booleano {
     Quebrado x recebe 3.14;
     Inteiro y recebe 2;
     Matematica mat recebe Novo Matematica;
@@ -25,5 +25,6 @@ funcao principal pede () e retorna Vazio {
     Imprime(soma(x,y));
     Imprime(mat.multiplicar(x,y));
 
-    devolve;
+    Padrao numero recebe `[0-9]+`;
+    devolve numero.casa(registro);
 };
