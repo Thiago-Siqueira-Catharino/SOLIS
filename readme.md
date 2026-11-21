@@ -8,6 +8,10 @@ A **Solis** é uma linguagem de programação criada para o desenvolvimento de s
 
 A linguagem combina a organização e a segurança inspiradas em **Java** com a simplicidade e a flexibilidade de **Lua**. Seu modelo de programação contempla os paradigmas de programação orientada a objetos e funcional.
 
+O domínio da Solis são os scripts que **identificam, organizam e filtram registros com campos**, descritos por **padrões**: quem escreve declara a forma que um campo pode ter (por exemplo, "um ou mais dígitos") e testa os registros com ela. A Solis é pensada como porta de entrada para quem precisa automatizar uma tarefa e não domina o inglês nem uma linguagem em inglês.
+
+Ao compilar, o compilador grava um **objeto** com as tabelas dos autômatos dos padrões e as instruções do script, sem executar nada. Quem executa é um **executor**, uma máquina virtual própria embutida no projeto que incorpora o script. O executor ainda não foi construído.
+
 ## Características da Linguagem
 
 | Característica | Detalhes |
@@ -17,7 +21,7 @@ A linguagem combina a organização e a segurança inspiradas em **Java** com a 
 | Base conceitual | Java |
 | Inspiração | Lua |
 | Tipagem | Forte |
-| Execução | Compilada |
+| Execução | Compilada: grava um objeto, executado depois por uma máquina virtual |
 | Paradigmas | Orientado a objetos e funcional |
 | Idioma | Português brasileiro |
 
@@ -31,6 +35,7 @@ A linguagem combina a organização e a segurança inspiradas em **Java** com a 
 | `Booleano` | Representa valores lógicos. | `verdadeiro` |
 | `Vazio` | Representa a ausência de valor de retorno. | `Vazio` |
 | `Lista` | Representa uma coleção ordenada de valores. | `['Ana', 'Beatriz']` |
+| `Padrao` | Representa a forma que um trecho de texto pode ter. | `` `[0-9]+` `` |
 
 ## Operadores
 
@@ -60,6 +65,8 @@ coisa. Só `%` e `!` não têm forma por extenso. A lista completa está em
 |---|---|---|
 | `>` | `maior-que` | maior que |
 | `<` | `menor-que` | menor que |
+| `>=` | `maior-ou-igual-a` | maior ou igual |
+| `<=` | `menor-ou-igual-a` | menor ou igual |
 | `==` | `igual-a` | igual |
 | `!=` | `diferente-de` | diferente |
 
@@ -94,6 +101,38 @@ analisador léxico o descarta, como os espaços em branco. Pode ter acento.
 Linha x recebe "texto aleatorio"; // daqui até o fim da linha é comentário
 ```
 
+## Padrões
+
+Um padrão é escrito entre crases, numa linha só, e guardado numa variável do tipo `Padrao`:
+
+```sol
+Padrao numero recebe `[0-9]+`;
+```
+
+Dentro das crases vale o núcleo de operadores de padrão descrito em `docs/02nucleo_minimo.md`
+(`|`, `*`, `+`, `?`, `[a-z]`, `.`, `\.`...), e também letras acentuadas: ``Padrao cidade recebe `São Paulo`;``.
+
+O padrão tem dois métodos, chamados com o `.`:
+
+| Método | Devolve | O que faz |
+|---|---|---|
+| `casa(texto)` | `Booleano` | diz se o texto **inteiro** tem a forma do padrão |
+| `procura(texto)` | `Lista` de `Linha` | os trechos do texto que têm a forma do padrão, ficando sempre com o trecho mais longo |
+
+```sol
+se (numero.casa(campo)) {
+    Imprime(campo);
+};
+Lista achados recebe numero.procura(registro);
+```
+
+Não há captura: o sistema não guarda qual trecho casou com cada parte do padrão. O padrão vazio,
+duas crases seguidas, só casa com a Linha vazia.
+
+**Limite da linguagem:** parênteses balanceados, em que cada `(` tem o seu `)` mais adiante em
+qualquer profundidade, não podem ser descritos por nenhum padrão da Solis. É o limite do
+reconhecimento por autômato finito.
+
 ## Estruturas de Controle
 
 ### Condicionais
@@ -103,6 +142,21 @@ se (condicao) {
     // bloco executado se verdadeiro
 } senao {
     // bloco executado se falso
+};
+```
+
+Não existe `senao se`. Para encadear condições, um `se` vai dentro do bloco do `senao`, e as
+condições são testadas uma de cada vez, na ordem em que foram escritas:
+
+```sol
+se (nota >= 7) {
+    Imprime('aprovado');
+} senao {
+    se (nota >= 5) {
+        Imprime('recuperação');
+    } senao {
+        Imprime('reprovado');
+    };
 };
 ```
 
@@ -176,6 +230,8 @@ Instanciação de um objeto com `Novo`:
 Matematica mat recebe Novo Matematica;
 ```
 
+Não há herança: uma classe não herda de outra. A herança fica fora do escopo por agora.
+
 ---
 
 ## Exemplo Completo
@@ -226,7 +282,7 @@ tudo passou, ou 1 quando alguma verificação falhou. A saída esperada é:
 [OK]     AFD de dígitos                 6/6 casos passaram.
 [OK]     AFD de letras                  6/6 casos passaram.
 [OK]     AFD de letras e dígitos        14/14 casos passaram.
-[OK]     Leitor de padrões              36/36 verificações passaram.
+[OK]     Leitor de padrões              37/37 verificações passaram.
 [OK]     AFN, passo 1: estrutura        9/9 verificações passaram.
 [OK]     AFN, passo 2: fecho vazio      11/11 verificações passaram.
 [OK]     AFN, passo 3: simulação        35/35 verificações passaram.
@@ -323,21 +379,22 @@ A saída tem quatro partes, na ordem da seção 1.8 do material:
 
 1. as cinco expressões do material, com a forma da árvore e o número de nós (1, 3, 5, 6 e 16);
 2. os padrões das classes léxicas da Solis, com os nós contados à mão antes de rodar: Inteiro 40,
-   Quebrado 83, Identificador 486, Booleano 29, Delimitador 19, Palavra reservada 307 e
-   Operador 187;
+   Quebrado 83, Identificador 486, Booleano 29, Delimitador 19, Palavra reservada 319 e
+   Operador 259;
 3. a convergência: `a+` e `aa*`, `[abc]` e `a|b|c`, `[a-c]` e `[abc]`, `(ab)c` e `abc`, `[0-9]+` e
    `[0-9][0-9]*` dão a mesma árvore; `[a-z0-9]` e `([a-z]|[0-9])` dão árvores diferentes, com os
    mesmos 71 nós;
 4. oito textos malformados, cada um com a marca `^` sob a posição do problema.
 
-A última linha esperada é `Leitor de padrões: 36/36 verificações passaram.` Se alguma verificação
+A última linha esperada é `Leitor de padrões: 37/37 verificações passaram.` Se alguma verificação
 falhar, a linha correspondente mostra `[FALHOU]` com o valor obtido e o esperado, e o programa
 termina com código de saída 1.
 
 As posições são contadas a partir de 1. Quando algo abre e não fecha, a marca fica no fim do texto,
 onde a falta foi constatada, e a mensagem diz em que posição o grupo ou a classe abriu.
 
-**Limite conhecido:** a Linha (`'[^'\n]*'`) usa classe negada, que o leitor não aceita.
+**Limite conhecido:** a Linha (`'[^'\n]*'`) e o literal Padrão (`` `[^`\n]*` ``) usam classe negada,
+que o leitor não aceita.
 
 ---
 
