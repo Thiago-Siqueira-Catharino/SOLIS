@@ -14,12 +14,12 @@
 | Sublinhado | `_` | 1 | nomes como `meu_nome` e `_nome`; um nome feito só de `_` não vale |
 | Aspas | `'` `"` | 2 | `'Ana'`, `"Olá, Solis!"` |
 | Crase | `` ` `` | 1 | abre e fecha um padrão: ``Padrao numero recebe `[0-9]+`;`` |
-| Símbolos de registro | `@` `#` `$` `º` `ª` | 5 | só dentro de padrão, de Linha ou de comentário: ``Padrao email recebe `[a-z]+@[a-z]+\.com`;``, `'pedido #123'`, `'R$ 10,50'`, `'nº 5'` |
+| Símbolos de registro | `@` `#` `$` `º` `ª` `°` | 6 | só dentro de padrão, de Linha ou de comentário: ``Padrao email recebe `[a-z]+@[a-z]+\.com`;``, `'pedido #123'`, `'R$ 10,50'`, `'nº 5'`, `'25°'` |
 | Interrogação e barra invertida | `?` `\` | 2 | só dentro de padrão, de Linha ou de comentário: ``Padrao inteiro recebe `-?[0-9]+`;``, `'Qual o seu nome?'` |
 | Espaços em branco | espaço, Tab, quebra de linha | 3 | entre as palavras e no fim de cada linha |
 | Letras acentuadas | `á` `à` `â` `ã` `é` `ê` `í` `ó` `ô` `õ` `ú` `ç` e as maiúsculas `Á` `À` `Â` `Ã` `É` `Ê` `Í` `Ó` `Ô` `Õ` `Ú` `Ç` | 24 | só dentro de Linha, de comentário ou de padrão: `'Digite um número :'`, `// número de alunos`, ``Padrao cidade recebe `São Paulo`;`` |
 
-**Total: 121 símbolos.**
+**Total: 122 símbolos.**
 
 ## Regras de uso
 
@@ -37,9 +37,11 @@
   com o núcleo de operadores de [`docs/02nucleo_minimo.md`](../docs/02nucleo_minimo.md). O padrão
   termina na crase seguinte, então um padrão não contém crase, do mesmo jeito que uma Linha aberta
   com `'` não contém `'`.
-- **Os símbolos de registro (`@`, `#`, `$`, `º`, `ª`) só valem dentro de um padrão, de uma Linha
-  ou de um comentário**, como as letras acentuadas. Eles existem porque aparecem nos registros que
-  os padrões leem: e-mails, números de pedido, valores em dinheiro, ordinais.
+- **Os símbolos de registro (`@`, `#`, `$`, `º`, `ª`, `°`) só valem dentro de um padrão, de uma
+  Linha ou de um comentário**, como as letras acentuadas. Eles existem porque aparecem nos registros
+  que os padrões leem: e-mails, números de pedido, valores em dinheiro, ordinais, graus. O `º` (de
+  `nº`) e o `°` (de `25°`) são símbolos diferentes, embora pareçam iguais: um padrão com um não casa
+  com o outro.
 - **`?` e `\` só valem dentro de um padrão, de uma Linha ou de um comentário**, como as letras
   acentuadas. No padrão, o `?` marca o que é opcional (`-?` é "com ou sem sinal"), e a `\` faz o
   símbolo seguinte valer como símbolo comum (`\.` é o ponto, e não o coringa). Na Linha e no
