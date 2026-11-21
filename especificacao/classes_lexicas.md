@@ -67,6 +67,11 @@ Vale o casamento mais longo: `>=` é um operador só, e não `>` seguido de `=`.
   `registro.separa(';')` divide o texto nos pedaços entre cada ocorrência do separador e devolve uma
   `Lista` de `Linha`. Dois separadores seguidos dão um campo vazio: se o registro é
   `'Ana;;Marília'`, `registro.separa(';')` devolve `'Ana'`, `''` e `'Marília'`.
+- `inteiro()` e `quebrado()` também são métodos da `Linha`, e também não são palavras reservadas:
+  convertem o texto de um campo em número. `campo.inteiro()` aceita só dígitos (`'3'` dá `3`);
+  `campo.quebrado()` aceita vírgula ou ponto (`'120,50'` e `'120.50'` dão `120.50`), sem
+  separador de milhar. Um texto que não é número é um erro de execução, e não um erro léxico: o
+  analisador léxico só vê o nome do método.
 - `devolve` tem duas formas: `devolve <valor>;` numa função que retorna um valor, e `devolve;`
   sozinho numa função que retorna `Vazio`. `Vazio` é só tipo: não é escrito como valor.
 
