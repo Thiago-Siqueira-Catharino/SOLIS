@@ -12,6 +12,10 @@ O domínio da Solis são os scripts que **identificam, organizam e filtram regis
 
 Ao compilar, o compilador grava um **objeto** com as tabelas dos autômatos dos padrões e as instruções do script, sem executar nada. Quem executa é um **executor**, uma máquina virtual própria embutida no projeto que incorpora o script. O executor ainda não foi construído.
 
+O executor chama a função `principal` uma vez para cada registro que o projeto recebe. Ela tem sempre a forma `funcao principal pede (Linha registro) e retorna Booleano`: devolver `verdadeiro` mantém o registro, e `falso` o descarta. Cada `Imprime` vira uma mensagem que o executor entrega ao projeto, e o projeto decide onde mostrá-la; as mensagens ficam separadas dos registros mantidos.
+
+A especificação completa, com exemplos, erros e mensagens, está em [`especificacao/especificacao.md`](especificacao/especificacao.md).
+
 ## Características da Linguagem
 
 | Característica | Detalhes |
@@ -92,6 +96,9 @@ Exemplo:
 Linha x recebe "texto aleatorio";
 ```
 
+Uma variável declarada dentro de um bloco `{ ... }` vale até o `}` que fecha esse bloco. Usá-la depois
+é um erro apontado antes de gravar o objeto.
+
 ## Comentários
 
 Um comentário começa com `//` e vai até o fim da linha. Ele não muda nada no programa: o
@@ -127,7 +134,22 @@ Lista achados recebe numero.procura(registro);
 ```
 
 Não há captura: o sistema não guarda qual trecho casou com cada parte do padrão. O padrão vazio,
-duas crases seguidas, só casa com a Linha vazia.
+duas crases seguidas, só casa com a Linha vazia. Um `Padrao` pode ser parâmetro de função, como
+qualquer outro valor.
+
+Para separar os campos de um registro, a `Linha` tem o método `separa`, que devolve uma `Lista` de
+`Linha`. Dois separadores seguidos dão um campo vazio:
+
+```sol
+Lista campos recebe registro.separa(';');
+para campo em campos {
+    se (numero.casa(campo)) {
+        devolve verdadeiro;
+    };
+};
+```
+
+Como `casa` e `procura`, o `separa` é chamado com o `.` e não é palavra reservada.
 
 **Limite da linguagem:** parênteses balanceados, em que cada `(` tem o seu `)` mais adiante em
 qualquer profundidade, não podem ser descritos por nenhum padrão da Solis. É o limite do
@@ -254,15 +276,19 @@ Classe Matematica {
     };
 }
 
-funcao principal pede () e retorna Vazio {
+funcao principal pede (Linha registro) e retorna Booleano {
     Quebrado x recebe 3.14;
     Inteiro y recebe 2;
     Matematica mat recebe Novo Matematica;
     Imprime(soma(x, y));
     Imprime(mat.multiplicar(x, y));
-    devolve;
+    Padrao numero recebe `[0-9]+`;
+    devolve numero.casa(registro);
 };
 ```
+
+As duas contas viram mensagens para o projeto, pelo `Imprime`, e o registro é mantido quando é só um
+número.
 
 ---
 
