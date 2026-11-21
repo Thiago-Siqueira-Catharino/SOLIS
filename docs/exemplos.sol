@@ -18,13 +18,22 @@ Classe Matematica {
 }
 
 funcao principal pede (Linha registro) e retorna Booleano {
-    Quebrado x recebe 3.14;
-    Inteiro y recebe 2;
+    Padrao valor recebe `[0-9]+(,|\.)[0-9][0-9]`;
+    Padrao quantidade recebe `[0-9]+`;
     Matematica mat recebe Novo Matematica;
+    Lista campos recebe registro.separa(';');
 
-    Imprime(soma(x,y));
-    Imprime(mat.multiplicar(x,y));
+    se (campos.tamanho() < 4) {
+        Imprime('registro com menos de 4 campos');
+        devolve falso;
+    };
+    se (!valor.casa(campos[2]) ou !quantidade.casa(campos[3]) ou !valor.casa(campos[4])) {
+        Imprime('preço, quantidade ou frete fora da forma');
+        devolve falso;
+    };
 
-    Padrao numero recebe `[0-9]+`;
-    devolve numero.casa(registro);
+    Quebrado total recebe soma(mat.multiplicar(campos[2].quebrado(),campos[3].inteiro()),campos[4].quebrado());
+    Imprime(total);
+
+    devolve total >= 300;
 };
