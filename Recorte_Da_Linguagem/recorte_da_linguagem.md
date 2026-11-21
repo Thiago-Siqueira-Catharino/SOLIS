@@ -106,9 +106,9 @@ O compilador verifica o texto antes de gravar o objeto:
 
 ## Alfabeto da Linguagem (Σ)
 
-Σ tem **121 símbolos**: letras minúsculas e maiúsculas, dígitos, operadores, delimitadores, ponto,
+Σ tem **122 símbolos**: letras minúsculas e maiúsculas, dígitos, operadores, delimitadores, ponto,
 sublinhado, aspas simples e dupla, crase, espaços em branco (espaço, Tab e quebra de linha), e
-letras acentuadas, os símbolos de registro (`@`, `#`, `$`, `º`, `ª`), `?` e `\`, que só valem
+letras acentuadas, os símbolos de registro (`@`, `#`, `$`, `º`, `ª`, `°`), `?` e `\`, que só valem
 dentro de uma `Linha`, de um comentário ou de um padrão.
 
 **Decisão — O alfabeto dos registros**
