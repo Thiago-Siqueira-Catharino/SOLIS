@@ -54,8 +54,8 @@ passagem. Exemplo: `a+` tem 4 nós (1 + 1 + 2).
 ## A exceção: o coringa
 
 O coringa `.` poderia ser reduzido: ele é a alternância de todos os símbolos do alfabeto. Mas o
-alfabeto da Solis tem 116 símbolos (`especificacao/alfabeto.md`), e a redução trocaria **1 folha
-por 2 × 116 − 1 = 231 nós** em cada ocorrência, uma árvore que ninguém consegue ler, para dizer o que
+alfabeto da Solis tem 122 símbolos (`especificacao/alfabeto.md`), e a redução trocaria **1 folha
+por 2 × 122 − 1 = 243 nós** em cada ocorrência, uma árvore que ninguém consegue ler, para dizer o que
 uma folha só já diz.
 
 Por isso ele fica como folha própria, e o custo dessa escolha tem endereço certo: a construção de
