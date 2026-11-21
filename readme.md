@@ -82,6 +82,22 @@ coisa. Só `%` e `!` não têm forma por extenso. A lista completa está em
 | `\|\|` | `ou` | ou lógico |
 | `!` | — | negação |
 
+### Precedência
+
+A mesma ordem do Java. O que está mais acima é feito primeiro; no mesmo nível, da esquerda para a
+direita (`10 - 3 - 2` dá `5`). A forma por extenso tem a mesma precedência do símbolo.
+
+| Ordem | Operadores |
+|---|---|
+| 1 | `( )`, chamada de função, `.` e acesso por posição `[ ]` |
+| 2 | `!` e o `-` de sinal (`-5`) |
+| 3 | `*` `/` `%` |
+| 4 | `+` `-` |
+| 5 | `<` `>` `<=` `>=` |
+| 6 | `==` `!=` |
+| 7 | `&&` (`e`) |
+| 8 | `\|\|` (`ou`) |
+
 ## Variáveis
 
 Declaração e atribuição seguem o formato:
@@ -94,6 +110,13 @@ Exemplo:
 
 ```sol
 Linha x recebe "texto aleatorio";
+```
+
+Uma variável já declarada recebe um valor novo sem repetir o tipo, e o tipo continua o da
+declaração:
+
+```sol
+total recebe total + 1;
 ```
 
 Uma variável declarada dentro de um bloco `{ ... }` vale até o `}` que fecha esse bloco. Usá-la depois
@@ -150,6 +173,13 @@ para campo em campos {
 ```
 
 Como `casa` e `procura`, o `separa` é chamado com o `.` e não é palavra reservada.
+
+Um item da `Lista` é pego pela posição, contando a partir de 1 (`campos[1]` é o primeiro), e o
+método `tamanho()` diz quantos itens ela tem. Todo campo é uma `Linha`; para fazer conta com ele, a
+`Linha` tem os métodos `inteiro()` (só dígitos: `'3'`) e `quebrado()` (com vírgula ou ponto:
+`'120,50'`). Converter um texto que não é número, ou pegar uma posição que não existe, só aparece
+durante a execução: o executor descarta aquele registro, avisa o projeto e segue para o próximo.
+Para evitar isso, o script confere a forma do campo e o `tamanho()` antes, como no exemplo abaixo.
 
 **Limite da linguagem:** parênteses balanceados, em que cada `(` tem o seu `)` mais adiante em
 qualquer profundidade, não podem ser descritos por nenhum padrão da Solis. É o limite do
@@ -277,18 +307,28 @@ Classe Matematica {
 }
 
 funcao principal pede (Linha registro) e retorna Booleano {
-    Quebrado x recebe 3.14;
-    Inteiro y recebe 2;
+    Padrao valor recebe `[0-9]+(,|\.)[0-9][0-9]`;
+    Padrao quantidade recebe `[0-9]+`;
     Matematica mat recebe Novo Matematica;
-    Imprime(soma(x, y));
-    Imprime(mat.multiplicar(x, y));
-    Padrao numero recebe `[0-9]+`;
-    devolve numero.casa(registro);
+    Lista campos recebe registro.separa(';');
+    se (campos.tamanho() < 4) {
+        Imprime('registro com menos de 4 campos');
+        devolve falso;
+    };
+    se (!valor.casa(campos[2]) ou !quantidade.casa(campos[3]) ou !valor.casa(campos[4])) {
+        Imprime('preço, quantidade ou frete fora da forma');
+        devolve falso;
+    };
+    Quebrado total recebe soma(mat.multiplicar(campos[2].quebrado(), campos[3].inteiro()), campos[4].quebrado());
+    Imprime(total);
+    devolve total >= 300;
 };
 ```
 
-As duas contas viram mensagens para o projeto, pelo `Imprime`, e o registro é mantido quando é só um
-número.
+Os registros deste exemplo têm quatro campos: produto, preço, quantidade e frete. O script mantém os
+pedidos de R$ 300,00 ou mais, com o frete: `caderno;24,90;12;18,00` dá 24,90 × 12 + 18,00 = 316,80 e
+é mantido; `caneta;2,50;100;15,00` dá 265,00 e é descartado. O total de cada um vira uma mensagem
+para o projeto, pelo `Imprime`.
 
 ---
 
