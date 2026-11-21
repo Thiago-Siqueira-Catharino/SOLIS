@@ -37,7 +37,7 @@ porta de entrada para os fundamentos de programação.
 
 ## 2. O que se escreve na linguagem
 
-Quatro exemplos, do mais simples ao mais elaborado. Os registros e os valores são inventados. Em
+Cinco exemplos, do mais simples ao mais elaborado. Os registros e os valores são inventados. Em
 todos, o projeto entrega ao script um registro por vez: a função `principal` recebe o registro e
 devolve `verdadeiro` para mantê-lo ou `falso` para descartá-lo.
 
@@ -124,6 +124,51 @@ Um padrão é um valor como os outros: vai de uma função para outra como argum
 `Ana Souza;ana@empresa.com;R$ 120,00` é mantido; `Ana Souza;ana@empresa.com;cento e vinte` é
 descartado, porque nenhum campo tem a forma de `valor`.
 
+**Exemplo 5: manter os pedidos de R$ 300,00 ou mais, calculando preço vezes quantidade.**
+
+Os registros deste exemplo têm quatro campos: nome, e-mail, preço e quantidade, nessa ordem.
+
+```sol
+Classe Matematica {
+    Possui {
+    };
+    Faz {
+        funcao multiplicar pede (Quebrado a, Quebrado b) e retorna Quebrado {
+            devolve a * b;
+        };
+    };
+}
+
+funcao principal pede (Linha registro) e retorna Booleano {
+    Padrao preco recebe `[0-9]+(,|\.)[0-9][0-9]`;
+    Padrao quantidade recebe `[0-9]+`;
+    Matematica mat recebe Novo Matematica;
+    Lista campos recebe registro.separa(';');
+    se (campos.tamanho() < 4) {
+        Imprime('registro com menos de 4 campos');
+        devolve falso;
+    };
+    se (!preco.casa(campos[3]) ou !quantidade.casa(campos[4])) {
+        Imprime('preço ou quantidade fora da forma');
+        devolve falso;
+    };
+    Quebrado total recebe mat.multiplicar(campos[3].quebrado(), campos[4].inteiro());
+    devolve total >= 300;
+};
+```
+
+Todo campo é uma `Linha`: para fazer a conta, `quebrado()` e `inteiro()` convertem o texto em número.
+Antes de converter, o script confere se o registro tem os quatro campos e se o preço e a quantidade
+têm a forma de número; sem essa conferência, um registro fora do formato daria um erro de execução
+(seção 6). Com os registros abaixo:
+
+| Registro | O que acontece |
+|---|---|
+| `Ana Souza;ana@empresa.com;120,50;3` | 120,50 × 3 = 361,50: mantido |
+| `Bruno Lima;bruno@empresa.com;99,90;2` | 99,90 × 2 = 199,80: descartado |
+| `Carla Dias;carla@empresa.com;sem preço;5` | descartado, com a mensagem `preço ou quantidade fora da forma` |
+| `Davi Rocha;davi@empresa.com` | descartado, com a mensagem `registro com menos de 4 campos` |
+
 ---
 
 ## 3. O que o sistema aceita e o que recusa
@@ -147,7 +192,8 @@ Um texto Solis é aceito quando:
 
 Quando o erro está num ponto do texto, a mensagem tem sempre a mesma forma: a linha do arquivo, o
 que está errado, o texto daquela linha repetido e a marca `^` embaixo do ponto do problema. Com qualquer erro, **nenhum objeto é gravado**:
-a pessoa corrige o ponto marcado e compila de novo. Os erros de verificação estão na seção 5.
+a pessoa corrige o ponto marcado e compila de novo. Os erros de verificação estão na seção 5, e os
+erros que só aparecem durante a execução, na seção 6.
 
 **Um símbolo fora do alfabeto.** A pessoa sabe qual símbolo tirar ou trocar.
 
@@ -306,8 +352,9 @@ linha 8: nome usado fora do bloco em que foi declarado: 'campos'
             ^
 ```
 
-**Dois valores de naturezas incompatíveis.** Um `Quebrado` onde se espera um `Inteiro`, ou uma
-`Linha` onde se espera um `Padrao`:
+**Dois valores de naturezas incompatíveis.** Um `Quebrado` onde se espera um `Inteiro`, uma
+`Linha` onde se espera um `Padrao`, ou uma reatribuição que muda o tipo da variável (`total` foi
+declarado `Quebrado`):
 
 ```
 linha 3: tipos incompatíveis: Inteiro espera um valor Inteiro, e recebeu Quebrado
@@ -319,6 +366,12 @@ linha 3: tipos incompatíveis: Inteiro espera um valor Inteiro, e recebeu Quebra
 linha 2: tipos incompatíveis: Padrao espera um padrão entre crases, e recebeu Linha
     Padrao numero recebe '[0-9]+';
                          ^
+```
+
+```
+linha 6: tipos incompatíveis: total é Quebrado, e recebeu Linha
+    total recebe 'cento e vinte';
+                 ^
 ```
 
 **Uma referência a algo que não existe.** Um método que a natureza do valor não tem, ou uma função
@@ -384,6 +437,27 @@ quem decide o que fica é só o `devolve` da `principal`.
 Um registro nunca é recusado por causa dos símbolos que tem: os que estão fora do alfabeto contam
 como o outro. O mesmo objeto roda em qualquer sistema operacional em que o executor rode, e pode ser
 executado muitas vezes, sobre registros diferentes, sem compilar de novo.
+
+### Os erros de execução
+
+Dois erros não podem ser apontados antes de rodar, porque dependem do conteúdo de um registro, que
+só existe na execução:
+
+- **converter um texto que não é número**: `campo.quebrado()` com o campo `'sem preço'`;
+- **pegar uma posição que não existe**: `campos[4]` num registro com dois campos.
+
+Os dois são tratados do mesmo jeito: o executor para de processar **aquele** registro, o descarta,
+entrega ao projeto uma mensagem dizendo o que aconteceu e em que registro, e segue para o próximo.
+Um registro fora do formato não derruba os outros. As mensagens têm esta forma:
+
+```
+registro 3: o texto 'sem preço' não é um número
+registro 4: a lista tem 2 itens, e foi pedida a posição 4
+```
+
+A mensagem não repete a linha do script, porque o objeto não guarda o texto Solis. Para evitar esses
+erros, o script confere a forma do campo com um padrão e o `tamanho()` da lista antes de converter,
+como no exemplo 5 da seção 2.
 
 ---
 
