@@ -1,10 +1,10 @@
 > **Registro histórico.** Esta é a primeira descrição da Solis, escrita no início do projeto e mantida
-> como estava. Várias decisões mudaram depois. A versão atual está no recorte da linguagem
+> como estava, com uma exceção: a extensão, atualizada abaixo. Várias decisões mudaram depois. A versão atual está no recorte da linguagem
 > (`Recorte_Da_Linguagem/recorte_da_linguagem.md`) e na especificação (`especificacao/`).
 
 ## Sobre a lingugem
 Nome: solis
-Extencao: .sol
+Extencao: .solx (antes era .sol, trocada porque .sol ja e a extensao dos contratos da linguagem Solidity)
 Baseando-se em: Java
 Inspiracao: Lua
 Linguagem compilada e fortemente tipada
