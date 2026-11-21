@@ -63,6 +63,10 @@ Vale o casamento mais longo: `>=` é um operador só, e não `>` seguido de `=`.
 - `Padrao` é o tipo de um padrão: ``Padrao numero recebe `[0-9]+`;``. As operações do padrão,
   `casa` e `procura`, são métodos chamados com o `.` (`numero.casa(campo)`), e por isso não são
   palavras reservadas: o analisador léxico os lê como identificadores.
+- `separa` também é um método, da `Linha`, e também não é palavra reservada:
+  `registro.separa(';')` divide o texto nos pedaços entre cada ocorrência do separador e devolve uma
+  `Lista` de `Linha`. Dois separadores seguidos dão um campo vazio: se o registro é
+  `'Ana;;Marília'`, `registro.separa(';')` devolve `'Ana'`, `''` e `'Marília'`.
 - `devolve` tem duas formas: `devolve <valor>;` numa função que retorna um valor, e `devolve;`
   sozinho numa função que retorna `Vazio`. `Vazio` é só tipo: não é escrito como valor.
 
