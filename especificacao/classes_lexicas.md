@@ -58,7 +58,8 @@ Vale o casamento mais longo: `>=` é um operador só, e não `>` seguido de `=`.
   `Imprime(soma(x, y));`.
 - `Novo` cria um objeto: `Matematica mat recebe Novo Matematica;`.
 - `Lista` é o tipo e aparece só na declaração. Os itens vêm direto entre colchetes:
-  `Lista Colaboradores recebe ['Ana', 'Beatriz', 'Luana'];`.
+  `Lista Colaboradores recebe ['Ana', 'Beatriz', 'Luana'];`, ou a `Lista` recebe o resultado de
+  uma chamada que devolve `Lista`: `Lista achados recebe numero.procura(registro);`.
 - `Padrao` é o tipo de um padrão: ``Padrao numero recebe `[0-9]+`;``. As operações do padrão,
   `casa` e `procura`, são métodos chamados com o `.` (`numero.casa(campo)`), e por isso não são
   palavras reservadas: o analisador léxico os lê como identificadores.
