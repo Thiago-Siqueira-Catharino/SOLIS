@@ -60,7 +60,8 @@ Tipos primitivos:
 - Igual `==`
 - Diferença `!=`
 
-Por extenso, `>=` é `maior-ou-igual-a` e `<=` é `menor-ou-igual-a`.
+Por extenso, `>=` é `maior-ou-igual-a` e `<=` é `menor-ou-igual-a`. O `==` e o `!=` também comparam
+duas `Linha`: `item == pedido` é verdadeiro quando os dois textos são iguais.
 
 **Decisão — Padrões**
 Quem escreve em Solis declara padrões: descrições da forma que um trecho de texto pode ter, como "um ou mais dígitos". É o que dá à linguagem o seu domínio: identificar, organizar e filtrar registros pela forma dos campos.
@@ -70,6 +71,10 @@ Quem escreve em Solis declara padrões: descrições da forma que um trecho de t
 - `procura` devolve uma `Lista` de `Linha` com os trechos de um texto que têm a forma do padrão, ficando sempre com o trecho mais longo: `numero.procura(registro)`
 - As duas operações são métodos do padrão, chamados com o `.` que já existe: não entra operador novo.
 - Não há captura: o sistema não guarda qual trecho casou com cada parte do padrão.
+- Um `Padrao` é um valor como os outros: pode ser parâmetro de função e ser passado de uma função para outra: `funcao tem pede (Padrao forma, Lista campos) e retorna Booleano`.
+
+**Decisão — Separar os campos**
+`separa` é um método da `Linha`: divide o texto nos pedaços entre cada ocorrência do separador e devolve uma `Lista` de `Linha`: `registro.separa(';')`. O separador é escolhido por quem escreve o script. Como `casa` e `procura`, é chamado com o `.` e não é palavra reservada.
 
 **Decisão — O pedido que o padrão não atende**
 Parênteses balanceados, em que cada `(` tem o seu `)` mais adiante, em qualquer profundidade, são um pedido natural de quem escreve padrões, e nenhum padrão da Solis o reconhece. É a demonstração do limite do reconhecimento por autômato finito.
@@ -79,7 +84,7 @@ Parênteses balanceados, em que cada `(` tem o seu `)` mais adiante, em qualquer
 | Estrutura | Sintaxe |
 |---|---|
 | Loop (equivalente ao `while` do Python) | `enquanto (<condição>) { ... }` |
-| Loop (equivalente ao `for` do Python) | `para <variável> em <iterável> { ... }` |
+| Loop (equivalente ao `for` do Python) | `para <variável> em <iterável> { ... }`; o iterável pode ser uma `Lista` guardada numa variável ou o resultado direto de uma chamada: `para achado em pedido.procura(registro) { ... }` |
 | Atribuição de variável | `<Tipo> <variável> recebe <valor>;` |
 | Condicionais | `se (<condição>) { ... } senao { ... }` |
 | Interrupção de loop | `pare` |
@@ -89,13 +94,25 @@ Parênteses balanceados, em que cada `(` tem o seu `)` mais adiante, em qualquer
 Linha x recebe "texto aleatorio";
 ```
 
+**Decisão — Escopo**
+Uma variável declarada dentro de um bloco `{ ... }` (de uma função, de um `se`, de um `enquanto` ou de um `para`) vale do ponto em que foi declarada até o `}` que fecha aquele bloco. Usá-la depois disso é um erro apontado antes de gravar o objeto.
+
 ---
 
 ## O Que o Sistema Produz
 
 Ao ser compilado, o sistema grava um **objeto**: um arquivo com as tabelas dos autômatos dos padrões declarados e as instruções do script. O compilador termina aí, sem executar nada.
 
+**Decisão — A ordem do objeto**
+O objeto guarda, nesta ordem: o cabeçalho (a marca de que é um objeto Solis e a versão do formato), a máquina de cada padrão, na ordem em que os padrões foram declarados, e as instruções do script, a começar pela `principal`.
+
 Quem executa é outro componente, o **executor**: uma máquina virtual própria, embutida no projeto que incorpora o script. Depois, e com o compilador já encerrado, o executor lê o objeto e o roda sobre os registros reais que o projeto recebe. O objeto não depende do sistema operacional.
+
+**Decisão — Um registro por vez**
+Todo script tem a função `principal pede (Linha registro) e retorna Booleano`. O executor a chama uma vez para cada registro: `verdadeiro` mantém o registro, `falso` o descarta.
+
+**Decisão — Para onde vai o `Imprime`**
+O executor não escreve em lugar nenhum por conta própria: cada `Imprime` vira uma mensagem que ele entrega ao projeto que incorporou o script, e o projeto decide onde mostrá-la (na tela, num arquivo, ou em lugar nenhum). As mensagens ficam separadas dos registros mantidos: quem decide o que fica é o `devolve` da `principal`.
 
 O compilador verifica o texto antes de gravar o objeto:
 
