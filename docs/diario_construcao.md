@@ -568,3 +568,163 @@ de lá conta o estado de erro inalcançável.
   alfabeto inteiro da Solis, que a determinização ainda não recebe.
 - **Para a análise sintática:** os dois usos de `e` e de `pede`; a regra de que o valor de
   `devolve` combina com o tipo de retorno; e a classe terminada em `}`, sem `;`.
+
+---
+
+## Módulo: A especificação e os padrões na Solis
+
+O trabalho deste módulo fica na branch `Especificacao_Modulo_02`. Ele fecha a Tarefa 1 do módulo
+"Expressões Regulares e Linguagens Regulares": a especificação em sete seções, em
+`especificacao/especificacao.md`. Para escrevê-la, o grupo precisou mudar o que a Solis é, e as
+mudanças passaram pelo recorte, pelo alfabeto, pelas classes léxicas, pelo núcleo mínimo, pelo
+README, pelo exemplo e pela demonstração do leitor.
+
+### O que o texto do Projeto Integrador mostrou
+
+A terceira leva deste diário registrou que a Solis "passa nos quatro" sinais de assunto que falha.
+Aqueles quatro sinais eram só os da Tarefa 1. O texto do Projeto Integrador traz **seis
+propriedades** que um assunto precisa ter, e a Solis, como estava, não cumpria duas delas: quem
+usava a linguagem **não escrevia padrões**, e o domínio **não tinha um pedido que a máquina finita
+não atende**. O mesmo texto descreve, como "o erro previsível", a escolha de "uma pequena linguagem
+imperativa", que era o caso da Solis. Das cinco perguntas de "O Teste que Fecha a Escolha", a
+terceira (escrever três padrões na linguagem e dizer o que cada um reconhece) ficava sem resposta.
+
+Foram três caminhos: **A**, manter a Solis como estava, com a pergunta 3 sem resposta e o capítulo
+do limite sem demonstração; **B**, dar padrões à Solis; **C**, trocar para um dos vinte assuntos.
+**O grupo escolheu o B.** O C foi descartado por ser inviável: descartaria a Solis inteira. O A
+foi descartado porque deixaria a primeira parte do que já foi construído (leitor, Thompson,
+determinização e minimização) servindo só aos tokens da própria Solis; no B, a mesma peça compila
+também os padrões de quem escreve.
+
+### A cena
+
+A Solis passa a ter um domínio: **registros com campos**, e a forma que cada campo pode ter. Quem
+escreve é uma pessoa que precisa automatizar uma tarefa e não domina o inglês nem uma linguagem em
+inglês, como um júnior que precisa identificar, organizar ou filtrar registros; o script que ele
+escreve é incorporado ao projeto da equipe. A Solis é, para essa pessoa, a porta de entrada.
+
+---
+
+### Decisões e o que elas descartaram
+
+#### Os padrões
+
+**O padrão é escrito entre crases, numa linha só, e guardado no tipo `Padrao`.** Descartado: entre
+barras, porque a `/` já é a divisão e `a / b / c` ficaria ambíguo; e dentro de aspas, porque uma
+`Linha` viraria `Padrao` pela atribuição e a fronteira entre os dois tipos ficaria borrada.
+Descartado também: o padrão ocupar várias linhas, porque uma crase esquecida só seria apontada
+longe de onde está.
+
+**O padrão vazio (duas crases seguidas) é permitido**, e só casa com a Linha vazia. Descartado:
+proibi-lo, trocando o `*` da classe por `+`.
+
+**As operações são `casa` (o texto inteiro tem a forma) e `procura` (os trechos com a forma, o mais
+longo de cada vez), sem captura.** Descartado: só `casa`, porque o executor quase não trabalharia
+sobre a entrada; e a captura, que o próprio Projeto Integrador trata como uma proposta inteira e
+difícil.
+
+**As operações são métodos, chamados com o `.`**: `numero.casa(campo)`. Descartado: um operador por
+extenso (`campo casa numero`), que entraria na tabela de precedência.
+
+**O pedido que nenhum padrão atende são os parênteses balanceados.** Descartados: blocos que abrem
+e fecham com outras marcas (o mesmo problema) e o trecho que volta invertido, menos natural para
+quem escreve scripts.
+
+#### O alfabeto
+
+**Entram a crase, o `?` e a `\`**, para escrever os padrões, e **os símbolos de registro `@`, `#`,
+`$`, `º`, `ª` e `°`**, que aparecem nos registros: e-mails, números de pedido, dinheiro, ordinais e
+graus. Todos, e também as letras acentuadas, valem só dentro de padrão, de Linha e de comentário.
+O alfabeto passa de 113 para **122 símbolos**. Que o `?` e a `\` valessem também na Linha e no
+comentário foi uma decisão tomada sem perguntar antes e aprovada depois: sem ela, `'Qual o seu
+nome?'` seria erro léxico. O `^` ficou de fora, porque o leitor o usa para marcar a classe negada.
+
+**Os registros podem ter qualquer símbolo: os que estão fora do alfabeto contam como um só, o
+outro, que só o coringa reconhece.** Descartado: recusar o registro, porque um filtro que trava no
+primeiro `€` não cumpre o domínio.
+
+#### O que o sistema produz
+
+**O compilador grava um objeto, e um executor, máquina virtual embutida no projeto, o roda
+depois.** Descartados: gravar código de outra linguagem (o executor deixaria de ser do grupo) e um
+executável nativo (preso a um sistema operacional, contra a restrição do Projeto Integrador). O
+recorte dizia "o programa é executado", que o material aponta como sinal de erro.
+
+**O objeto guarda o cabeçalho, a máquina de cada padrão e as instruções, nessa ordem, e cada
+instrução leva o número da linha do script.** Descartado: as instruções antes dos padrões. O número
+da linha entrou para que as mensagens de erro de execução digam a linha; descartado: dizer só o
+registro.
+
+**As extensões são `.solx` para o script e `.solxo` para o objeto.** A extensão `.sol`, usada até
+aqui, já é a dos contratos da linguagem Solidity, e por isso foi trocada. Descartado: a mesma
+extensão para os dois, porque compilar `filtro.solx` gravaria o objeto por cima do script. Os
+blocos de código dos documentos passam a ser marcados como `solx`, e ficam sem cor no GitHub;
+descartado: manter `sol`, que os pintava com as cores do Solidity. As entradas antigas deste diário
+continuam com `.sol`, como foram escritas.
+
+**O executor chama a `principal` uma vez por registro**: `pede (Linha registro) e retorna
+Booleano`, e `verdadeiro` mantém o registro. Descartados: todos os registros de uma vez numa
+`Lista`, e uma função de leitura, que pediria palavra reservada nova.
+
+**O `Imprime` vira uma mensagem que o executor entrega ao projeto**, que decide onde mostrá-la.
+Descartado: escrever no terminal, que um projeto com tela própria não tem.
+
+#### A linguagem
+
+- **Sai o SenãoSe**, que executava duas comparações "ao mesmo tempo" (uma condição de corrida). As
+  condições encadeadas são um `se` dentro do `senao`. Descartado: um `senao se` como o `else if` do
+  C#, que o grupo considerou desnecessário.
+- **Não há herança.** Descartado: herança com palavra reservada própria, pelo custo na gramática,
+  na verificação e no executor; fica fora do escopo por agora.
+- **Entram `>=` e `<=`**, por extenso `maior-ou-igual-a` e `menor-ou-igual-a`. O recorte falava em
+  "juntar" os operadores, sem que eles existissem nas classes léxicas.
+- **`separa` é um método da `Linha`** e devolve os campos; dois separadores seguidos dão um campo
+  vazio. Descartados: separar com `procura` (o leitor recusa a classe negada `[^;]`) e o projeto
+  entregar os campos já separados.
+- **Escopo por bloco**: a variável vale até o `}` do bloco dela. Descartado: valer na função inteira.
+- **`inteiro()` e `quebrado()` convertem um campo em número**; o `quebrado()` aceita vírgula ou
+  ponto, sem separador de milhar. Um texto que não é número é o primeiro **erro de execução**: o
+  executor descarta aquele registro, avisa o projeto e segue. Descartados: não ter conversão, e,
+  para o erro, devolver `0` (esconde o erro) ou parar o script (derruba todos os registros).
+- **Reatribuição sem repetir o tipo** (`total recebe total + 1;`); sem ela, um `enquanto` não
+  terminaria sozinho.
+- **Acesso por posição a partir de 1** (`campos[1]`), como no Lua, com o método `tamanho()`; a
+  posição que não existe é erro de execução, como a conversão. Descartado: começar em 0, como no
+  Java.
+- **A precedência dos operadores é a do Java**, com a forma por extenso no mesmo nível do símbolo.
+- Também ficaram decididos: a `Lista` recebe o resultado de uma chamada; o `==` compara `Linha`; o
+  `para` percorre o resultado direto de uma chamada; e um `Padrao` pode ser parâmetro de função.
+
+#### A especificação
+
+**As mensagens de erro seguem o formato do leitor**: a linha, o problema, o texto repetido e a
+marca `^`. Descartado: uma linha só, sem o texto. As frases das mensagens são uma proposta, aceita
+pelo grupo como estão.
+
+**A pergunta medida é se a máquina determinística mínima é mais rápida que a simulação da não
+determinística**, com a simulação do AFN, que já existe, como referência. Descartadas: comparar um
+autômato só contra um por padrão, e medir o crescimento do objeto.
+
+---
+
+### O que mudou no código e nos números
+
+- O `demonstrar_leitor.py` recontou à mão os padrões que mudaram: Palavra reservada 307 → **319**
+  (com o `Padrao`, 30 palavras) e Operador 187 → **259** (com `>=`, `<=` e as formas por extenso). A
+  verificação de que o literal Padrão é recusado entrou, e o placar foi de 36 para **37**.
+- O `docs/02nucleo_minimo.md` ainda usava o Identificador antigo (`[a-zA-Z_]`, 105 nós); passou ao
+  atual (`[a-zA-Z]`, **103** nós). O coringa reduzido, com 122 símbolos, custaria **243** nós.
+- O `docs/exemplos.solx` e o exemplo completo do README passaram a ter a `principal` nova, e a
+  classe `Matematica` passou a fazer conta com os campos do registro.
+
+### Pendências, depois deste módulo
+
+- **O executor ainda não existe.** Quando for construído, a máquina do objeto precisa da coluna do
+  outro: hoje a determinização recusa os símbolos fora do alfabeto do padrão (o caso de `abc` em
+  `a.c`).
+- **A Linha, o comentário e o literal Padrão** dependem de classe negada (`[^...]`), que o leitor
+  ainda recusa.
+- **Não foram decididos:** como se declaram os atributos dentro do `Possui`, e se um método pode ser
+  chamado direto num literal (`'a;b'.separa(';')`).
+- **Para a análise sintática:** os dois usos de `e` (operador lógico e `pede (...) e retorna`) e de
+  `pede`; e a classe terminada em `}`, sem `;`.
