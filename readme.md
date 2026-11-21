@@ -21,7 +21,7 @@ A especificação completa, com exemplos, erros e mensagens, está em [`especifi
 | Característica | Detalhes |
 |---|---|
 | Nome | Solis |
-| Extensão de arquivo | `.sol` |
+| Extensão de arquivo | `.solx` (o script) e `.solxo` (o objeto gravado) |
 | Base conceitual | Java |
 | Inspiração | Lua |
 | Tipagem | Forte |
@@ -102,20 +102,20 @@ direita (`10 - 3 - 2` dá `5`). A forma por extenso tem a mesma precedência do 
 
 Declaração e atribuição seguem o formato:
 
-```sol
+```solx
 <Tipo> <variavel> recebe <valor>;
 ```
 
 Exemplo:
 
-```sol
+```solx
 Linha x recebe "texto aleatorio";
 ```
 
 Uma variável já declarada recebe um valor novo sem repetir o tipo, e o tipo continua o da
 declaração:
 
-```sol
+```solx
 total recebe total + 1;
 ```
 
@@ -127,7 +127,7 @@ Uma variável declarada dentro de um bloco `{ ... }` vale até o `}` que fecha e
 Um comentário começa com `//` e vai até o fim da linha. Ele não muda nada no programa: o
 analisador léxico o descarta, como os espaços em branco. Pode ter acento.
 
-```sol
+```solx
 Linha x recebe "texto aleatorio"; // daqui até o fim da linha é comentário
 ```
 
@@ -135,7 +135,7 @@ Linha x recebe "texto aleatorio"; // daqui até o fim da linha é comentário
 
 Um padrão é escrito entre crases, numa linha só, e guardado numa variável do tipo `Padrao`:
 
-```sol
+```solx
 Padrao numero recebe `[0-9]+`;
 ```
 
@@ -149,7 +149,7 @@ O padrão tem dois métodos, chamados com o `.`:
 | `casa(texto)` | `Booleano` | diz se o texto **inteiro** tem a forma do padrão |
 | `procura(texto)` | `Lista` de `Linha` | os trechos do texto que têm a forma do padrão, ficando sempre com o trecho mais longo |
 
-```sol
+```solx
 se (numero.casa(campo)) {
     Imprime(campo);
 };
@@ -163,7 +163,7 @@ qualquer outro valor.
 Para separar os campos de um registro, a `Linha` tem o método `separa`, que devolve uma `Lista` de
 `Linha`. Dois separadores seguidos dão um campo vazio:
 
-```sol
+```solx
 Lista campos recebe registro.separa(';');
 para campo em campos {
     se (numero.casa(campo)) {
@@ -189,7 +189,7 @@ reconhecimento por autômato finito.
 
 ### Condicionais
 
-```sol
+```solx
 se (condicao) {
     // bloco executado se verdadeiro
 } senao {
@@ -200,7 +200,7 @@ se (condicao) {
 Não existe `senao se`. Para encadear condições, um `se` vai dentro do bloco do `senao`, e as
 condições são testadas uma de cada vez, na ordem em que foram escritas:
 
-```sol
+```solx
 se (nota >= 7) {
     Imprime('aprovado');
 } senao {
@@ -216,7 +216,7 @@ se (nota >= 7) {
 
 **Enquanto** (equivalente ao `while`):
 
-```sol
+```solx
 enquanto (condicao) {
     // corpo do loop
 };
@@ -224,7 +224,7 @@ enquanto (condicao) {
 
 **Para** (equivalente ao `for ... in`):
 
-```sol
+```solx
 para <variavel> em <iteravel> {
     // corpo do loop
 };
@@ -232,7 +232,7 @@ para <variavel> em <iteravel> {
 
 Interromper um loop:
 
-```sol
+```solx
 pare;
 ```
 
@@ -240,7 +240,7 @@ pare;
 
 Sintaxe geral:
 
-```sol
+```solx
 funcao <nome_da_funcao> pede (<tipo> <arg>, ...) e retorna <tipo> {
     // corpo
     devolve <valor>;
@@ -251,7 +251,7 @@ Uma função que retorna `Vazio` termina com `devolve;` sozinho, sem valor: `Vaz
 
 Exemplo:
 
-```sol
+```solx
 funcao soma pede (Quebrado a, Quebrado b) e retorna Quebrado {
     devolve a + b;
 };
@@ -261,7 +261,7 @@ funcao soma pede (Quebrado a, Quebrado b) e retorna Quebrado {
 
 Classes usam os blocos `Possui` (atributos) e `Faz` (métodos):
 
-```sol
+```solx
 Classe Matematica {
     Possui {
     };
@@ -278,7 +278,7 @@ Classe Matematica {
 
 Instanciação de um objeto com `Novo`:
 
-```sol
+```solx
 Matematica mat recebe Novo Matematica;
 ```
 
@@ -288,7 +288,7 @@ Não há herança: uma classe não herda de outra. A herança fica fora do escop
 
 ## Exemplo Completo
 
-```sol
+```solx
 funcao soma pede (Quebrado a, Quebrado b) e retorna Quebrado {
     devolve a + b;
 };
