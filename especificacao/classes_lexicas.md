@@ -1,6 +1,6 @@
 # Classes léxicas da Solis
 
-Cada token de um arquivo `.sol` pertence a uma das classes abaixo. Os símbolos que podem aparecer
+Cada token de um arquivo `.solx` pertence a uma das classes abaixo. Os símbolos que podem aparecer
 estão em [`alfabeto.md`](alfabeto.md).
 
 ## Resumo
