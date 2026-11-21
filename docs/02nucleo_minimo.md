@@ -1,6 +1,7 @@
 # O núcleo mínimo de operadores de padrão
 
-Os padrões das classes léxicas da Solis (`[0-9]+`, `[a-zA-Z_][a-zA-Z0-9_]*`...) são lidos pelo
+Os padrões das classes léxicas da Solis (`[0-9]+`, `[a-zA-Z][a-zA-Z0-9_]*`...) e os padrões que
+quem escreve em Solis declara entre crases (``Padrao numero recebe `[0-9]+`;``) são lidos pelo
 leitor de padrões (`Leitor_De_Padroes/`), que monta a árvore de cada um. Este documento registra
 quais operadores de padrão essa árvore conhece e quais notações são só conveniência de quem
 escreve, reduzidas ao núcleo durante a leitura.
@@ -53,25 +54,26 @@ passagem. Exemplo: `a+` tem 4 nós (1 + 1 + 2).
 ## A exceção: o coringa
 
 O coringa `.` poderia ser reduzido: ele é a alternância de todos os símbolos do alfabeto. Mas o
-alfabeto da Solis tem 113 símbolos (`especificacao/alfabeto.md`), e a redução trocaria **1 folha
-por 2 × 113 − 1 = 225 nós** em cada ocorrência, uma árvore que ninguém consegue ler, para dizer o que
+alfabeto da Solis tem 116 símbolos (`especificacao/alfabeto.md`), e a redução trocaria **1 folha
+por 2 × 116 − 1 = 231 nós** em cada ocorrência, uma árvore que ninguém consegue ler, para dizer o que
 uma folha só já diz.
 
 Por isso ele fica como folha própria, e o custo dessa escolha tem endereço certo: a construção de
 Thompson leva o coringa como rótulo de uma seta, e a simulação do AFN aceita qualquer símbolo
 nessa seta. A exceção tem razão de tamanho, e não de capacidade, e fica escrita para que quem a
 encontrar saiba que ela foi decidida, e não esquecida. Hoje nenhuma classe léxica da Solis usa o
-coringa.
+coringa, mas um padrão escrito entre crases pode usá-lo.
 
 A classe de símbolos, ao contrário, **é** reduzida, mesmo custando caro: a primeira classe do
-Identificador, `[a-zA-Z_]`, vira 105 nós. A diferença é que quem escreve a classe escolhe o tamanho
+Identificador, `[a-zA-Z]`, vira 103 nós. A diferença é que quem escreve a classe escolhe o tamanho
 dela; o coringa tem sempre o custo máximo.
 
 ## Fora do núcleo
 
 **Classe negada (`[^...]`).** Ela também se reduz: é a alternância dos símbolos do alfabeto que não
 estão na lista. Então, se entrar, entra como redução, nunca como operador do núcleo. Hoje o leitor a
-recusa, e isso é um limite conhecido: o padrão da Linha (`'[^'\n]*'`) depende dela.
+recusa, e isso é um limite conhecido: o padrão da Linha (`'[^'\n]*'`), o do comentário
+(`//[^\n]*`) e o do literal Padrão (`` `[^`\n]*` ``) dependem dela.
 
 **Quantificador contado (`x{3,5}`).** Também se reduz, a concatenações e opcionais, então o
 critério já o deixaria fora do núcleo. E ele não entra nem como notação, porque na Solis `{` e `}`
