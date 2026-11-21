@@ -1,6 +1,6 @@
 # Alfabeto da Solis (Σ)
 
-Σ é o conjunto de todos os símbolos que podem aparecer num arquivo `.sol`. Um símbolo fora de Σ
+Σ é o conjunto de todos os símbolos que podem aparecer num arquivo `.solx`. Um símbolo fora de Σ
 é erro léxico. Σ é a união dos grupos abaixo.
 
 | Grupo | Símbolos | Qtd | Onde aparece nos exemplos |
@@ -53,7 +53,7 @@
 
 ## O alfabeto dos registros
 
-Σ é o alfabeto do que se **escreve** num arquivo `.sol`. Os registros que o executor **lê** podem ter
+Σ é o alfabeto do que se **escreve** num arquivo `.solx`. Os registros que o executor **lê** podem ter
 qualquer símbolo, inclusive os que não estão em Σ, como `€`, `ñ` ou um emoji.
 
 - Um símbolo do registro que está em Σ é reconhecido por ele mesmo: o `a` de um padrão casa com o
