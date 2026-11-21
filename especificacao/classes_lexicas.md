@@ -143,7 +143,7 @@ posição do problema.
 
 | Válidos | Inválidos |
 |---|---|
-| `` `[0-9]+` ``, `` `-?[0-9]+` ``, `` `São Paulo` ``, `` `[0-9]+\.[0-9]+` `` | `` `[0-9]+ `` (não fecha na mesma linha), `'[0-9]+'` (é uma Linha, e não um padrão) |
+| `` `[0-9]+` ``, `` `-?[0-9]+` ``, `` `São Paulo` ``, `` `[0-9]+\.[0-9]+` ``, ``` `` ``` (o padrão vazio: só casa com a Linha vazia) | `` `[0-9]+ `` (não fecha na mesma linha), `'[0-9]+'` (é uma Linha, e não um padrão) |
 
 ## Delimitadores/Pontuação
 
