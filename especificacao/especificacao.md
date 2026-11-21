@@ -376,6 +376,11 @@ outro componente, que roda depois e sem o compilador:
 2. para cada registro que o projeto recebe, chama a função `principal` com o registro;
 3. mantém o registro se a `principal` devolver `verdadeiro`, e o descarta se devolver `falso`.
 
+Durante a execução, cada `Imprime` vira uma mensagem que o executor entrega ao projeto. O executor
+não escreve em lugar nenhum por conta própria: é o projeto que decide onde mostrar as mensagens, na
+tela, num arquivo ou em lugar nenhum. As mensagens ficam separadas dos registros mantidos, e
+quem decide o que fica é só o `devolve` da `principal`.
+
 Um registro nunca é recusado por causa dos símbolos que tem: os que estão fora do alfabeto contam
 como o outro. O mesmo objeto roda em qualquer sistema operacional em que o executor rode, e pode ser
 executado muitas vezes, sobre registros diferentes, sem compilar de novo.
