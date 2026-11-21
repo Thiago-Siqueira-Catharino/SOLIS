@@ -94,6 +94,7 @@ Parênteses balanceados, em que cada `(` tem o seu `)` mais adiante, em qualquer
 | Loop (equivalente ao `while` do Python) | `enquanto (<condição>) { ... }` |
 | Loop (equivalente ao `for` do Python) | `para <variável> em <iterável> { ... }`; o iterável pode ser uma `Lista` guardada numa variável ou o resultado direto de uma chamada: `para achado em pedido.procura(registro) { ... }` |
 | Atribuição de variável | `<Tipo> <variável> recebe <valor>;` |
+| Reatribuição de variável | `<variável> recebe <valor>;` |
 | Condicionais | `se (<condição>) { ... } senao { ... }` |
 | Interrupção de loop | `pare` |
 
@@ -101,6 +102,26 @@ Parênteses balanceados, em que cada `(` tem o seu `)` mais adiante, em qualquer
 ```
 Linha x recebe "texto aleatorio";
 ```
+
+**Decisão — Reatribuição**
+Uma variável já declarada recebe um valor novo sem repetir o tipo: `total recebe total + 1;`. O tipo continua o da declaração, e guardar um valor de outro tipo é um erro apontado antes de gravar o objeto. Sem reatribuição, a condição de um `enquanto` nunca mudaria lá dentro, e o laço só terminaria com `pare` ou `devolve`.
+
+**Decisão — Acesso por posição**
+Um item de uma `Lista` é pego pela posição, entre colchetes, contando a partir de 1, como no Lua: `campos[1]` é o primeiro campo. O método `tamanho()` diz quantos itens a lista tem: `campos.tamanho()`. Uma posição que não existe (`campos[9]` numa lista de 4 itens) só aparece na execução, e é um erro de execução tratado como o da conversão: o executor descarta aquele registro, avisa o projeto e segue para o próximo. Para evitar o erro, o script confere o `tamanho()` antes de pegar a posição.
+
+**Decisão — Precedência dos operadores**
+A mesma ordem do Java. O que está mais acima é feito primeiro, e operadores do mesmo nível são feitos da esquerda para a direita (`10 - 3 - 2` dá `5`). A forma por extenso tem a mesma precedência do símbolo.
+
+| Ordem | Operadores |
+|---|---|
+| 1 | `( )`, chamada de função, `.` e acesso por posição `[ ]` |
+| 2 | `!` e o `-` de sinal (`-5`) |
+| 3 | `*` `/` `%` (`multiplica`, `dividido-por`) |
+| 4 | `+` `-` (`mais`, `menos`) |
+| 5 | `<` `>` `<=` `>=` (`menor-que`, `maior-que`, `menor-ou-igual-a`, `maior-ou-igual-a`) |
+| 6 | `==` `!=` (`igual-a`, `diferente-de`) |
+| 7 | `&&` (`e`) |
+| 8 | `\|\|` (`ou`) |
 
 **Decisão — Escopo**
 Uma variável declarada dentro de um bloco `{ ... }` (de uma função, de um `se`, de um `enquanto` ou de um `para`) vale do ponto em que foi declarada até o `}` que fecha aquele bloco. Usá-la depois disso é um erro apontado antes de gravar o objeto.
