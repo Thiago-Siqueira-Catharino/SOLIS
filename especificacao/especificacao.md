@@ -43,7 +43,7 @@ devolve `verdadeiro` para mantê-lo ou `falso` para descartá-lo.
 
 **Exemplo 1: manter os registros que são só um número.**
 
-```sol
+```solx
 funcao principal pede (Linha registro) e retorna Booleano {
     Padrao numero recebe `[0-9]+`;
     devolve numero.casa(registro);
@@ -55,7 +55,7 @@ registro **inteiro** tem a forma do padrão.
 
 **Exemplo 2: manter os registros que têm um campo de e-mail.**
 
-```sol
+```solx
 funcao principal pede (Linha registro) e retorna Booleano {
     Padrao email recebe `[a-z0-9_]+@[a-z]+\.com(\.br)?`;
     Lista campos recebe registro.separa(';');
@@ -73,7 +73,7 @@ funcao principal pede (Linha registro) e retorna Booleano {
 
 **Exemplo 3: manter os registros que citam um pedido atrasado, em qualquer lugar do texto.**
 
-```sol
+```solx
 funcao atrasado pede (Linha pedido) e retorna Booleano {
     Lista atrasados recebe ['#102', '#215', '#330'];
     para item em atrasados {
@@ -101,7 +101,7 @@ dígitos, onde quer que estejam. No registro `cliente pediu #215 e depois #400`,
 
 **Exemplo 4: manter os registros que têm, ao mesmo tempo, um e-mail e um valor em dinheiro.**
 
-```sol
+```solx
 // tem: diz se algum campo da lista tem a forma do padrão
 funcao tem pede (Padrao forma, Lista campos) e retorna Booleano {
     para campo em campos {
@@ -128,7 +128,7 @@ descartado, porque nenhum campo tem a forma de `valor`.
 
 Os registros deste exemplo têm quatro campos: nome, e-mail, preço e quantidade, nessa ordem.
 
-```sol
+```solx
 Classe Matematica {
     Possui {
     };
@@ -276,7 +276,7 @@ ou um `para ... em`, que têm o seu próprio bloco dentro. Não há profundidade
 
 Três níveis, todos tirados do exemplo 2 da seção 2:
 
-```sol
+```solx
 funcao principal pede (Linha registro) e retorna Booleano {     // nível 1: o bloco da função
     Padrao email recebe `[a-z0-9_]+@[a-z]+\.com(\.br)?`;
     Lista campos recebe registro.separa(';');
@@ -292,7 +292,7 @@ funcao principal pede (Linha registro) e retorna Booleano {     // nível 1: o b
 As condições encadeadas também se aninham: como não existe `senao se`, cada condição a mais é um
 `se` dentro do bloco do `senao` anterior. Num trecho em que `nota` é um `Inteiro` já declarado:
 
-```sol
+```solx
 se (nota >= 7) {
     Imprime('aprovado');
 } senao {
@@ -410,7 +410,9 @@ linha 4: a condição do se precisa ser Booleano, e é Lista
 ### O objeto
 
 Quando a compilação termina sem erro, o compilador grava **um objeto**: um arquivo com tudo o que é
-preciso para rodar o script, e nada do texto Solis. O compilador termina aí, sem executar nada.
+preciso para rodar o script, e nada do texto Solis. O script tem a extensão `.solx`, e o objeto, a
+extensão `.solxo`: compilar `filtro.solx` grava `filtro.solxo`, sem escrever por cima do script. O
+compilador termina aí, sem executar nada.
 O objeto contém, nesta ordem:
 
 1. **o cabeçalho**: a marca de que o arquivo é um objeto Solis e a versão do formato, para que o
@@ -418,7 +420,8 @@ O objeto contém, nesta ordem:
 2. **a máquina de cada padrão** do script, na ordem em que os padrões foram declarados: os estados,
    para onde cada símbolo leva a partir de cada estado, o estado inicial e os estados que aceitam.
    Os símbolos fora do alfabeto entram como um só, o **outro**, que só o coringa reconhece;
-3. **as instruções do script**, função por função, a começar pela `principal`.
+3. **as instruções do script**, função por função, a começar pela `principal`. Cada instrução leva
+   o número da linha do script de onde veio, para as mensagens de erro de execução.
 
 ### Quem executa
 
@@ -447,15 +450,17 @@ só existe na execução:
 - **pegar uma posição que não existe**: `campos[4]` num registro com dois campos.
 
 Os dois são tratados do mesmo jeito: o executor para de processar **aquele** registro, o descarta,
-entrega ao projeto uma mensagem dizendo o que aconteceu e em que registro, e segue para o próximo.
+entrega ao projeto uma mensagem dizendo o que aconteceu, em que registro e em que linha do script,
+e segue para o próximo.
 Um registro fora do formato não derruba os outros. As mensagens têm esta forma:
 
 ```
-registro 3: o texto 'sem preço' não é um número
-registro 4: a lista tem 2 itens, e foi pedida a posição 4
+registro 3, linha 17: o texto 'sem preço' não é um número
+registro 4, linha 17: a lista tem 2 itens, e foi pedida a posição 4
 ```
 
-A mensagem não repete a linha do script, porque o objeto não guarda o texto Solis. Para evitar esses
+A mensagem diz o número da linha, que o objeto guarda junto de cada instrução, mas não repete o
+texto da linha, porque o objeto não guarda o texto Solis. Para evitar esses
 erros, o script confere a forma do campo com um padrão e o `tamanho()` da lista antes de converter,
 como no exemplo 5 da seção 2.
 
