@@ -31,7 +31,7 @@ Base em POO (Programação Orientada a Objetos), para que classes possam ser reu
 Também funcional: um programa em Solis pode ser escrito só com funções, sem nenhuma classe. As funções existem fora das classes, como `soma` e `principal` em `docs/exemplos.solx`.
 
 **Decisão — Atributos da classe**
-Um atributo é declarado dentro do `Possui` como uma variável comum, com o tipo, o nome e o valor: `<Tipo> <atributo> recebe <valor>;`. Ele vale na classe toda, e não só até o `}` do `Possui`: os métodos do `Faz` usam o atributo pelo nome. De fora da classe, o atributo é usado pelo objeto, com o `.`: `p.frete` lê o valor, e `p.frete recebe 20.00;` guarda um valor novo, que precisa ser do tipo da declaração. Um método não pode declarar uma variável com o mesmo nome de um atributo da classe: dois `frete` no mesmo método confundiriam quem está lendo, e isso é um erro apontado antes de gravar o objeto.
+Um atributo é declarado dentro do `Possui` como uma variável comum, com o tipo, o nome e o valor: `<Tipo> <atributo> recebe <valor>;`. Ele vale na classe toda, e não só até o `}` do `Possui`: os métodos do `Faz` usam o atributo pelo nome. De fora da classe, o atributo é usado pelo objeto, com o `.`: `p.frete` lê o valor, e `p.frete recebe 20.00;` guarda um valor novo, que precisa ser do tipo da declaração. Um método não pode ter um parâmetro nem declarar uma variável com o mesmo nome de um atributo da classe (`funcao total pede (Quebrado frete)` numa classe que tem o atributo `frete`): dois `frete` no mesmo método confundiriam quem está lendo, e isso é um erro apontado antes de gravar o objeto.
 
 ```solx
 Classe Pedido {
