@@ -185,6 +185,8 @@ Um texto Solis é aceito quando:
   [`docs/02nucleo_minimo.md`](../docs/02nucleo_minimo.md);
 - as instruções seguem as formas da linguagem: declarações, `se`/`senao`, `enquanto`, `para ... em`,
   funções, classes, cada instrução terminada em `;` e cada bloco `{` fechado com o seu `}`;
+- todo método é chamado numa variável, ou numa posição de uma lista guardada numa variável
+  (`campos[3].quebrado()`), e nunca direto num literal nem no resultado de outra chamada;
 - passa por todas as verificações da seção 5;
 - existe a função `principal`, na forma `funcao principal pede (Linha registro) e retorna Booleano`.
 
@@ -250,6 +252,29 @@ linha 5: esperava ';' depois da instrução
 linha 2: o bloco aberto aqui não foi fechado com }: o arquivo terminou antes
     funcao principal pede (Linha registro) e retorna Booleano {
                                                               ^
+```
+
+**Um método chamado direto num literal, ou no resultado de outra chamada.** O método é chamado
+sempre numa variável: o tipo dela fica declarado, à vista de quem lê, e o nome diz o que o valor
+significa. Vale para a Linha entre aspas e para o padrão entre crases. A marca fica no `.` da
+chamada, e a pessoa guarda o valor numa variável antes de chamar o método.
+
+```
+linha 4: método chamado direto num literal: guarde o valor numa variável e chame o método nela
+    Lista partes recebe 'a;b'.separa(';');
+                             ^
+```
+
+```
+linha 5: método chamado direto num literal: guarde o valor numa variável e chame o método nela
+    se (`[0-9]+`.casa(campo)) {
+                ^
+```
+
+```
+linha 6: método chamado no resultado de outra chamada: guarde o resultado numa variável e chame o método nela
+    Inteiro quantos recebe registro.separa(';').tamanho();
+                                               ^
 ```
 
 **Falta a função `principal`.** Sem ela, o executor não teria o que chamar para cada registro. É o
@@ -344,12 +369,23 @@ linha 4: nome usado sem ter sido declarado: 'emial'
 ```
 
 **Um nome usado fora do bloco em que foi declarado.** Uma variável vale do ponto em que foi
-declarada até o `}` que fecha o bloco dela.
+declarada até o `}` que fecha o bloco dela. A exceção são os atributos declarados no `Possui`, que
+valem na classe toda.
 
 ```
 linha 8: nome usado fora do bloco em que foi declarado: 'campos'
     devolve campos;
             ^
+```
+
+**Uma variável com o nome de um atributo da classe.** Dentro de um método, uma variável chamada
+`frete` numa classe que já tem o atributo `frete` deixaria dois `frete` no mesmo trecho, e quem lê
+não saberia qual deles é usado. A pessoa escolhe outro nome para a variável.
+
+```
+linha 7: o nome 'frete' já é um atributo da classe Pedido: escolha outro nome para a variável
+    Quebrado frete recebe 0.0;
+             ^
 ```
 
 **Dois valores de naturezas incompatíveis.** Um `Quebrado` onde se espera um `Inteiro`, uma
