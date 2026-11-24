@@ -378,9 +378,15 @@ linha 8: nome usado fora do bloco em que foi declarado: 'campos'
             ^
 ```
 
-**Uma variável com o nome de um atributo da classe.** Dentro de um método, uma variável chamada
-`frete` numa classe que já tem o atributo `frete` deixaria dois `frete` no mesmo trecho, e quem lê
-não saberia qual deles é usado. A pessoa escolhe outro nome para a variável.
+**Um parâmetro ou uma variável com o nome de um atributo da classe.** Dentro de um método, um
+parâmetro ou uma variável chamada `frete` numa classe que já tem o atributo `frete` deixaria dois
+`frete` no mesmo trecho, e quem lê não saberia qual deles é usado. A pessoa escolhe outro nome.
+
+```
+linha 6: o nome 'frete' já é um atributo da classe Pedido: escolha outro nome para o parâmetro
+    funcao total pede (Quebrado preco, Quebrado frete) e retorna Quebrado {
+                                                ^
+```
 
 ```
 linha 7: o nome 'frete' já é um atributo da classe Pedido: escolha outro nome para a variável
