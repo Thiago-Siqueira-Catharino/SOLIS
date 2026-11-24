@@ -30,6 +30,22 @@ O usuário dispensa a necessidade de utilizar o operador ternário: a escolha en
 Base em POO (Programação Orientada a Objetos), para que classes possam ser reutilizadas criando objetos com `Novo`, com definições simples de métodos e declarações de instâncias. Não há herança: uma classe não herda de outra. A herança fica fora do escopo por agora e pode entrar depois.
 Também funcional: um programa em Solis pode ser escrito só com funções, sem nenhuma classe. As funções existem fora das classes, como `soma` e `principal` em `docs/exemplos.solx`.
 
+**Decisão — Atributos da classe**
+Um atributo é declarado dentro do `Possui` como uma variável comum, com o tipo, o nome e o valor: `<Tipo> <atributo> recebe <valor>;`. Ele vale na classe toda, e não só até o `}` do `Possui`: os métodos do `Faz` usam o atributo pelo nome. De fora da classe, o atributo é usado pelo objeto, com o `.`: `p.frete` lê o valor, e `p.frete recebe 20.00;` guarda um valor novo, que precisa ser do tipo da declaração. Um método não pode declarar uma variável com o mesmo nome de um atributo da classe: dois `frete` no mesmo método confundiriam quem está lendo, e isso é um erro apontado antes de gravar o objeto.
+
+```solx
+Classe Pedido {
+    Possui {
+        Quebrado frete recebe 15.00;
+    };
+    Faz {
+        funcao total pede (Quebrado preco) e retorna Quebrado {
+            devolve preco + frete;
+        };
+    };
+}
+```
+
 **Decisão — Operadores e tipos primitivos**
 Por se tratar de uma linguagem para scripts, os operadores básicos são:
 
@@ -84,6 +100,9 @@ Todo campo é uma `Linha`, mesmo quando parece um número. Para fazer conta com 
 
 O conteúdo de um registro só existe na execução, então converter um texto que não é número (um campo `'abc'` com `campo.quebrado()`) não pode ser apontado antes de rodar: é um **erro de execução**. O executor para de processar aquele registro, o descarta, entrega ao projeto uma mensagem dizendo qual texto não era número e segue para o próximo registro. Um registro ruim não derruba os outros. Para evitar o erro, o script testa a forma do campo com um padrão antes de converter.
 
+**Decisão — Onde se chama um método**
+Um método é sempre chamado numa variável, nunca direto num literal, seja ele uma `Linha` ou um `Padrao`. `'a;b'.separa(';')` não é aceito: se escreve `Linha texto recebe 'a;b';` e depois `texto.separa(';')`. `` `[0-9]+`.casa(campo) `` também não é aceito: se escreve ``Padrao numero recebe `[0-9]+`;`` e depois `numero.casa(campo)`. O motivo é que o método depende da classe: `separa` existe na `Linha` e não existe no `Inteiro`. As aspas e as crases mostram de que tipo é o literal, mas o tipo não está declarado. Com a variável, a classe fica escrita no código, à vista de quem lê, e o nome da variável diz o que o valor significa. Usar o literal como valor continua aceito: guardar com `recebe`, passar como argumento (o `';'` de `registro.separa(';')`) e comparar com `==`. A posição de uma lista guardada numa variável conta como variável: `campos[3].quebrado()` é aceito. Também não se chama um método no resultado de outra chamada: `registro.separa(';').tamanho()` não é aceito, e se escreve `Lista campos recebe registro.separa(';');` e depois `campos.tamanho()`. Quem usa a Solis está aprendendo, e um código explícito, com um passo por vez, é mais fácil de ler. Chamar um método direto num literal é um erro apontado antes de gravar o objeto.
+
 **Decisão — O pedido que o padrão não atende**
 Parênteses balanceados, em que cada `(` tem o seu `)` mais adiante, em qualquer profundidade, são um pedido natural de quem escreve padrões, e nenhum padrão da Solis o reconhece. É a demonstração do limite do reconhecimento por autômato finito.
 
@@ -124,7 +143,7 @@ A mesma ordem do Java. O que está mais acima é feito primeiro, e operadores do
 | 8 | `\|\|` (`ou`) |
 
 **Decisão — Escopo**
-Uma variável declarada dentro de um bloco `{ ... }` (de uma função, de um `se`, de um `enquanto` ou de um `para`) vale do ponto em que foi declarada até o `}` que fecha aquele bloco. Usá-la depois disso é um erro apontado antes de gravar o objeto.
+Uma variável declarada dentro de um bloco `{ ... }` (de uma função, de um `se`, de um `enquanto` ou de um `para`) vale do ponto em que foi declarada até o `}` que fecha aquele bloco. Usá-la depois disso é um erro apontado antes de gravar o objeto. A exceção são os atributos declarados no `Possui`, que valem na classe toda (ver Atributos da classe).
 
 ---
 
