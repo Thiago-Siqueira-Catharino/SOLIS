@@ -728,3 +728,91 @@ autômato só contra um por padrão, e medir o crescimento do objeto.
   chamado direto num literal (`'a;b'.separa(';')`).
 - **Para a análise sintática:** os dois usos de `e` (operador lógico e `pede (...) e retorna`) e de
   `pede`; e a classe terminada em `}`, sem `;`.
+
+---
+
+### As duas pendências decididas: os atributos e a chamada de método
+
+Duas perguntas tinham ficado sem resposta no fim deste módulo: como se declaram os atributos dentro
+do `Possui`, e se um método pode ser chamado direto num literal. O grupo respondeu as duas, e cada
+resposta abriu outras perguntas, que foram feitas antes de qualquer arquivo ser escrito. A
+prioridade que guiou as respostas foi a da cena: quem escreve em Solis está aprendendo, e um código
+**explícito e legível** vem antes de um código curto.
+
+#### Decisões e o que elas descartaram
+
+**O atributo é declarado no `Possui` como uma variável comum**, com tipo, nome e valor:
+`Quebrado frete recebe 15.00;`. É a mesma forma de toda declaração da Solis, que sempre nasce com
+um valor.
+
+**O atributo vale na classe toda**, e os métodos do `Faz` o usam pelo nome. É a exceção à regra do
+escopo por bloco. Descartado: seguir a regra ao pé da letra, porque o atributo morreria no `}` do
+`Possui` e nenhum método conseguiria usá-lo.
+
+**De fora da classe, o atributo é usado pelo objeto, com o `.`**: `p.frete` lê o valor, e
+`p.frete recebe 20.00;` guarda um valor novo, do tipo da declaração. Descartados: o atributo só
+poder ser usado dentro da classe, e o atributo como uma constante, sem reatribuição.
+
+**Um método é sempre chamado numa variável, nunca direto num literal**, seja uma Linha entre aspas
+(`'a;b'.separa(';')`) ou um padrão entre crases (`` `[0-9]+`.casa(campo) ``). O motivo é que o
+método depende da classe: `separa` existe na `Linha` e não existe no `Inteiro`. As aspas e as
+crases mostram de que tipo é o literal, mas o tipo não está declarado; com a variável, a classe
+fica escrita no código, e o nome diz o que o valor significa. Descartado: proibir só na Linha.
+Usar o literal como valor continua aceito: guardar com `recebe`, passar como argumento (o `';'` de
+`registro.separa(';')`) e comparar com `==`.
+
+Proibir o método no literal é uma **escolha de projeto, e não um limite técnico**. O leitor já
+separa o Literal Linha e o Literal Padrão em classes léxicas diferentes, e o compilador saberia o
+tipo de `'a;b'` sem declaração nenhuma. Para comparar, cada caso abaixo foi rodado no compilador ou
+no interpretador de verdade:
+
+| Linguagem | Chamada direto no literal | O que acontece |
+|---|---|---|
+| Java | `"a;b".split(";")` | funciona: o literal de texto já é um objeto `String` |
+| Java | `(5).toString()` | não compila: `int cannot be dereferenced`, porque o `int` é primitivo |
+| Python | `"a;b".split(";")` | funciona |
+| Python | `5.bit_length()` | erro de sintaxe; com parênteses, `(5).bit_length()` funciona |
+| JavaScript | `/[0-9]+/.test("123")` | funciona: o JavaScript tem literal de expressão regular |
+| Lua | `"abc":upper()` | erro de sintaxe; com parênteses, `("abc"):upper()` funciona |
+
+O Java não tem literal de padrão: a expressão regular é uma `String` passada a `Pattern.compile`, e
+a forma completa, `Pattern.compile("[0-9]+").matcher("123").matches()`, é um encadeamento. A Solis
+fica mais restrita que o Java e o Python, e perto da Lua, que inspira a linguagem.
+
+**A posição de uma lista guardada numa variável conta como variável**: `campos[3].quebrado()` é
+aceito. Descartado: exigir uma variável no meio (`Linha textoPreco recebe campos[3];`), que obrigaria
+a reescrever o Exemplo 5 da especificação e o exemplo completo do README.
+
+**Não se chama um método no resultado de outra chamada**: `registro.separa(';').tamanho()` não é
+aceito, e se escreve `Lista campos recebe registro.separa(';');` e depois `campos.tamanho()`. Dois
+motivos: a regra que acabou de ser definida, porque o resultado de uma chamada não é uma variável; e
+a cena, porque um passo por vez é mais fácil de ler para quem está aprendendo.
+
+**Um método não pode ter um parâmetro nem declarar uma variável com o nome de um atributo da
+classe.** Com dois `frete` no mesmo método, quem lê não saberia qual deles é usado. Descartado:
+permitir, com o nome de dentro do método escondendo o atributo. A variável foi decidida primeiro, e
+o parâmetro numa pergunta à parte, com a mesma resposta.
+
+#### O que mudou nos documentos
+
+- **O recorte** ganhou as decisões "Atributos da classe" e "Onde se chama um método", e a regra do
+  escopo passou a citar a exceção dos atributos.
+- **A especificação** separou as regras novas pelo que cada uma precisa para ser verificada. O
+  método num literal e o encadeamento se reconhecem só pela forma do texto, e foram para a seção 3,
+  com três mensagens de erro (literal Linha, literal Padrão e encadeamento). O nome de atributo
+  repetido só se reconhece sabendo quais atributos a classe tem, e foi para a seção 5, com duas
+  mensagens (parâmetro e variável). A seção 5 também passou a citar a exceção dos atributos.
+- **O README** ganhou a regra de chamar métodos numa variável, com uma tabela do que não é aceito e
+  de como se escreve; a `Classe Pedido`, com o atributo `frete` usado dentro e fora da classe; e a
+  exceção dos atributos na regra do bloco.
+- **Nenhum exemplo do repositório precisou ser reescrito**: nenhum chamava método num literal nem
+  encadeava chamadas. Os blocos de código novos passaram pela verificação léxica.
+
+### Pendências, depois desta decisão
+
+- **O executor ainda não existe.** Quando for construído, a máquina do objeto precisa da coluna do
+  outro.
+- **A Linha, o comentário e o literal Padrão** dependem de classe negada (`[^...]`), que o leitor
+  ainda recusa.
+- **Para a análise sintática:** os dois usos de `e` (operador lógico e `pede (...) e retorna`) e de
+  `pede`; e a classe terminada em `}`, sem `;`.
