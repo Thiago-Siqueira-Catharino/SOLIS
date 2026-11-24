@@ -120,7 +120,8 @@ total recebe total + 1;
 ```
 
 Uma variável declarada dentro de um bloco `{ ... }` vale até o `}` que fecha esse bloco. Usá-la depois
-é um erro apontado antes de gravar o objeto.
+é um erro apontado antes de gravar o objeto. A exceção são os atributos de uma classe (veja
+[Classes](#classes)).
 
 ## Comentários
 
@@ -180,6 +181,20 @@ método `tamanho()` diz quantos itens ela tem. Todo campo é uma `Linha`; para f
 `'120,50'`). Converter um texto que não é número, ou pegar uma posição que não existe, só aparece
 durante a execução: o executor descarta aquele registro, avisa o projeto e segue para o próximo.
 Para evitar isso, o script confere a forma do campo e o `tamanho()` antes, como no exemplo abaixo.
+
+**Um método é sempre chamado numa variável.** Não se chama um método direto num literal, seja uma
+Linha entre aspas ou um padrão entre crases, nem no resultado de outra chamada. A posição de uma
+lista guardada numa variável conta como variável (`campos[3].quebrado()`). Com a variável, o tipo
+fica declarado e o nome diz o que o valor significa, e quem está aprendendo lê um passo por vez:
+
+| Não é aceito | Se escreve assim |
+|---|---|
+| `'a;b'.separa(';')` | `Linha texto recebe 'a;b';` e depois `texto.separa(';')` |
+| `` `[0-9]+`.casa(campo) `` | ``Padrao numero recebe `[0-9]+`;`` e depois `numero.casa(campo)` |
+| `registro.separa(';').tamanho()` | `Lista campos recebe registro.separa(';');` e depois `campos.tamanho()` |
+
+O literal continua podendo ser usado como valor: guardado com `recebe`, passado como argumento (o
+`';'` de `registro.separa(';')`) ou comparado com `==`.
 
 **Limite da linguagem:** parênteses balanceados, em que cada `(` tem o seu `)` mais adiante em
 qualquer profundidade, não podem ser descritos por nenhum padrão da Solis. É o limite do
@@ -281,6 +296,33 @@ Instanciação de um objeto com `Novo`:
 ```solx
 Matematica mat recebe Novo Matematica;
 ```
+
+Um atributo é declarado no `Possui` como uma variável comum, com tipo, nome e valor. Ele vale na
+classe toda: os métodos do `Faz` o usam pelo nome.
+
+```solx
+Classe Pedido {
+    Possui {
+        Quebrado frete recebe 15.00;
+    };
+    Faz {
+        funcao total pede (Quebrado preco) e retorna Quebrado {
+            devolve preco + frete;
+        };
+    };
+}
+```
+
+De fora da classe, o atributo é usado pelo objeto, com o `.`, e um valor novo precisa ser do tipo
+da declaração:
+
+```solx
+Pedido p recebe Novo Pedido;
+p.frete recebe 20.00;
+```
+
+Um método não pode declarar uma variável com o nome de um atributo da classe: com dois `frete` no
+mesmo método, quem lê não saberia qual deles é usado.
 
 Não há herança: uma classe não herda de outra. A herança fica fora do escopo por agora.
 
