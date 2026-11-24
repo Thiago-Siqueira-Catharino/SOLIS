@@ -321,8 +321,9 @@ Pedido p recebe Novo Pedido;
 p.frete recebe 20.00;
 ```
 
-Um método não pode declarar uma variável com o nome de um atributo da classe: com dois `frete` no
-mesmo método, quem lê não saberia qual deles é usado.
+Um método não pode ter um parâmetro nem declarar uma variável com o nome de um atributo da classe
+(`funcao total pede (Quebrado frete)` no `Pedido` não é aceito): com dois `frete` no mesmo método,
+quem lê não saberia qual deles é usado.
 
 Não há herança: uma classe não herda de outra. A herança fica fora do escopo por agora.
 
