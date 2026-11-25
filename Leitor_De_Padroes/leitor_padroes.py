@@ -6,13 +6,18 @@ Gramática lida (do nível mais fraco para o mais forte):
     alternancia  := concatenacao ( "|" concatenacao )*
     concatenacao := repeticao repeticao*
     repeticao    := atomo ( "*" | "+" | "?" )*
-    atomo        := simbolo | "." | "\\" simbolo | "[" classe "]" | "(" alternancia ")"
+    atomo        := simbolo | "." | "\\" simbolo | "[" "^"? classe "]" | "(" alternancia ")"
 
 O açúcar é reduzido aqui, na leitura, e não chega na árvore:
     x+     ->  concatenacao(x, fecho(x))
     x?     ->  alternancia(x, vazio())
     [abc]  ->  alternancia(alternancia(a, b), c)
     [a-c]  ->  a mesma enumeração, com a faixa expandida símbolo por símbolo
+    [^ab]  ->  a enumeração de todos os símbolos do alfabeto, menos a e b
+
+A classe negada só é lida quando o alfabeto é informado em ler_padrao: o
+complemento é sempre "o alfabeto menos os símbolos da lista". Sem alfabeto,
+ela é recusada, como antes.
 
 Um padrão malformado gera ErroDeLeitura com duas posições, contadas a partir de 1:
     posicao  ->  onde a leitura constatou o problema. Quando algo abre e não
@@ -51,15 +56,17 @@ def mostrar_erro(texto, erro):
     return f"{texto}\n{marca} {erro.mensagem} (posição {erro.posicao})"
 
 
-def ler_padrao(texto):
+def ler_padrao(texto, alfabeto=None):
 
     #Lê o padrão inteiro e devolve a raiz da árvore.
     #Padrão vazio devolve None: a construção de Thompson faz a máquina da cadeia vazia.
+    #alfabeto: os símbolos que a classe negada pode usar, na ordem em que entram na árvore.
+    #Sem ele (None), a classe negada é recusada.
 
     if texto == "":
         return None
 
-    leitor = _Leitor(texto)
+    leitor = _Leitor(texto, alfabeto)
     raiz = leitor.alternancia()
 
     #Se a leitura terminou antes do fim do texto, sobrou alguma coisa.
@@ -74,9 +81,10 @@ class _Leitor:
 
     #Lê o texto da esquerda para a direita. "pos" é a posição do próximo símbolo.
 
-    def __init__(self, texto):
+    def __init__(self, texto, alfabeto=None):
         self.texto = texto
         self.pos = 0
+        self.alfabeto = alfabeto
 
     def no_fim(self):
         return self.pos >= len(self.texto)
@@ -158,8 +166,14 @@ class _Leitor:
         inicio = self.pos
         self.avancar()   # o "["
 
+        negada = False
         if not self.no_fim() and self.atual() == "^":
-            raise ErroDeLeitura("Classe negada ([^...]) não é aceita", self.pos + 1, origem=inicio + 1)
+            #Sem o alfabeto não há como saber o que é "todo o resto".
+            if self.alfabeto is None:
+                raise ErroDeLeitura("Classe negada ([^...]) só é aceita quando o alfabeto é informado",
+                                    self.pos + 1, origem=inicio + 1)
+            negada = True
+            self.avancar()   # o "^"
 
         simbolos = []
         while not self.no_fim() and self.atual() != "]":
@@ -190,6 +204,16 @@ class _Leitor:
         if not sem_repetir:
             #Constatada no "]", que fecha a classe sem nada dentro.
             raise ErroDeLeitura("Classe vazia", self.pos, origem=inicio + 1)
+
+        if negada:
+            #[^ab] -> todos os símbolos do alfabeto, na ordem dele, menos a e b.
+            #Um símbolo da lista que não está no alfabeto não muda nada: ele já não entraria.
+            fora = set(sem_repetir)
+            sem_repetir = [s for s in dict.fromkeys(self.alfabeto) if s not in fora]
+            if not sem_repetir:
+                #Constatada no "]": a lista tirou todos os símbolos do alfabeto.
+                raise ErroDeLeitura("Classe negada não deixa nenhum símbolo do alfabeto", self.pos,
+                                    origem=inicio + 1)
 
         #[abc] -> alternancia(alternancia(a, b), c): aninhada pela esquerda
         no = simbolo(sem_repetir[0])
