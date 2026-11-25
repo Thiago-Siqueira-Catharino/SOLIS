@@ -45,6 +45,11 @@ símbolo.
 
 Vale o casamento mais longo: `>=` é um operador só, e não `>` seguido de `=`.
 
+O `e` do cabeçalho de função (`pede (Quebrado a, Quebrado b) e retorna Quebrado`) é o mesmo token
+do operador lógico `e`. Quem distingue os dois é a análise sintática, pela posição: logo depois do
+`)` que fecha os parâmetros não cabe expressão nenhuma, então ali o `e` só pode ser o do cabeçalho.
+Os dois usos têm o mesmo sentido em português, e por isso a palavra é a mesma.
+
 ## Palavras reservadas
 
 `funcao` · `pede` · `retorna` · `devolve` · `Classe` · `Possui` · `Faz` · `principal` · `Linha` ·
@@ -52,6 +57,9 @@ Vale o casamento mais longo: `>=` é um operador só, e não `>` seguido de `=`.
 `Imprime` · `imprime` · `enquanto` · `Enquanto` · `para` · `Para` · `em` · `Em` · `se` · `Se` ·
 `senao` · `Senao` · `pare` · `Pare`
 
+- `pede` aparece só no cabeçalho de função, antes dos parâmetros:
+  `funcao soma pede (Quebrado a, Quebrado b) e retorna Quebrado`. Não há outro uso: a entrada do
+  script é o registro que a `principal` recebe.
 - As palavras de controle (`se`, `senao`, `enquanto`, `para`, `em`, `pare`) valem com a inicial
   minúscula ou maiúscula: `se` e `Se` são a mesma palavra. As outras têm uma grafia só.
 - `Imprime` e `imprime` são a mesma palavra, e a chamada é sempre com parênteses:
@@ -151,7 +159,8 @@ acentuadas, `?` e `\`, menos a crase e a quebra de linha. O analisador léxico s
 do resto do texto: se o que está entre as crases é um padrão bem escrito, quem decide é o leitor
 de padrões, com o núcleo de operadores de [`docs/02nucleo_minimo.md`](../docs/02nucleo_minimo.md).
 Um padrão malformado entre crases é um token Padrão válido e é recusado depois, pelo leitor, com a
-posição do problema.
+posição do problema. A classe negada (`[^...]`) não é aceita dentro das crases: ela fica fora do
+núcleo, e um padrão que a use é recusado pelo leitor.
 
 | Válidos | Inválidos |
 |---|---|
@@ -201,3 +210,10 @@ longo: `//` começa um comentário, e uma `/` sozinha é o operador de divisão.
 | `x+` | uma ou mais vezes |
 | `x*` | zero ou mais vezes |
 | `a \| b` | um ou outro |
+
+A classe negada é usada nestas classes léxicas (Linha, Padrão e Comentário), que o compilador usa
+para ler o código-fonte. O leitor de padrões a lê quando recebe o alfabeto, sempre como "o
+alfabeto menos os símbolos da lista": `[^'\n]` vira a alternância dos 120 símbolos de Σ que não
+são a aspa nem a quebra de linha. No código-fonte isso basta, porque um símbolo fora de Σ já é erro
+léxico. Quem escreve Solis não usa a classe negada dentro das crases: num registro, um símbolo fora
+de Σ conta como o outro, e `[^;]` não casaria com ele, embora ele não seja `;`.
