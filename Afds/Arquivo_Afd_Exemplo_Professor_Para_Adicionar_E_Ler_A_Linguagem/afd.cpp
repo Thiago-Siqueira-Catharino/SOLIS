@@ -1,4 +1,18 @@
-to#include <fstream>
+/*
+ * Exemplo do professor: AFD que aceita as cadeias sobre {0, 1} que terminam em 01.
+ * A palavra é o conteúdo inteiro do arquivo fonte.lin, que fica na mesma pasta.
+ *
+ * Como compilar (precisa do C++20, por causa do contains):
+ *     g++ -std=c++20 -o afd afd.cpp
+ *
+ * Como rodar:
+ *     ./afd        (no Windows: afd.exe)
+ *
+ * Cuidado: uma quebra de linha no fim do fonte.lin também é lida, e como ela
+ * não está em Σ = {0, 1}, a palavra é REJEITADA. Salve o arquivo sem ela.
+ */
+
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <unordered_map>
