@@ -15,7 +15,7 @@ Classe Matematica {
                 devolve a * b;
             };
     };
-}
+};
 
 funcao principal pede (Linha registro) e retorna Booleano {
     Padrao valor recebe `[0-9]+(,|\.)[0-9][0-9]`;
