@@ -816,3 +816,111 @@ o parâmetro numa pergunta à parte, com a mesma resposta.
   ainda recusa.
 - **Para a análise sintática:** os dois usos de `e` (operador lógico e `pede (...) e retorna`) e de
   `pede`; e a classe terminada em `}`, sem `;`.
+
+---
+
+### As últimas pendências: o leitor, a sintaxe, o AFD do professor e a medição
+
+Depois das decisões dos atributos e da chamada de método, sobravam o executor e quatro pendências: a
+classe negada no leitor, os dois pontos da análise sintática, o `afd.cpp` do professor e a medição da
+seção 7. A meta desta rodada foi deixar só o executor. Os AFDs em Python não ganharam leitura de
+arquivo: a atividade que pediria isso não foi passada pelo professor, e sem enunciado não há
+requisito.
+
+#### Decisões e o que elas descartaram
+
+**A classe negada entrou no leitor como redução.** `ler_padrao` recebe o alfabeto como parâmetro
+opcional e lê `[^ab]` como a alternância de todos os símbolos do alfabeto, menos `a` e `b`. Era o
+que o `docs/02nucleo_minimo.md` já previa: se entrasse, entraria como redução. A árvore não ganhou
+nó novo, e o Thompson, o AFN e a determinização não mudaram. Sem o alfabeto, a classe negada
+continua recusada, e os módulos que já usavam o leitor não precisaram mudar. Descartado: um nó novo,
+"qualquer exceto", que deixaria a árvore menor, mas obrigaria a mudar a árvore, o Thompson, o AFN, a
+determinização e os testes dos quatro módulos.
+
+**A classe negada fica só nas classes léxicas, e não dentro das crases.** O complemento é sempre
+sobre Σ. No código-fonte isso basta, porque um símbolo fora de Σ já é erro léxico. Num registro, um
+símbolo fora de Σ conta como o outro, e `[^;]` não casaria com ele, embora ele não seja `;`: o
+juninho teria um resultado sem sentido. Descartado: liberar agora, com o aviso de que `[^;]` não
+casa com o outro até o executor existir, que seria uma regra a mais para o iniciante. A decisão pode
+ser revista quando o executor tiver a coluna do outro.
+
+**O `pede` já estava resolvido.** A pendência falava em dois usos: os parâmetros e a leitura de
+entrada. A leitura de entrada deixou de existir quando a `principal` passou a receber o registro, e
+não sobrou nenhum `pede` fora do cabeçalho de função.
+
+**O `e` do cabeçalho continua o mesmo `e` do operador lógico.** Logo depois do `)` que fecha os
+parâmetros não cabe expressão nenhuma, e a análise sintática distingue os dois pela posição. Os dois
+usos têm o mesmo sentido em português. Descartados: tirar o `e` do cabeçalho (`pede (...) retorna`),
+que mudaria todos os exemplos, e tirar o `e` como forma por extenso do `&&`, contra a ideia da
+linguagem em português.
+
+**A classe termina com `};`**, como as funções, o `Possui`, o `Faz` e os blocos de controle. Ela era
+a única construção que terminava em `}` sem `;`. Descartado: manter a exceção e explicá-la, que
+deixaria um caso à parte para quem está aprendendo lembrar.
+
+**O `afd.cpp` do professor foi corrigido.** A primeira linha começava com `to#include`, e o arquivo
+não compilava. Tirado o `to`, apareceu um segundo problema: o código usa `contains`, que só existe a
+partir do C++20. O comentário do topo diz como compilar (`g++ -std=c++20 -o afd afd.cpp`) e avisa
+que uma quebra de linha no fim do `fonte.lin` também é lida: como ela não está em Σ = {0, 1}, a
+palavra é rejeitada. Isso foi conferido compilando e rodando: `1101` é aceita, e `1101` com a quebra
+de linha no fim é rejeitada. Os sublinhados que o VS Code mostra nos `#include` vêm da falta de um
+compilador configurado no editor, e não do arquivo.
+
+#### A medição da seção 7
+
+A medição tinha sido anotada como dependente do executor, e não era: a pergunta compara as
+máquinas, e as duas já existiam. O `Medicao/medir.py` mede, e o `Medicao/resultado.md` registra o
+resultado.
+
+**Como foi medido, e o que foi descartado em cada ponto:**
+
+- **Os registros têm só os símbolos do alfabeto do padrão.** Assim os padrões com coringa podem
+  entrar, e as duas máquinas concordam. Descartado: registros com símbolos de fora, em que o AFD e o
+  AFN seguem regras diferentes (o caso de `abc` em `a.c`), que é a coluna do outro, pendência do
+  executor.
+- **A simulação do AFN não guarda o traço.** O `simular()` guarda cada passo para o
+  `formatar_simulacao` mostrar, e esse custo não tem a ver com decidir o registro. Descartado: medir
+  o `simular()` como está, que daria ao AFD uma vantagem que não é dele.
+- **Antes de comparar tempo, as duas máquinas são comparadas com o `re.fullmatch` do Python**, um
+  oráculo de fora. Sem a mesma resposta, comparar tempo não vale nada.
+- **Cada tempo é a mediana de 5 repetições**, menos sensível a um travamento do computador.
+- **O tamanho do objeto é medido em estados e setas**, e não em bytes, porque o formato do objeto
+  ainda não foi escrito.
+- **A medição entrou no `rodar_tudo.py`**, com o placar da conferência, e não dos tempos, porque os
+  tempos não são certos ou errados. Ela leva uns 35 segundos.
+
+**O resultado:** em três execuções, duas no Linux e uma no Windows, a conferência deu 2520 de 2520,
+e o AFD mínimo foi mais rápido em todos os padrões e tamanhos, de 5,2 a 662,8 vezes. A expectativa
+se confirmou, inclusive nos dois casos que poderiam contrariá-la: nos registros curtos, de 44,9 a
+440,8 vezes; com n = 8, de 82,1 a 235,9 vezes, mesmo com 256 estados contra 52.
+
+**O que o resultado não diz:** o número de vezes é exagerado pela implementação, porque o
+`fecho_vazio` cria uma lista do tamanho da máquina a cada símbolo; o AFN para quando fica sem estado
+ativo e o AFD lê até o fim, e por isso a vantagem cai para 5 a 8 vezes no preço e no valor longos;
+montar o AFD custa mais (o do e-mail, de 155 a 220 ms), mas esse custo é do compilador, e não do
+executor; e, nos tempos abaixo de 1 µs, a proporção varia bastante entre execuções. Em nenhuma das
+42 linhas, em nenhuma execução, a direção mudou.
+
+#### O que mudou no código e nos números
+
+- O `leitor_padroes.py` lê a classe negada quando recebe o alfabeto. Os nós foram contados à mão
+  antes de rodar: `[^'\n]` tem 239 (120 folhas e 119 alternâncias), a Linha 489, o comentário 246 e
+  o literal Padrão 244.
+- O `demonstrar_leitor.py` ganhou o alfabeto de 122 símbolos e trocou as duas verificações de
+  "limite conhecido" pelas de aceitação, com mais duas recusas: sem o alfabeto, e com uma classe
+  negada que tira todos os símbolos. O placar foi de 37 para **42**.
+- O `classes_lexicas.md` explica o `e` do cabeçalho, o `pede` e a classe negada; o
+  `02nucleo_minimo.md` registra que ela entrou como redução; o README atualiza o leitor e fecha as
+  classes com `};`, assim como o `docs/exemplos.solx`, a especificação e o recorte, que ganhou as
+  decisões do fim da classe e do `e`.
+- A seção 7 da especificação ganhou o que a medição mostrou, com o link para o resultado.
+- O `rodar_tudo.py` passou de 12 para **13 partes**.
+
+### Pendências, depois desta rodada
+
+- **O executor.** É a única pendência. Quando ele for construído:
+  - a máquina do objeto precisa da coluna do outro, para os símbolos fora do alfabeto do padrão;
+  - o formato do objeto define o tamanho da tabela em bytes, que a medição contou em estados e
+    setas;
+  - a classe negada dentro das crases pode ser revista, porque o motivo de deixá-la de fora é a
+    falta da coluna do outro.
