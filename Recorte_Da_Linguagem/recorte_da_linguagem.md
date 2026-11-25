@@ -43,8 +43,14 @@ Classe Pedido {
             devolve preco + frete;
         };
     };
-}
+};
 ```
+
+**Decisão — O fim da classe**
+A classe termina com `};`, como as funções, o `Possui`, o `Faz` e os blocos de controle. Antes ela era a única construção que terminava em `}` sem `;`; com a mudança, a regra fica uma só, sem exceção, e quem está aprendendo não precisa lembrar de um caso à parte.
+
+**Decisão — O `e` do cabeçalho de função**
+O `e` de `pede (...) e retorna` é o mesmo `e` do operador lógico, e continua assim: nos dois lugares ele tem o mesmo sentido em português. Os dois usos não se confundem, porque logo depois do `)` que fecha os parâmetros não cabe expressão nenhuma; quem os distingue é a análise sintática, pela posição.
 
 **Decisão — Operadores e tipos primitivos**
 Por se tratar de uma linguagem para scripts, os operadores básicos são:
