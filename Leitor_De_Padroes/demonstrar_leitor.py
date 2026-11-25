@@ -4,7 +4,8 @@ de cada linha.
 
 Quatro partes:
   1. as cinco expressões: forma da árvore e número de nós;
-  2. os padrões das classes léxicas: número de nós;
+  2. os padrões das classes léxicas: número de nós, inclusive os que usam
+     classe negada (Linha, comentário e literal Padrão), lidos com o alfabeto;
   3. a convergência: escritas diferentes que chegam (ou não) à mesma árvore;
   4. as recusas: texto malformado, com a marca ^ na posição do problema.
 
@@ -64,6 +65,39 @@ EXPRESSOES_DO_MATERIAL = [
 PALAVRAS_RESERVADAS = ("funcao|pede|retorna|devolve|Classe|Possui|Faz|principal|Linha|Inteiro"
                        "|Quebrado|Booleano|Vazio|Lista|Padrao|Novo|Imprime|imprime"
                        "|enquanto|Enquanto|para|Para|em|Em|se|Se|senao|Senao|pare|Pare")
+
+#O alfabeto da Solis (especificacao/alfabeto.md), grupo por grupo, na ordem da tabela.
+#É com ele que a classe negada é lida: [^ab] vira todos estes símbolos, menos a e b.
+
+ALFABETO_DA_SOLIS = (
+    list("abcdefghijklmnopqrstuvwxyz")              # letras minúsculas: 26
+    + list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")            # letras maiúsculas: 26
+    + list("0123456789")                            # dígitos: 10
+    + list("+-*/%=<>!&|")                           # operadores: 11
+    + list("{}()[]:;,")                             # delimitadores: 9
+    + ["."]                                         # ponto: 1
+    + ["_"]                                         # sublinhado: 1
+    + ["'", '"']                                    # aspas: 2
+    + ["`"]                                         # crase: 1
+    + list("@#$ºª°")                                # símbolos de registro: 6
+    + ["?", "\\"]                                   # interrogação e barra invertida: 2
+    + [" ", "\t", "\n"]                             # espaço, Tab e quebra de linha: 3
+    + list("áàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ")              # letras acentuadas: 24
+)
+
+#As classes léxicas que usam classe negada. Os nós esperados foram contados à mão:
+#     [^'\n]             122 símbolos menos 2 = 120 folhas + 119 alternâncias            = 239
+#     Linha              '[^'\n]*' = 239 + 1 fecho + 2 aspas + 2 junções = 244;
+#                        "[^"\n]*" também 244; 244 + 244 + 1 barra                       = 489
+#     Comentário         [^\n] = 121 folhas + 120 alternâncias = 241;
+#                        241 + 1 fecho + 2 símbolos / + 2 junções                        = 246
+#     Literal Padrão     igual à Linha de aspas simples, com a crase no lugar da aspa    = 244
+
+PADROES_COM_CLASSE_NEGADA = [
+    ("Linha", "'[^'\n]*'|\"[^\"\n]*\"", 489),
+    ("Comentário", "//[^\n]*", 246),
+    ("Literal Padrão", "`[^`\n]*`", 244),
+]
 
 PADROES_DA_SOLIS = [
     ("Inteiro", r"[0-9]+", 40),
@@ -135,25 +169,32 @@ def parte2():
     conferir("caracteres escritos (160 letras + 29 barras)", len(PALAVRAS_RESERVADAS), 189)
     conferir("nós da árvore", contar_nos(ler_padrao(PALAVRAS_RESERVADAS)), 319)
 
-    #Limite conhecido: a Linha usa classe negada, que o leitor não aceita.
-    linha = "'[^'\n]*'"
-    print("\n    Linha: '[^'\\n]*'  (limite conhecido: usa classe negada)")
-    try:
-        ler_padrao(linha)
-        recusada = False
-    except ErroDeLeitura:
-        recusada = True
-    conferir("a Linha é recusada pelo leitor", recusada, True)
+    #As classes que usam classe negada precisam do alfabeto: o complemento é "o alfabeto menos a lista".
+    print("\n    As classes com classe negada, lidas com o alfabeto da Solis:")
+    conferir("símbolos do alfabeto", len(ALFABETO_DA_SOLIS), 122)
+    conferir("nós de [^'\\n]", contar_nos(ler_padrao("[^'\n]", ALFABETO_DA_SOLIS)), 239)
+    for nome, texto, nos_esperados in PADROES_COM_CLASSE_NEGADA:
+        arvore = ler_padrao(texto, ALFABETO_DA_SOLIS)
+        #A quebra de linha aparece escrita como \n, como em classes_lexicas.md.
+        escrito = texto.replace("\n", "\\n")
+        print(f"    {nome}: {exibir(escrito)}")
+        conferir(f"nós de {nome}", contar_nos(arvore), nos_esperados)
 
-    #O mesmo limite vale para o literal Padrão, que também usa classe negada.
-    padrao = "`[^`\n]*`"
-    print("\n    Padrão: `[^`\\n]*`  (limite conhecido: usa classe negada)")
+    #Sem o alfabeto, a classe negada continua recusada: não há como saber o que é "todo o resto".
     try:
-        ler_padrao(padrao)
+        ler_padrao("'[^'\n]*'")
         recusada = False
     except ErroDeLeitura:
         recusada = True
-    conferir("o literal Padrão é recusado pelo leitor", recusada, True)
+    conferir("sem o alfabeto, a Linha é recusada", recusada, True)
+
+    #Uma classe negada que tira todos os símbolos do alfabeto não sobra nada para casar.
+    try:
+        ler_padrao("[^ab]", ["a", "b"])
+        recusada = False
+    except ErroDeLeitura:
+        recusada = True
+    conferir("[^ab] sobre o alfabeto {a, b} é recusada", recusada, True)
 
 
 def parte3():
