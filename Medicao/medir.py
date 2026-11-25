@@ -22,8 +22,9 @@ formatar_simulacao mostrar, e esse custo não tem a ver com decidir o registro.
 Os tempos dependem do computador e da versão do Python. O que se compara é a
 proporção entre as duas máquinas no mesmo computador.
 
-Ao terminar, devolve código 1 se alguma máquina discordar do oráculo e 0 se
-todas concordarem.
+Ao terminar, mostra o placar da conferência na última linha e devolve código
+1 se alguma máquina discordar do oráculo e 0 se todas concordarem. Os tempos
+não entram no placar: eles não são certos ou errados, são o que foi medido.
 """
 
 import os
@@ -243,6 +244,8 @@ def main():
             print(f"    {nome:<26} {rotulo:<8} {tempo_afn * 1e6:>10.1f} {tempo_afd * 1e6:>11.1f} "
                   f"{tempo_afn / tempo_afd:>9.1f}x")
 
+    #A última linha é o placar, no formato que o rodar_tudo.py lê: "nome: X/Y ...".
+    print(f"\nMedição: {concordaram}/{conferidos} registros com a mesma resposta nas duas máquinas e no oráculo.")
     return 0 if concordaram == conferidos else 1
 
 
