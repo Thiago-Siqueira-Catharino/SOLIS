@@ -274,7 +274,8 @@ funcao soma pede (Quebrado a, Quebrado b) e retorna Quebrado {
 
 ## Classes
 
-Classes usam os blocos `Possui` (atributos) e `Faz` (métodos):
+Classes usam os blocos `Possui` (atributos) e `Faz` (métodos), e terminam com `};`, como as funções e
+os outros blocos:
 
 ```solx
 Classe Matematica {
@@ -288,7 +289,7 @@ Classe Matematica {
             devolve a * b;
         };
     };
-}
+};
 ```
 
 Instanciação de um objeto com `Novo`:
@@ -310,7 +311,7 @@ Classe Pedido {
             devolve preco + frete;
         };
     };
-}
+};
 ```
 
 De fora da classe, o atributo é usado pelo objeto, com o `.`, e um valor novo precisa ser do tipo
@@ -347,7 +348,7 @@ Classe Matematica {
             devolve a * b;
         };
     };
-}
+};
 
 funcao principal pede (Linha registro) e retorna Booleano {
     Padrao valor recebe `[0-9]+(,|\.)[0-9][0-9]`;
@@ -391,7 +392,7 @@ tudo passou, ou 1 quando alguma verificação falhou. A saída esperada é:
 [OK]     AFD de dígitos                 6/6 casos passaram.
 [OK]     AFD de letras                  6/6 casos passaram.
 [OK]     AFD de letras e dígitos        14/14 casos passaram.
-[OK]     Leitor de padrões              37/37 verificações passaram.
+[OK]     Leitor de padrões              42/42 verificações passaram.
 [OK]     AFN, passo 1: estrutura        9/9 verificações passaram.
 [OK]     AFN, passo 2: fecho vazio      11/11 verificações passaram.
 [OK]     AFN, passo 3: simulação        35/35 verificações passaram.
@@ -472,7 +473,7 @@ na pasta `Afn/`, consome.
 
 | Arquivo | O que faz |
 |---|---|
-| `Leitor_De_Padroes/leitor_padroes.py` | lê o padrão por descida recursiva e reduz o açúcar (`x+`, `x?`, `[abc]`, `[a-c]`) na leitura |
+| `Leitor_De_Padroes/leitor_padroes.py` | lê o padrão por descida recursiva e reduz o açúcar (`x+`, `x?`, `[abc]`, `[a-c]` e, quando recebe o alfabeto, `[^...]`) na leitura |
 | `Leitor_De_Padroes/arvore.py` | os 6 tipos de nó, a forma da árvore em texto e a contagem de nós |
 | `Leitor_De_Padroes/demonstrar_leitor.py` | mostra o leitor funcionando, com o resultado esperado ao lado de cada linha |
 
@@ -489,21 +490,23 @@ A saída tem quatro partes, na ordem da seção 1.8 do material:
 1. as cinco expressões do material, com a forma da árvore e o número de nós (1, 3, 5, 6 e 16);
 2. os padrões das classes léxicas da Solis, com os nós contados à mão antes de rodar: Inteiro 40,
    Quebrado 83, Identificador 486, Booleano 29, Delimitador 19, Palavra reservada 319 e
-   Operador 259;
+   Operador 259; e, lidos com o alfabeto da Solis (122 símbolos), os que usam classe negada: Linha
+   489, Comentário 246 e literal Padrão 244. Sem o alfabeto, a classe negada continua recusada;
 3. a convergência: `a+` e `aa*`, `[abc]` e `a|b|c`, `[a-c]` e `[abc]`, `(ab)c` e `abc`, `[0-9]+` e
    `[0-9][0-9]*` dão a mesma árvore; `[a-z0-9]` e `([a-z]|[0-9])` dão árvores diferentes, com os
    mesmos 71 nós;
 4. oito textos malformados, cada um com a marca `^` sob a posição do problema.
 
-A última linha esperada é `Leitor de padrões: 37/37 verificações passaram.` Se alguma verificação
+A última linha esperada é `Leitor de padrões: 42/42 verificações passaram.` Se alguma verificação
 falhar, a linha correspondente mostra `[FALHOU]` com o valor obtido e o esperado, e o programa
 termina com código de saída 1.
 
 As posições são contadas a partir de 1. Quando algo abre e não fecha, a marca fica no fim do texto,
 onde a falta foi constatada, e a mensagem diz em que posição o grupo ou a classe abriu.
 
-**Limite conhecido:** a Linha (`'[^'\n]*'`) e o literal Padrão (`` `[^`\n]*` ``) usam classe negada,
-que o leitor não aceita.
+A classe negada (`[^...]`) é lida como "o alfabeto menos a lista", e por isso só com o alfabeto:
+`ler_padrao(texto, alfabeto)`. Ela serve às classes léxicas da Linha, do comentário e do literal
+Padrão, e não é aceita dentro das crases.
 
 ---
 
