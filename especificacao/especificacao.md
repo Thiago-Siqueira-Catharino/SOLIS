@@ -535,6 +535,15 @@ Dois casos fariam isso acontecer, e a medida precisa incluí-los:
   determinização): o objeto cresce tanto que carregá-lo custa mais do que o tempo ganho nos
   registros.
 
+**O que a medição mostrou:** a expectativa se confirmou. Nas três execuções, em dois computadores,
+as duas máquinas deram a mesma resposta que o oráculo em 2520 de 2520 registros, e a determinística
+mínima foi mais rápida em todos os padrões e tamanhos de registro, de 5,2 a 662,8 vezes. Os dois
+casos que poderiam contrariar a expectativa não a contrariaram: nos registros curtos, ela foi de
+44,9 a 440,8 vezes mais rápida; com n = 8, de 82,1 a 235,9 vezes, mesmo com 256 estados contra 52.
+O crescimento aparece no tamanho da tabela, e não no tempo por registro. O número de vezes é
+exagerado pela implementação da simulação, e o que a medição sustenta é a direção. Os números, o
+método e o que a medição não diz estão em [`Medicao/resultado.md`](../Medicao/resultado.md).
+
 ---
 
 ## O Teste que Fecha a Escolha
