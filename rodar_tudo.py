@@ -29,6 +29,8 @@ PARTES = [
     ("Determinização", "Determinizacao/teste_determinizacao.py"),
     ("Minimização", "Determinizacao/teste_minimizacao.py"),
     ("Três máquinas e explosão", "Determinizacao/demonstrar_determinizacao.py"),
+    #A medição leva uns 35 segundos: cronometra as duas máquinas. Só a conferência com o oráculo decide se passou.
+    ("Medição da seção 7", "Medicao/medir.py"),
 ]
 
 RAIZ = os.path.dirname(os.path.abspath(__file__))
