@@ -137,7 +137,7 @@ Classe Matematica {
             devolve a * b;
         };
     };
-}
+};
 
 funcao principal pede (Linha registro) e retorna Booleano {
     Padrao preco recebe `[0-9]+(,|\.)[0-9][0-9]`;
@@ -184,7 +184,8 @@ Um texto Solis é aceito quando:
 - todo padrão entre crases é um padrão bem escrito, com o núcleo de operadores de
   [`docs/02nucleo_minimo.md`](../docs/02nucleo_minimo.md);
 - as instruções seguem as formas da linguagem: declarações, `se`/`senao`, `enquanto`, `para ... em`,
-  funções, classes, cada instrução terminada em `;` e cada bloco `{` fechado com o seu `}`;
+  funções, classes, cada instrução terminada em `;` e cada bloco `{` fechado com o seu `}` e um
+  `;`, a classe inclusive (`};`);
 - todo método é chamado numa variável, ou numa posição de uma lista guardada numa variável
   (`campos[3].quebrado()`), e nunca direto num literal nem no resultado de outra chamada;
 - passa por todas as verificações da seção 5;
