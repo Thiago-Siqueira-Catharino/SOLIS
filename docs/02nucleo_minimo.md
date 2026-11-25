@@ -71,9 +71,13 @@ dela; o coringa tem sempre o custo máximo.
 ## Fora do núcleo
 
 **Classe negada (`[^...]`).** Ela também se reduz: é a alternância dos símbolos do alfabeto que não
-estão na lista. Então, se entrar, entra como redução, nunca como operador do núcleo. Hoje o leitor a
-recusa, e isso é um limite conhecido: o padrão da Linha (`'[^'\n]*'`), o do comentário
-(`//[^\n]*`) e o do literal Padrão (`` `[^`\n]*` ``) dependem dela.
+estão na lista. Então, se entrar, entra como redução, nunca como operador do núcleo. E foi assim que
+ela entrou: o leitor a lê quando recebe o alfabeto, e `[^'\n]` vira a alternância dos 120 símbolos
+de Σ que não são a aspa nem a quebra de linha, com 239 nós. A árvore não ganhou nó novo, e o
+Thompson, o AFN e a determinização não mudaram. Ela serve às classes léxicas que dependem dela: o
+padrão da Linha (`'[^'\n]*'`, 489 nós com as duas aspas), o do comentário (`//[^\n]*`, 246) e o do
+literal Padrão (`` `[^`\n]*` ``, 244). Dentro das crases, quem escreve Solis não a usa: o complemento
+é sobre Σ, e num registro um símbolo fora de Σ conta como o outro, com que `[^;]` não casaria.
 
 **Quantificador contado (`x{3,5}`).** Também se reduz, a concatenações e opcionais, então o
 critério já o deixaria fora do núcleo. E ele não entra nem como notação, porque na Solis `{` e `}`
