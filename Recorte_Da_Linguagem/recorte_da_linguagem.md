@@ -93,6 +93,7 @@ Quem escreve em Solis declara padrões: descrições da forma que um trecho de t
 - `procura` devolve uma `Lista` de `Linha` com os trechos de um texto que têm a forma do padrão, ficando sempre com o trecho mais longo: `numero.procura(registro)`
 - As duas operações são métodos do padrão, chamados com o `.` que já existe: não entra operador novo.
 - Não há captura: o sistema não guarda qual trecho casou com cada parte do padrão.
+- Não há classe negada (`[^...]`) dentro das crases. O complemento seria sobre o alfabeto, e num registro um símbolo fora do alfabeto conta como o outro: `[^;]` não casaria com ele, embora ele não seja `;`. A classe negada fica só nas classes léxicas que o compilador usa para ler o código, onde um símbolo fora do alfabeto já é erro léxico. Pode ser revista quando o executor tiver a coluna do outro.
 - Um `Padrao` é um valor como os outros: pode ser parâmetro de função e ser passado de uma função para outra: `funcao tem pede (Padrao forma, Lista campos) e retorna Booleano`.
 
 **Decisão — Separar os campos**
