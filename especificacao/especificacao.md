@@ -231,13 +231,26 @@ linha 3: padrão aberto não foi fechado nesta linha
 ```
 
 **Um padrão malformado.** O texto entre as crases é um token válido, mas não é um padrão bem
-escrito. A mensagem repete a do leitor de padrões, que diz em que posição do padrão o problema
-começou, e a marca fica onde a leitura o constatou: aqui, no fim do padrão, onde falta o `]`.
+escrito. A mensagem repete a do leitor de padrões (a classe negada, logo abaixo, é a exceção), que
+diz em que posição do padrão o problema começou, e a marca fica onde a leitura o constatou: aqui,
+no fim do padrão, onde falta o `]`.
 
 ```
 linha 3: padrão malformado: Classe aberta na posição 1 do padrão não foi fechada com ]
     Padrao pedido recebe `[0-9+`;
                                ^
+```
+
+**Uma classe negada dentro de um padrão.** A classe negada (`[^...]`) existe nas classes léxicas
+que o compilador usa para ler o código, mas não dentro das crases: num registro, um símbolo fora do
+alfabeto conta como o outro, e `[^;]` não casaria com ele, embora ele não seja `;`. Este caso não
+repete a mensagem do leitor, que foi escrita para quem programa o compilador; a mensagem diz o que
+não é aceito, e a marca fica no `^`.
+
+```
+linha 3: a classe negada ([^...]) não é aceita dentro de um padrão
+    Padrao campo recebe `[^;]+`;
+                          ^
 ```
 
 **Uma instrução sem `;`, ou um bloco sem o seu `}`.** A marca fica no último trecho da instrução,
