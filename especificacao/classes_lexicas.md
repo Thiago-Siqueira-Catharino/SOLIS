@@ -160,7 +160,8 @@ do resto do texto: se o que está entre as crases é um padrão bem escrito, que
 de padrões, com o núcleo de operadores de [`docs/02nucleo_minimo.md`](../docs/02nucleo_minimo.md).
 Um padrão malformado entre crases é um token Padrão válido e é recusado depois, pelo leitor, com a
 posição do problema. A classe negada (`[^...]`) não é aceita dentro das crases: ela fica fora do
-núcleo, e um padrão que a use é recusado pelo leitor.
+núcleo, e um padrão que a use é recusado antes de gravar o objeto, com mensagem própria (seção 3
+de [`especificacao.md`](especificacao.md), "Uma classe negada dentro de um padrão").
 
 | Válidos | Inválidos |
 |---|---|
