@@ -924,3 +924,24 @@ executor; e, nos tempos abaixo de 1 µs, a proporção varia bastante entre exec
     setas;
   - a classe negada dentro das crases pode ser revista, porque o motivo de deixá-la de fora é a
     falta da coluna do outro.
+
+### Ajustes na documentação, depois desta rodada
+
+Uma varredura no repositório achou o que tinha ficado para trás nos documentos:
+
+- **O README** ganhou a seção "Medição" (a estrutura, o método, como executar e o resultado), o
+  "Como rodar tudo" passou a 13 partes, e a Análise Léxica passou a mostrar a pasta do modelo do
+  professor, com o comando para compilar em C++20 e o cuidado com a quebra de linha no `fonte.lin`.
+- **A especificação** ganhou, na seção 3, o erro da classe negada dentro de um padrão. A regra era
+  repetir a mensagem do leitor, mas a do leitor ("só é aceita quando o alfabeto é informado") foi
+  escrita para quem programa o compilador, e quem escreve Solis nunca informa alfabeto nenhum. O
+  caso ganhou mensagem própria: `a classe negada ([^...]) não é aceita dentro de um padrão`, com a
+  marca no `^`. Descartado: trocar a mensagem no próprio leitor, que continuaria servindo aos dois
+  casos, com e sem alfabeto, e deixaria um deles mal explicado.
+- **O recorte** ganhou, na decisão dos padrões, que não há classe negada dentro das crases, com o
+  motivo. A decisão já estava nas classes léxicas, no núcleo mínimo, no README e na especificação,
+  mas faltava no lugar onde as decisões da linguagem ficam.
+- **As classes léxicas** passaram a apontar para essa mensagem própria, em vez de dizer que o padrão
+  é recusado pelo leitor.
+
+As pendências não mudaram: continua só o executor.
