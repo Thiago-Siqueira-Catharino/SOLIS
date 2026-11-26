@@ -384,9 +384,10 @@ Requer Python 3. Na raiz do projeto, um comando roda todas as verificações do 
 python rodar_tudo.py
 ```
 
-O script roda, uma a uma, as doze partes descritas nas seções abaixo, na ordem em que as peças do
+O script roda, uma a uma, as treze partes descritas nas seções abaixo, na ordem em que as peças do
 compilador foram construídas. Cada parte confere o próprio resultado e termina com código 0 quando
-tudo passou, ou 1 quando alguma verificação falhou. A saída esperada é:
+tudo passou, ou 1 quando alguma verificação falhou. A última parte, a medição, leva uns 35
+segundos. A saída esperada é:
 
 ```
 [OK]     AFD de dígitos                 6/6 casos passaram.
@@ -401,8 +402,9 @@ tudo passou, ou 1 quando alguma verificação falhou. A saída esperada é:
 [OK]     Determinização                 39/39 verificações passaram.
 [OK]     Minimização                    36/36 verificações passaram.
 [OK]     Três máquinas e explosão       71/71 verificações passaram.
+[OK]     Medição da seção 7             2520/2520 registros com a mesma resposta nas duas máquinas e no oráculo.
 
-Solis: 12/12 partes passaram.
+Solis: 13/13 partes passaram.
 ```
 
 Se uma parte falhar, a linha dela começa com `[FALHOU]`, logo abaixo aparecem as verificações que
@@ -422,6 +424,16 @@ Autômatos finitos determinísticos (AFD) que reconhecem as partes do alfabeto d
 | `Afds/Alfabeto_0_ate_9` | AFD de dígitos |
 | `Afds/Alfabeto_A_ate_Z` | AFD de letras |
 | `Afds/Alfabeto_0_ate_Z` | AFD de letras e dígitos |
+| `Afds/Arquivo_Afd_Exemplo_Professor_Para_Adicionar_E_Ler_A_Linguagem` | O modelo do professor em C++ (`afd.cpp`): aceita as cadeias sobre {0, 1} terminadas em `01`, lidas do arquivo `fonte.lin` |
+
+O modelo do professor precisa do C++20, por causa do `contains`. Na pasta dele:
+
+```
+g++ -std=c++20 -o afd afd.cpp
+```
+
+Ele lê o `fonte.lin` inteiro como uma palavra só: uma quebra de linha no fim do arquivo também é
+lida e, como não está em {0, 1}, faz a palavra ser rejeitada.
 
 ### Padrões reconhecidos
 
@@ -642,3 +654,51 @@ por isso o crescimento é da linguagem, e não do algoritmo: nenhum AFD reconhec
 menos estados. O material mede 2ⁿ + 2 e 2ⁿ + 1 porque conta o estado de erro inalcançável; aqui ele
 não é criado. A demonstração confere as três máquinas contra a definição da linguagem, escrita
 sem máquina nenhuma, em todas as 2047 cadeias sobre {a, b} até o comprimento 10.
+
+---
+
+## Medição
+
+A pasta `Medicao/` responde à pergunta da seção 7 da especificação: processar os registros com o
+AFD mínimo de cada padrão é mais rápido do que simular o AFN construído direto do padrão?
+
+### Estrutura
+
+| Arquivo | O que contém |
+|---|---|
+| `Medicao/medir.py` | monta as duas máquinas de cada padrão, confere as duas contra um oráculo e cronometra o tempo por registro |
+| `Medicao/resultado.md` | o resultado de três execuções, em dois computadores, e o que ele não diz |
+
+Os padrões são os da especificação (quantidade, preço, preço com coringa, pedido, e-mail e valor) e
+o n-ésimo símbolo do fim, com n de 1 a 8. Os registros são gerados com a semente fixa 2026, só com
+os símbolos do alfabeto de cada padrão, em três tamanhos (5, 50 e 500 símbolos), metade que casa e
+metade que não casa. Antes de cronometrar, as duas máquinas são comparadas com o `re.fullmatch` do
+Python. A simulação do AFN é a do `Afn/afn.py`, sem guardar o traço dos passos, e cada tempo é a
+mediana de 5 repetições.
+
+### Como executar
+
+Requer Python 3. Na raiz do projeto:
+
+```
+python Medicao/medir.py
+```
+
+Leva uns 35 segundos. A saída tem três partes: o tamanho das máquinas e o tempo de montagem, a
+conferência contra o oráculo e o tempo por registro. A última linha esperada é:
+
+```
+Medição: 2520/2520 registros com a mesma resposta nas duas máquinas e no oráculo.
+```
+
+Os tempos mudam de computador para computador; o tamanho das máquinas e a conferência saem iguais
+em qualquer um, porque a semente é fixa. Se alguma máquina discordar do oráculo, o programa termina
+com código de saída 1.
+
+### Resultado
+
+Em três execuções, duas no Linux e uma no Windows, o AFD mínimo foi mais rápido em todos os padrões
+e tamanhos de registro, de 5,2 a 662,8 vezes, inclusive nos registros curtos e no n-ésimo do fim com
+n = 8, em que o AFD mínimo tem 256 estados contra 52 do AFN. O número de vezes é exagerado pela
+implementação da simulação; o que a medição sustenta é a direção. Os números e os cuidados estão em
+[`Medicao/resultado.md`](Medicao/resultado.md).
